@@ -55,31 +55,44 @@ function App() {
                 }
                 return { x: 0, y: 0 };
             };
-
-            for (let x = 0; x <= width; x += actualHorizontalGridSize) {
+            // vertical lines
+            for (let i = 1; i <= numHorizontalLines; i++) {
+                const x = i * actualHorizontalGridSize;
                 ctx.beginPath();
                 let { x: startWarpX, y: startWarpY } = warp(x, 0);
-                ctx.moveTo(x + startWarpX, 0 + startWarpY);
-                for (let y = 5; y < height; y += 5) {
+                ctx.moveTo(x + startWarpX, startWarpY);
+                let offsetx = 0;
+                if (i === numHorizontalLines) {
+                    console.log('here');
+                    offsetx -= 0.5;
+                } else if (i === 0) {
+                    offsetx += 0.5
+                }
+                for (let y = 0; y < usableHeight; y += 1) {
                     const { x: warpX, y: warpY } = warp(x, y);
-                    ctx.lineTo(x + warpX, y + warpY);
+                    ctx.lineTo(x + warpX + offsetx, y + warpY);
                 }
                 ctx.stroke();
             }
-
-            for (let y = 0; y <= height; y += actualVerticalGridSize) {
-                ctx.beginPath();
+            // horizontal lines
+            for (let i = 1; i <= numVerticalLines; i++) {
+                const y = i * actualVerticalGridSize;
                 let { x: startWarpX, y: startWarpY } = warp(0, y);
-                ctx.moveTo(0 + startWarpX, y + startWarpY);
-                for (let x = 5; x < width; x += 5) {
+                ctx.beginPath();
+                ctx.moveTo(startWarpX, y + startWarpY);
+                let offsety = 0;
+                if (i === numHorizontalLines) {
+                    console.log('here');
+                    offsety -= 0.5;
+                } else if (i === 0) {
+                    offsety += 0.5
+                }
+                for (let x = 0; x <= usableWidth; x += 0.75) {
                     const { x: warpX, y: warpY } = warp(x, y);
-                    ctx.lineTo(x + warpX, y + warpY);
+                    ctx.lineTo(x + warpX, y + warpY + offsety);
                 }
                 ctx.stroke();
             }
-
-            ctx.lineWidth = 1;
-            ctx.strokeRect(0.5, 0.5, width - 1, height - 1);
         };
 
         drawGrid();
