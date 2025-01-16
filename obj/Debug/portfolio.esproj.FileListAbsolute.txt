@@ -1,0 +1,1 @@
+C:\dev\portfolio\obj\Debug\portfolio.esproj.CoreCompileInputs.cache

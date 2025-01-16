@@ -1,0 +1,1 @@
+C:\dev\kbkayak\kbapp\obj\Debug\kbapp.esproj.CoreCompileInputs.cache
