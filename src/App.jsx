@@ -35,7 +35,7 @@ function App() {
         const gridHeight = height - 2 * margin;
 
         // Dynamic grid size calculation (adjust as needed)
-        let gridSize = 10; // Example: 10 grid spaces
+        let gridSize = 20; // Example: 10 grid spaces
 
         const warp = (x, y) => {
             const dx = x - mousePos.x; // Difference in x between grid point and mouse
