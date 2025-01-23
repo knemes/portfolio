@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from 'react'
+import { useRef, useEffect, useState, useCallback} from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
@@ -18,91 +18,91 @@ function App() {
         }
     };
 
-    useEffect(() => {
+    const drawGrid = useCallback(() => {
         const canvas = canvasRef.current;
-        const ctx = canvas.getContext('2d');
-        if (!ctx || !canvas) return;
+        if (!canvas || !canvas.getContext) return;
 
+        const ctx = canvas.getContext('2d');
         const width = canvas.width = window.innerWidth;
         const height = canvas.height = window.innerHeight;
 
-        const drawGrid = () => {
-            ctx.clearRect(0, 0, width, height);
+        ctx.clearRect(0, 0, width, height);
+        ctx.strokeStyle = 'black';
+        ctx.lineWidth = 1;
 
-            const gridSize = 20;
+        const margin = 100; // Margin around the grid
+        const gridWidth = width - 2 * margin;
+        const gridHeight = height - 2 * margin;
 
-            //ctx.strokeStyle = '#eee';
-            ctx.strokeStyle = 'black';
-            ctx.lineWidth = 1;
+        // Dynamic grid size calculation (adjust as needed)
+        let gridSize = 10; // Example: 10 grid spaces
 
-            const usableWidth = width - 40;
-            const usableHeight = height - 40;
+        const warp = (x, y) => {
+            const dx = x - mousePos.x; // Difference in x between grid point and mouse
+            const dy = y - mousePos.y; // Difference in y between grid point and mouse
+            const dist = Math.sqrt(dx * dx + dy * dy); // Distance between grid point and mouse
 
-            const numHorizontalLines = Math.floor(usableWidth / gridSize);
-            const actualHorizontalGridSize = usableWidth / numHorizontalLines;
-
-            const numVerticalLines = Math.floor(usableHeight / gridSize);
-            const actualVerticalGridSize = usableHeight / numVerticalLines;
-
-            const warp = (x, y) => {
-                const dx = x - mousePos.x;
-                const dy = y - mousePos.y;
-                const dist = Math.sqrt(dx * dx + dy * dy);
-
-                if (dist < 100) {
-                    let warpAmount = (100 - dist) / 100 * 10;
-                    return { x: warpAmount * (dx / dist), y: warpAmount * (dy / dist) };
-                }
-                return { x: 0, y: 0 };
-            };
-            // vertical lines
-            for (let i = 1; i <= numHorizontalLines; i++) {
-                const x = i * actualHorizontalGridSize;
-                ctx.beginPath();
-                let { x: startWarpX, y: startWarpY } = warp(x, 0);
-                ctx.moveTo(x + startWarpX, startWarpY);
-                let offsetx = 0;
-                if (i === numHorizontalLines) {
-                    console.log('here');
-                    offsetx -= 0.5;
-                } else if (i === 0) {
-                    offsetx += 0.5
-                }
-                for (let y = 0; y < usableHeight; y += 1) {
-                    const { x: warpX, y: warpY } = warp(x, y);
-                    ctx.lineTo(x + warpX + offsetx, y + warpY);
-                }
-                ctx.stroke();
+            if (dist < 100) { // If mouse is within 100 pixels
+                let warpAmount = (100 - dist) / 100 * 10; // Calculate warp amount (stronger closer to mouse)
+                return { x: warpAmount * (dx / dist), y: warpAmount * (dy / dist) }; // Return offset
             }
-            // horizontal lines
-            for (let i = 1; i <= numVerticalLines; i++) {
-                const y = i * actualVerticalGridSize;
-                let { x: startWarpX, y: startWarpY } = warp(0, y);
-                ctx.beginPath();
-                ctx.moveTo(startWarpX, y + startWarpY);
-                let offsety = 0;
-                if (i === numHorizontalLines) {
-                    console.log('here');
-                    offsety -= 0.5;
-                } else if (i === 0) {
-                    offsety += 0.5
-                }
-                for (let x = 0; x <= usableWidth; x += 0.75) {
-                    const { x: warpX, y: warpY } = warp(x, y);
-                    ctx.lineTo(x + warpX, y + warpY + offsety);
-                }
-                ctx.stroke();
-            }
+            return { x: 0, y: 0 }; // No warp if mouse is too far away
         };
 
-        drawGrid();
+        // Vertical lines
+        for (let xIndex = 0; xIndex <= Math.floor(gridWidth / gridSize); xIndex++) {
+            const x = margin + xIndex * gridSize;
+            let { x: startWarpX, y: startWarpY } = warp(x, margin);
+            let startX = x + startWarpX;
+            let startY = margin + startWarpY;
 
-        window.addEventListener('resize', drawGrid);
+            ctx.beginPath();
+            ctx.moveTo(startX, startY);
 
-        return () => {
-            window.removeEventListener('resize', drawGrid);
-        };
+            for (let yIndex = 0; yIndex <= Math.floor(gridHeight / gridSize); yIndex++) {
+                const y = margin + yIndex * gridSize;
+                const { x: warpX, y: warpY } = warp(x, y);
+                let endX = x + warpX;
+                let endY = y + warpY;
+                ctx.lineTo(endX, endY);
+            }
+            ctx.stroke();
+        }
+
+        // Horizontal lines (similar adjustments)
+        for (let y = margin; y < gridHeight + margin; y += gridSize) {
+            let { x: startWarpX, y: startWarpY } = warp(margin, y); // Apply margin to warp
+            let startX = margin + startWarpX; // Apply margin
+            let startY = y + startWarpY;
+
+            ctx.beginPath();
+            ctx.moveTo(startX, startY);
+
+            for (let xIndex = 0; xIndex <= Math.floor(gridWidth / gridSize); xIndex++) { // Adjusted loop
+                const x = margin + xIndex * gridSize;
+                const { x: warpX, y: warpY } = warp(x, y);
+                let endX = x + warpX;
+                let endY = y + warpY;
+                ctx.lineTo(endX, endY);
+            }
+            ctx.stroke();
+        }
     }, [mousePos]);
+
+    useEffect(() => {
+        const canvas = canvasRef.current;
+        if (canvas) {
+            canvas.addEventListener('mousemove', handleMouseMove);
+            window.addEventListener('resize', drawGrid);
+            drawGrid();
+        }
+        return () => {
+            if (canvas) {
+                canvas.removeEventListener('mousemove', handleMouseMove);
+                window.removeEventListener('resize', drawGrid);
+            }
+        };
+    }, [drawGrid]);
 
     return (
     <>
