@@ -1,0 +1,47 @@
+/* Flexbox Utility Classes */
+
+.flex-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.flex-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.items-center { /* Align items to the center along the cross axis */
+    align-items: center;
+}
+
+.items-start { /* Align items to the start along the cross axis */
+    align-items: flex-start;
+}
+
+.items-end { /* Align items to the end along the cross axis */
+    align-items: flex-end;
+}
+
+.justify-center { /* Align items to the center along the main axis */
+    justify-content: center;
+}
+
+.justify-start { /* Align items to the start along the main axis */
+    justify-content: flex-start;
+}
+
+.justify-end { /* Align items to the end along the main axis */
+    justify-content: flex-end;
+}
+
+.justify-between { /* Distribute space between items along the main axis */
+    justify-content: space-between;
+}
+
+.justify-around { /* Distribute space around items along the main axis */
+    justify-content: space-around;
+}
+
+.justify-evenly { /* Distribute space evenly around items along the main axis */
+    justify-content: space-evenly;
+}
