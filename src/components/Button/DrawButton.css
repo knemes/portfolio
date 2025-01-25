@@ -1,0 +1,15 @@
+.draw-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 2; /* Above content */
+    padding: 10px 20px;
+}
+
+.draw-options {
+    position: fixed;
+    bottom: 20px;
+    right: 100px;
+    z-index: 2;
+    gap: 10px;
+}

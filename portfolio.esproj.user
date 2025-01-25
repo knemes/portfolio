@@ -6,10 +6,8 @@
   "name": "localhost (Chrome)",
   "type": "chrome",
   "request": "launch",
-  "url": "http://localhost:3000",
-  "webRoot": "C:\\dev\\kbkayak",
-  "runtimeExecutable": "/usr/bin/chromium",
-  "smartStep": true
+  "url": "http://localhost:50357",
+  "webRoot": "C:\\dev\\portfolio"
 }</LaunchJsonTarget>
   </PropertyGroup>
 </Project>

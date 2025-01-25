@@ -1,0 +1,26 @@
+.button-expander {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    width: fit-content; /* Set a fixed width when collapsed */
+}
+
+.expander-content {
+    display: flex;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.expander-toggle {
+    padding: 10px;
+    cursor: pointer;
+    border: none;
+    background-color: #eee;
+    border-radius: 5px;
+}
+
+.button-expander.expanded .expander-toggle {
+    /* Add styles for expanded state */
+}
