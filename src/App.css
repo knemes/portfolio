@@ -79,3 +79,12 @@ canvas {
     width: 100%;
     z-index: -1;
 }
+
+.app-container.drawing-mode .content-container {
+    filter: grayscale(0.7);
+    pointer-events: none;
+}
+
+.app-container.drawing-mode .graph {
+    filter: brightness(0.5);
+}
