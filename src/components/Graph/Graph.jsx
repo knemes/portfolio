@@ -14,10 +14,10 @@ function Graph({ mousePos }) {
         const height = canvas.height;
 
         ctx.clearRect(0, 0, width, height);
-        ctx.strokeStyle = 'lightgray';
+        ctx.strokeStyle = '#EEEEEE';
         ctx.lineWidth = 1;
 
-        const margin = 100; // Margin around the grid
+        const margin = 50; // Margin around the grid
         const gridWidth = width - 2 * margin;
         const gridHeight = height - 2 * margin;
         let gridSize = 20;
