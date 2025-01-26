@@ -5,8 +5,8 @@ body, html {
 }
 
 #root {
-  height: 100%;
-  width: 100%;
+  height: 100vh;
+  width: 100vw;
   text-align: left;
 }
 
@@ -78,4 +78,13 @@ canvas {
     left: 0;
     width: 100%;
     z-index: -1;
+}
+
+.app-container.drawing-mode .content-container {
+    filter: grayscale(0.7);
+    pointer-events: none;
+}
+
+.app-container.drawing-mode .graph {
+    filter: brightness(0.5);
 }
