@@ -1,25 +1,41 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import './ButtonExpander.css';
 
-function ButtonExpander({ children, expandDirection = 'left', onToggle }) {
-    console.log("ButtonExpander component rendered");
+function ButtonExpander({ children, isDrawing, setIsDrawing, expandDirection = 'left', toggleLabel = '>', collapseLabel = '<' }) {
     const [isExpanded, setIsExpanded] = useState(false);
-    const containerRef = useRef(null)
     const [contentWidth, setContentWidth] = useState(0)
+    const contentRef = useRef(null);
+    const toggleRef = useRef(null);
 
-    useEffect(() => {
-        if (containerRef.current) {
-            setContentWidth(containerRef.current.offsetWidth)
-        }
-    }, [isExpanded])
+    const setToggleRef = useCallback((node) => {
+        toggleRef.current = node;
+    }, []);
 
     const toggleExpand = () => {
         setIsExpanded(!isExpanded);
-        if (onToggle) {
-            onToggle(!isExpanded);
-        }
+        setIsDrawing(!isDrawing);
     };
+
+    useEffect(() => {
+        if (isExpanded && contentRef.current && toggleRef.current) {
+            const childrenArray = Array.from(contentRef.current.children);
+
+            childrenArray.forEach((child, index) => {
+                setTimeout(() => {
+                    child.style.visibility = 'visible';
+                    child.style.transform = 'translateX(0)';
+                }, index * 100);
+            });
+        } else if (contentRef.current) {
+            const toggleWidth = toggleRef.current.offsetWidth;
+            const childrenArray = Array.from(contentRef.current.children);
+            childrenArray.forEach((child) => {
+                child.style.visibility = 'hidden';
+                child.style.transform = `translateX(${toggleWidth}px)`;
+            });
+        }
+    }, [isExpanded]);
 
     const containerStyle = {
         position: 'fixed',
@@ -30,22 +46,23 @@ function ButtonExpander({ children, expandDirection = 'left', onToggle }) {
     };
 
     const contentStyle = {
-        position: 'absolute', // Absolute positioning for content
-        top: 0,
-        right: 0,
-        transition: 'width 0.3s ease-in-out', // Transition width
-        width: isExpanded ? 'auto' : 0, // Animate width
+        transition: 'transform 0.5s ease-in-out, visibility 0.5s ease-in-out',
+        visibility: isExpanded ? 'visible' : 'hidden', // Still use visibility 
         overflow: 'hidden',
-        display: 'flex'
+        display: 'flex',
+        flexDirection: 'row',
+        padding: '10px',
+        whiteSpace: 'nowrap',
+        transform: isExpanded ? 'translateX(0)' : `translateX(${expandDirection === 'left' ? '100%' : '-100%'})`,
     };
 
     return (
         <div className="button-expander" style={containerStyle}>
-            <div className="expander-content" style={contentStyle} ref={containerRef}>
+            <div className="expander-content" style={contentStyle} ref={contentRef}>
                 {children}
             </div>
-            <button className="expander-toggle" onClick={toggleExpand}>
-                {isExpanded ? '<' : '>'}
+            <button className="expander-toggle" onClick={toggleExpand} ref={setToggleRef}>
+                {isExpanded ? collapseLabel : toggleLabel}
             </button>
         </div>
     );
@@ -53,8 +70,11 @@ function ButtonExpander({ children, expandDirection = 'left', onToggle }) {
 
 ButtonExpander.propTypes = {
     children: PropTypes.node.isRequired,
-    expandDirection: PropTypes.oneOf(['left', 'right']),
-    onToggle: PropTypes.func,
+    expandDirection: PropTypes.oneOf(['left', 'right', 'up', 'down']),
+    isDrawing: PropTypes.bool.isRequired,
+    setIsDrawing: PropTypes.func.isRequired,
+    toggleLabel: PropTypes.func,
+    collapseLabel: PropTypes.string,
 };
 
 export default ButtonExpander;

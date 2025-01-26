@@ -24,29 +24,13 @@ function Graph({canvas, mousePos, isDrawing, lines, backgroundLines }) {
     }, [canvas, mousePos]);
 
     const drawGrid = useCallback(() => {
-        //const canvas = canvasRef.current;
-        if (!canvas || !canvas.getContext) {
-            console.log("Canvas or context not available");
-            return;
-        }
 
         const ctx = canvas.getContext('2d');
-        if (!ctx) {
-            console.log("Canvas context is null!");
-            return;
-        }
-
-
         const width = canvas.width;
         const height = canvas.height;
 
-        if (width === 0 || height === 0) {
-            console.log("Canvas has zero dimensions!");
-            return;
-        }
-
         ctx.clearRect(0, 0, width, height);
-        ctx.strokeStyle = '#EEEEEE';
+        ctx.strokeStyle = isDrawing ? '#AAAAAA' : '#EEEEEE';
         ctx.lineWidth = 1;
 
         const margin = 50; // Margin around the grid
@@ -148,7 +132,7 @@ function Graph({canvas, mousePos, isDrawing, lines, backgroundLines }) {
 
         if (!isDrawing) { // Only warp when NOT drawing
             backgroundLines.forEach(line => {
-                drawWarpedLine(line, line[0].color || 'rgba(0,0,0,0.1)');
+                drawWarpedLine(line, 'rgba(0,0,0,0.1)');
             });
         } else {
             backgroundLines.forEach(line => {
@@ -156,7 +140,7 @@ function Graph({canvas, mousePos, isDrawing, lines, backgroundLines }) {
             })
         }
 
-        // Draw current line (warped only if isDrawing is true)
+        // Draw current line 
         if (isDrawing && lines.length > 0) {
             lines.forEach(line => {
                 drawLine(line, line[0].color); // Use helper function
@@ -183,11 +167,7 @@ function Graph({canvas, mousePos, isDrawing, lines, backgroundLines }) {
                 return () => {
                     window.removeEventListener('resize', handleResize);
                 };
-            } else {
-                console.log("Context not available")
             }
-        } else {
-            console.log("Canvas ref not available yet.");
         }
     }, [canvas, drawGrid, drawLines]);
 

@@ -1,6 +1,7 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import Graph from './Graph/Graph';
+import ButtonExpander from './Button/ButtonExpander';
 
 function Layout() {
     console.log('Layout component rendered'); 
@@ -144,6 +145,17 @@ function Layout() {
                     backgroundLines={backgroundLines} />}
             </div>
             <div style={{ padding: '20px', position: 'relative', zIndex: 1, pointerEvents: 'auto' }}> {/* Content area */}
+                <ButtonExpander
+                    isDrawing={isDrawing}
+                    setIsDrawing={setIsDrawing}
+                    toggleLabel={isDrawing ? "Stop Drawing" : "Start Drawing"}
+                    collapseLabel="Close"
+                >
+                    <button onClick={() => setPencilColor('red')} style={{ backgroundColor: 'red' }}>Red</button>
+                    <button onClick={() => setPencilColor('blue')} style={{ backgroundColor: 'blue' }}>Blue</button>
+                    <button onClick={() => setPencilColor('green')} style={{ backgroundColor: 'green' }}>Green</button>
+                    <button onClick={clearCanvas}>Clear Canvas</button>
+                </ButtonExpander>
                 <Outlet context={{ isDrawing, toggleDrawingMode, setPencilColor, clearCanvas, pencilColor }} />
             </div>
         </div>
