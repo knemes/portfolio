@@ -1,12 +1,12 @@
-import React, { useRef, useEffect, useCallback } from 'react';
+import React, { useRef, useLayoutEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import './Graph.css';
 
-function Graph({ mousePos, isDrawing, lines, backgroundLines}) {
-    const canvasRef = useRef(null);
+function Graph({canvas, mousePos, isDrawing, lines, backgroundLines }) {
+    //const canvasRef = useRef(null);
 
-    const warp = (x, y) => {
-        const canvas = canvasRef.current;
+    const warp = useCallback((x, y) => {
+        //const canvas = canvasRef.current;
         if (!mousePos) return { x: 0, y: 0 }; // No warp if no mouse position
         const rect = canvas.getBoundingClientRect(); // Get canvas position
         const canvasMouseX = mousePos.x - rect.left; // Difference in x between grid point and mouse
@@ -21,15 +21,29 @@ function Graph({ mousePos, isDrawing, lines, backgroundLines}) {
             return { x: warpAmount * (dx / dist), y: warpAmount * (dy / dist) }; // Return offset
         }
         return { x: 0, y: 0 }; // No warp if mouse is too far away
-    };
+    }, [canvas, mousePos]);
 
     const drawGrid = useCallback(() => {
-        const canvas = canvasRef.current;
-        if (!canvas || !canvas.getContext) return;
+        //const canvas = canvasRef.current;
+        if (!canvas || !canvas.getContext) {
+            console.log("Canvas or context not available");
+            return;
+        }
 
         const ctx = canvas.getContext('2d');
+        if (!ctx) {
+            console.log("Canvas context is null!");
+            return;
+        }
+
+
         const width = canvas.width;
         const height = canvas.height;
+
+        if (width === 0 || height === 0) {
+            console.log("Canvas has zero dimensions!");
+            return;
+        }
 
         ctx.clearRect(0, 0, width, height);
         ctx.strokeStyle = '#EEEEEE';
@@ -99,10 +113,10 @@ function Graph({ mousePos, isDrawing, lines, backgroundLines}) {
             }
             ctx.stroke();
         }
-    }, [mousePos, isDrawing, warp]);
+    }, [canvas, isDrawing, warp]);
 
     const drawLines = useCallback(() => {
-        const canvas = canvasRef.current;
+        //const canvas = canvasRef.current;
         if (!canvas || !canvas.getContext) return;
         const ctx = canvas.getContext('2d');
         ctx.lineJoin = 'round';
@@ -149,39 +163,51 @@ function Graph({ mousePos, isDrawing, lines, backgroundLines}) {
             });
         }
 
-    }, [lines, backgroundLines, drawGrid, isDrawing, mousePos]);
+    }, [canvas, lines, backgroundLines, drawGrid, isDrawing, warp]);
 
-    useEffect(() => {
-        const canvas = canvasRef.current;
+    useLayoutEffect(() => { // Use useLayoutEffect here!
+        //const canvas = canvasRef.current;
         if (canvas) {
-            const handleResize = () => {
-                canvas.width = window.innerWidth;
-                canvas.height = document.body.scrollHeight;
-                drawGrid();
-                drawLines();
-            };
+            const ctx = canvas.getContext('2d');
+            if (ctx) {
+                const handleResize = () => {
+                    canvas.width = canvas.offsetWidth;
+                    canvas.height = canvas.offsetHeight;
+                    drawGrid();
+                    drawLines();
+                };
 
-            handleResize();
-            window.addEventListener('resize', handleResize);
+                handleResize();
+                window.addEventListener('resize', handleResize);
 
-            return () => {
-                window.removeEventListener('resize', handleResize);
-            };
+                return () => {
+                    window.removeEventListener('resize', handleResize);
+                };
+            } else {
+                console.log("Context not available")
+            }
+        } else {
+            console.log("Canvas ref not available yet.");
         }
-    }, [drawGrid, drawLines]);
+    }, [canvas, drawGrid, drawLines]);
 
-    useEffect(() => {
-        drawGrid(); // Call drawGrid when mousePos or isDrawing changes
-    }, [mousePos, isDrawing, drawGrid]);
+    useLayoutEffect(() => {
+        drawGrid();
+    }, [drawGrid]);
 
-    useEffect(() => {
-        drawLines(); // Call drawLines when lines changes
-    }, [lines, drawLines, backgroundLines]);
+    useLayoutEffect(() => {
+        drawLines();
+    }, [drawLines, lines, backgroundLines]);
 
-    return <canvas ref={canvasRef} className="graph" />;
+    if (!canvas) {
+        return null; // Don't render anything if the canvas ref is not yet set
+    }
+
+    return null;
 }
 
 Graph.propTypes = {
+    canvas: PropTypes.instanceOf(HTMLCanvasElement),
     mousePos: PropTypes.shape({
         x: PropTypes.number.isRequired,
         y: PropTypes.number.isRequired,
