@@ -2,7 +2,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import './ButtonExpander.css';
 
-function ButtonExpander({ children, expandDirection = 'left', onToggle}) {
+function ButtonExpander({ children, expandDirection = 'left', onToggle }) {
+    console.log("ButtonExpander component rendered");
     const [isExpanded, setIsExpanded] = useState(false);
     const containerRef = useRef(null)
     const [contentWidth, setContentWidth] = useState(0)
