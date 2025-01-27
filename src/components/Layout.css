@@ -1,0 +1,41 @@
+.layout-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    width: 100vw;
+    position: relative;
+}
+
+.canvas-container {
+    flex-grow: 1; /* Allow canvas to take up available space */
+    position: relative;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    flex-shrink: 0;
+}
+
+.controls-container {
+    /* No need for absolute positioning here */
+    padding: 20px;
+    z-index: 10;
+}
+
+.layout-main {
+    flex-grow: 1;
+}
+
+canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.page-content { /* Style for the page content overlay */
+    position: absolute;
+    z-index: 5; /* Ensure it's above the graph but below header/footer */
+    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+    overflow-y: auto; /* Add scroll if content is too long */
+    padding: 20px; /* Add padding to page content */
+}

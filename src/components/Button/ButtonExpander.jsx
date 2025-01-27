@@ -73,7 +73,7 @@ ButtonExpander.propTypes = {
     expandDirection: PropTypes.oneOf(['left', 'right', 'up', 'down']),
     isDrawing: PropTypes.bool.isRequired,
     setIsDrawing: PropTypes.func.isRequired,
-    toggleLabel: PropTypes.func,
+    toggleLabel: PropTypes.string,
     collapseLabel: PropTypes.string,
 };
 

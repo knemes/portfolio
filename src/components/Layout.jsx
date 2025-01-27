@@ -1,10 +1,14 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import Graph from './Graph/Graph';
+import './Layout.css';
+import Header from './Header/Header';
+import Footer from './Footer/Footer';
 import ButtonExpander from './Button/ButtonExpander';
 
 function Layout() {
-    console.log('Layout component rendered'); 
+    const [canvasWidth, setCanvasWidth] = useState(window.innerWidth - 200);
+    const [canvasHeight, setCanvasHeight] = useState(window.innerHeight - 200);
     const [mousePos, setMousePos] = useState({ x: -100, y: -100 });
     const [isDrawing, setIsDrawing] = useState(false);
     const [lines, setLines] = useState([]);
@@ -13,8 +17,6 @@ function Layout() {
     const isMouseDown = useRef(false);
     const canvasRef = useRef(null);
 
-    const [canvasWidth, setCanvasWidth] = useState(window.innerWidth);
-    const [canvasHeight, setCanvasHeight] = useState(window.innerHeight);
     const [hasMounted, setHasMounted] = useState(false);
 
     const getCanvasCoords = useCallback((e) => {
@@ -114,21 +116,9 @@ function Layout() {
     }, []);
 
     return (
-        <div style={{ width: '100vw', height: '100vh', display: 'flex', flexDirection: 'column', position: 'relative' }}> {/* Flexbox for layout */}
-            <div
-                style={{
-                    width: canvasWidth, // Use state for width
-                    height: canvasHeight, // Use state for height
-                    position: 'absolute', // Important for canvas positioning
-                    top: 0,
-                    left: 0,
-                    pointerEvents: 'none', // Ensure canvas doesn't block interactions
-                    zIndex: 0, // Ensure canvas is above other content
-                }}
-                onMouseMove={handleMouseMove}
-                onMouseDown={handleMouseDown}
-                onMouseUp={handleMouseUp}
-            >
+        <div className='layout-container'> {/* Flexbox for layout */}
+            <Header />
+            <div className="canvas-container layout-main" >
                 <canvas
                     ref={canvasRef}
                     style={{
@@ -144,7 +134,8 @@ function Layout() {
                     lines={lines}
                     backgroundLines={backgroundLines} />}
             </div>
-            <div style={{ padding: '20px', position: 'relative', zIndex: 1, pointerEvents: 'auto' }}> {/* Content area */}
+            <Outlet context={{ isDrawing, toggleDrawingMode, setPencilColor, clearCanvas, pencilColor }} />
+            <div className='controls-container'> {/* Content area */}
                 <ButtonExpander
                     isDrawing={isDrawing}
                     setIsDrawing={setIsDrawing}
@@ -156,8 +147,9 @@ function Layout() {
                     <button onClick={() => setPencilColor('green')} style={{ backgroundColor: 'green' }}>Green</button>
                     <button onClick={clearCanvas}>Clear Canvas</button>
                 </ButtonExpander>
-                <Outlet context={{ isDrawing, toggleDrawingMode, setPencilColor, clearCanvas, pencilColor }} />
             </div>
+            
+            <Footer />
         </div>
     );
 }

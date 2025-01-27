@@ -5,7 +5,7 @@ function Home() {
     const { pencilColor } = useOutletContext();
 
     return (
-        <div>
+        <div className="page-content layout-main">
             <h1>Home</h1>
             <p>Welcome to the home page!</p>
             <p>Current Pencil Color: <span style={{ color: pencilColor }}>{pencilColor}</span></p>

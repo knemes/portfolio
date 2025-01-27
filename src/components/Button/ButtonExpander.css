@@ -1,5 +1,5 @@
 .button-expander {
-    position: fixed;
+    position: absolute;
     bottom: 20px;
     right: 20px;
     display: flex;
