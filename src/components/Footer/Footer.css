@@ -8,12 +8,12 @@
     right: 100px;
 }
 
-.footer-content { /* Style the content container */
+.footer-content {
     display: flex;
-    justify-content: space-between; /* Example: Align nav to left, h1 to right */
+    justify-content: space-between; 
     align-items: center;
-    max-width: 1200px;
-    margin: 0 auto; /* Center the content */
+    position: relative; 
+    padding: 0 100px;
 }
 
 nav {

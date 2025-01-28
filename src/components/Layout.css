@@ -1,3 +1,4 @@
+@import url('layout.css');
 .layout-container {
     display: flex;
     flex-direction: column;
@@ -12,30 +13,30 @@
     width: 100%;
     height: 100%;
     margin: 0;
-    padding: 0;
     flex-shrink: 0;
-}
-
-.controls-container {
-    /* No need for absolute positioning here */
-    padding: 20px;
-    z-index: 10;
 }
 
 .layout-main {
     flex-grow: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 canvas {
+    position: absolute;
     display: block;
     width: 100%;
     height: 100%;
 }
 
 .page-content { /* Style for the page content overlay */
-    position: absolute;
-    z-index: 5; /* Ensure it's above the graph but below header/footer */
-    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
-    overflow-y: auto; /* Add scroll if content is too long */
-    padding: 20px; /* Add padding to page content */
+    position: absolute; /* Absolutely position the page content */
+    top: 60px; /* Match header height + padding */
+    bottom: 60px; /* Match footer height + padding */
+    left: 100px; /* Match container padding */
+    right: 100px; /* Match container padding */
+    z-index: 5; /* Ensure page is above canvas */
+    background-color: transparent;
+    overflow-y: auto;
+    padding: 20px;
 }

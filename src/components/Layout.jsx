@@ -4,7 +4,6 @@ import Graph from './Graph/Graph';
 import './Layout.css';
 import Header from './Header/Header';
 import Footer from './Footer/Footer';
-import ButtonExpander from './Button/ButtonExpander';
 
 function Layout() {
     const [canvasWidth, setCanvasWidth] = useState(window.innerWidth - 200);
@@ -134,22 +133,8 @@ function Layout() {
                     lines={lines}
                     backgroundLines={backgroundLines} />}
             </div>
-            <Outlet context={{ isDrawing, toggleDrawingMode, setPencilColor, clearCanvas, pencilColor }} />
-            <div className='controls-container'> {/* Content area */}
-                <ButtonExpander
-                    isDrawing={isDrawing}
-                    setIsDrawing={setIsDrawing}
-                    toggleLabel={isDrawing ? "Stop Drawing" : "Start Drawing"}
-                    collapseLabel="Close"
-                >
-                    <button onClick={() => setPencilColor('red')} style={{ backgroundColor: 'red' }}>Red</button>
-                    <button onClick={() => setPencilColor('blue')} style={{ backgroundColor: 'blue' }}>Blue</button>
-                    <button onClick={() => setPencilColor('green')} style={{ backgroundColor: 'green' }}>Green</button>
-                    <button onClick={clearCanvas}>Clear Canvas</button>
-                </ButtonExpander>
-            </div>
-            
-            <Footer />
+            <Outlet context={{ isDrawing, toggleDrawingMode, setPencilColor, clearCanvas, pencilColor }} />            
+            <Footer isDrawing={isDrawing} setIsDrawing={setIsDrawing} setPencilColor={setPencilColor} clearCanvas={clearCanvas}/>
         </div>
     );
 }
