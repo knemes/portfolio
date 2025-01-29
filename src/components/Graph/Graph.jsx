@@ -2,7 +2,7 @@ import React, { useRef, useLayoutEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import './Graph.css';
 
-function Graph({canvas, mousePos, isDrawing, lines, backgroundLines }) {
+function Graph({ canvas, mousePos, isDrawing, lines, backgroundLines }) {
     //const canvasRef = useRef(null);
 
     const warp = useCallback((x, y) => {
@@ -33,7 +33,7 @@ function Graph({canvas, mousePos, isDrawing, lines, backgroundLines }) {
         ctx.strokeStyle = isDrawing ? '#DDDDDD' : '#EEEEEE';
         ctx.lineWidth = 1;
 
-        const margin = 100; // Margin around the grid
+        const margin = 75; // Margin around the grid
         const gridWidth = width - 2 * margin;
         const gridHeight = height - 2 * margin;
         let gridSize = 20;
@@ -41,14 +41,25 @@ function Graph({canvas, mousePos, isDrawing, lines, backgroundLines }) {
         // Vertical lines
         for (let xIndex = 0; xIndex <= Math.floor(gridWidth / gridSize); xIndex++) {
             const x = margin + xIndex * gridSize;
+            const firstthirdx = Math.floor(gridWidth / gridSize / 3);
+            const secondthirdx = Math.floor(gridWidth / gridSize / 3 * 2);
+            const lastx = Math.floor(gridWidth / gridSize)
             let { x: startWarpX, y: startWarpY } = warp(x, margin);
             let startX, startY;
             if (!isDrawing) {
                 startX = x + startWarpX;
-                startY = margin + startWarpY;
+                if (xIndex == 0 || xIndex == firstthirdx || xIndex == secondthirdx || xIndex == lastx) {
+                    startY = startWarpY - 10;
+                } else {
+                    startY = margin + startWarpY;
+                }
             } else {
                 startX = x;
-                startY = margin;
+                if (xIndex == 0 || xIndex == firstthirdx || xIndex == secondthirdx || xIndex == lastx) {
+                    startY = -10;
+                } else {
+                    startY = margin;
+                }
             }
 
             ctx.beginPath();
@@ -56,12 +67,23 @@ function Graph({canvas, mousePos, isDrawing, lines, backgroundLines }) {
 
             for (let yIndex = 0; yIndex <= Math.floor(gridHeight / gridSize); yIndex++) {
                 const y = margin + yIndex * gridSize;
+                const lasty = Math.floor(gridHeight / gridSize)
                 const { x: warpX, y: warpY } = warp(x, y);
-                let endX = x
-                let endY = y
+                let endX = x;
+                let endY; 
                 if (!isDrawing) {
                     endX = x + warpX;
-                    endY = y + warpY;
+                    if ((xIndex == 0 || xIndex == lastx) && yIndex == lasty) {
+                        endY = y + warpY + margin + 10;
+                    } else {
+                        endY = y + warpY;
+                    }
+                } else {
+                    if ((xIndex == 0 || xIndex == lastx) && yIndex == lasty) {
+                        endY = y + margin + 10;
+                    } else {
+                        endY = y;
+                    }  
                 }
                 ctx.lineTo(endX, endY);
             }
@@ -71,27 +93,47 @@ function Graph({canvas, mousePos, isDrawing, lines, backgroundLines }) {
         // Horizontal lines (similar adjustments)
         for (let yIndex = 0; yIndex <= Math.floor(gridHeight / gridSize); yIndex++) {
             const y = margin + yIndex * gridSize;
-            let { x: startWarpX, y: startWarpY } = warp(margin, y); // Apply margin to warp
+            const lasty = Math.floor(gridHeight / gridSize)
+            let { x: startWarpX, y: startWarpY } = warp(margin, y); 
             let startX, startY;
             if (!isDrawing) {
-                startX = margin + startWarpX;
+                if (yIndex == 0 || yIndex == lasty) {
+                    startX = startWarpX - 10;
+                } else {
+                    startX = margin + startWarpX;
+                }
                 startY = y + startWarpY;
             } else {
-                startX = margin;
+                if (yIndex == 0 || yIndex == lasty) {
+                    startX = -10;
+                } else {
+                    startX = margin;
+                }
                 startY = y;
             }
 
             ctx.beginPath();
             ctx.moveTo(startX, startY);
 
-            for (let xIndex = 0; xIndex <= Math.floor(gridWidth / gridSize); xIndex++) { // Adjusted loop
+            for (let xIndex = 0; xIndex <= Math.floor(gridWidth / gridSize); xIndex++) { 
                 const x = margin + xIndex * gridSize;
+                const lastx = Math.floor(gridWidth / gridSize)
                 const { x: warpX, y: warpY } = warp(x, y);
-                let endX = x;
+                let endX;
                 let endY = y;
                 if (!isDrawing) {
-                    endX = x + warpX;
+                    if ((yIndex == 0 || yIndex == lasty) && xIndex == lastx) {
+                        endX = x + warpX + margin + 10;
+                    } else {
+                        endX = x + warpX;
+                    }
                     endY = y + warpY;
+                } else {
+                    if ((yIndex == 0 || yIndex == lasty) && xIndex == lastx) {
+                        endX = x + margin + 10;
+                    } else {
+                        endX = x;
+                    }
                 }
                 ctx.lineTo(endX, endY);
             }
