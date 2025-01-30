@@ -1,12 +1,16 @@
 import React from 'react';
+import { useOutletContext } from 'react-router-dom';
 
-function AboutPage() {
+function About() {
+    const { pencilColor } = useOutletContext();
+
     return (
-        <div>
-            <h1>About Page</h1>
-            {/* ... your about page content */}
+        <div className="page-content layout-main">
+            <h1>About</h1>
+            <p>I am a computational designer</p>
+            <p>Current Pencil Color: <span style={{ color: pencilColor }}>{pencilColor}</span></p>
         </div>
     );
 }
 
-export default AboutPage;
+export default About;

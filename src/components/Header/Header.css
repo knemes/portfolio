@@ -1,28 +1,91 @@
 .header {
     background-color: transparent;
-    position: absolute;
+    /* position: absolute; Remove this! */
+    position: fixed; /* Or position: sticky; */
     z-index: 10;
-    top: 0px;
-    left: 75px;
-    right: 75px;
+    top: 0;
+    left: 95px;
+    right: 95px;
     height: 75px;
     display: flex;
+    align-items: flex-end; /* Align items vertically */
+    justify-content: space-between; /* Distribute space between left and right navs */
 }
 
-.header-content { /* Style the content container */
+.header-content {
     display: flex;
-    justify-content: space-between; /* Example: Align nav to left, h1 to right */
-    align-items: flex-end;
-    margin: 0;
-    padding: 0;
+    justify-content: space-between; /* Distribute space between left and right */
+    align-items: flex-end; /* Vertically center content */
+    width: 100%;
+    margin: 0 auto;
 }
 
-nav {
+nav a {
+    margin-bottom: 0;
+}
+
+.left-links {
+    display: flex;
+    gap: 20px;
+    align-items: flex-end;
+    font-size: 2rem; 
+}
+
+.right-links {
+    display: flex;
+    gap: 20px;
+    align-items: flex-end;
+    font-size: 1rem;
+}
+
+.regular-links { /* Styles for regular links */
     display: flex;
     gap: 20px;
 }
 
-nav a {
+.right-content { /* Styles for the container of button and links */
+    display: flex;
+    align-items: center; /* Align button and links vertically */
+    justify-content: flex-end;
+}
+
+/* Styles for the dropdown menu (initially hidden) */
+.dropdown-menu {
+    display: none; /* Hidden by default */
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 10px;
+    z-index: 100;
+}
+
+.dropdown-menu a {
+    display: block;
+    padding: 5px;
     text-decoration: none;
     color: black;
+}
+
+/* Styles for the dropdown button (hidden on larger screens) */
+.dropdown-button {
+    display: none;
+    position: absolute;
+    right: 0;
+}
+
+/* Media query for smaller screens */
+@media (max-width: 800px) {
+    .right-links {
+        display: none; /* Hide regular links on small screens */
+    }
+
+    .dropdown-button {
+        display: block; /* Show button on small screens */
+    }
+
+    .dropdown-menu {
+        display: block; /* Show dropdown menu on small screens */
+    }
 }

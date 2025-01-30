@@ -1,18 +1,15 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import Graph from './Graph/Graph';
 import './Layout.css';
 import Header from './Header/Header';
 import Footer from './Footer/Footer';
 
-function Layout() {
+function Layout({ isDrawing, setIsDrawing, pencilColor, setPencilColor, lines, setLines, backgroundLines, setBackgroundLines, clearCanvas }) {
     const [canvasWidth, setCanvasWidth] = useState(window.innerWidth - 200);
     const [canvasHeight, setCanvasHeight] = useState(window.innerHeight - 200);
     const [mousePos, setMousePos] = useState({ x: -100, y: -100 });
-    const [isDrawing, setIsDrawing] = useState(false);
-    const [lines, setLines] = useState([]);
-    const [backgroundLines, setBackgroundLines] = useState([]);
-    const [pencilColor, setPencilColor] = useState('black');
     const isMouseDown = useRef(false);
     const canvasRef = useRef(null);
 
@@ -79,11 +76,6 @@ function Layout() {
         }
     };
 
-    const clearCanvas = () => {
-        setLines([]);
-        setBackgroundLines([]);
-    };
-
     useEffect(() => {
         const handleResize = () => {
             setCanvasWidth(window.innerWidth);
@@ -134,9 +126,33 @@ function Layout() {
                     backgroundLines={backgroundLines} />}
             </div>
             <Outlet context={{ isDrawing, toggleDrawingMode, setPencilColor, clearCanvas, pencilColor }} />            
-            <Footer isDrawing={isDrawing} setIsDrawing={setIsDrawing} setPencilColor={setPencilColor} clearCanvas={clearCanvas}/>
+            <Footer />
         </div>
     );
 }
+
+Layout.propTypes = {
+    isDrawing: PropTypes.bool.isRequired,
+    setIsDrawing: PropTypes.func.isRequired,
+    pencilColor: PropTypes.string.isRequired,
+    setPencilColor: PropTypes.func.isRequired,
+    clearCanvas: PropTypes.func.isRequired,
+    lines: PropTypes.arrayOf(PropTypes.shape({
+        x: PropTypes.number.isRequired,
+        y: PropTypes.number.isRequired,
+        color: PropTypes.string
+    })).isRequired,
+    setLines: PropTypes.func.isRequired,
+    setBackgroundLines: PropTypes.func.isRequired,
+    backgroundLines: PropTypes.arrayOf(
+        PropTypes.arrayOf( // Array of lines
+            PropTypes.shape({ // Each line is an array of points
+                x: PropTypes.number.isRequired,
+                y: PropTypes.number.isRequired,
+                color: PropTypes.string,
+            })
+        )
+    ).isRequired,
+};
 
 export default Layout;
