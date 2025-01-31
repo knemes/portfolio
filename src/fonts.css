@@ -1,0 +1,24 @@
+@font-face {
+    font-family: 'Architect'; /* Replace with your font name */
+    src: url('../fonts/ArchitectBoldBold-AwdA.ttf') format('truetype'), url('../public/fonts/ArchitectRegular-D0XR.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'ArchitectsDaughter'; /* Replace with your font name */
+    src: url('../fonts/ArchitectsDaughter-vG0y.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Cyanotype'; /* Replace with your font name */
+    src: url('../fonts/Cyanotype.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'EngineerHand'; /* Replace with your font name */
+    src: url('../fonts/EngineerHand.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Woolkarth'; /* Replace with your font name */
+    src: url('../fonts/Woolkarth-Bold Bold.ttf') format('truetype'), url('../public/fonts/WoolkarthBoldBold-q355.ttf') format('truetype');
+}

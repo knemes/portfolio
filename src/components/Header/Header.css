@@ -28,14 +28,16 @@ nav a {
     display: flex;
     gap: 20px;
     align-items: flex-end;
-    font-size: 2rem; 
+    font-size: 2rem;
+    font-family: 'ArchitectsDaughter'; /* Add font-family */
 }
 
 .right-links {
     display: flex;
     gap: 20px;
     align-items: flex-end;
-    font-size: 1rem;
+    font-size: 2rem;
+    font-family: 'EngineerHand';
 }
 
 .regular-links { /* Styles for regular links */

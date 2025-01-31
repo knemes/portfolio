@@ -7,6 +7,7 @@ import About from './pages/AboutPage';
 import Project from './pages/ProjectPage';
 import Contact from './pages/ContactPage';
 import './App.css'
+import './fonts.css'
 
 function App() {
     const [isDrawing, setIsDrawing] = useState(false);
@@ -18,7 +19,6 @@ function App() {
         setLines([]);
         setBackgroundLines([]);
     };
-
 
     return (
         <Router>
