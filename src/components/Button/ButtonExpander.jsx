@@ -40,7 +40,7 @@ function ButtonExpander({ children, isDrawing, setIsDrawing, expandDirection = '
     const containerStyle = {
         position: 'fixed',
         bottom: '10px',
-        right: '10px',
+        right: '120px',
         display: 'flex',
         alignItems: 'center',
     };

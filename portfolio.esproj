@@ -10,7 +10,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="public\fonts\" />
-    <Folder Include="public\background\" />
     <Folder Include="src\components\Header\" />
     <Folder Include="src\components\Footer\" />
   </ItemGroup>
