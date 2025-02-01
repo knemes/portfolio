@@ -2,7 +2,7 @@
     position: fixed;
     bottom: 20px;
     right: 20px;
-    z-index: 2; /* Above content */
+    z-index: 1001; /* Above content */
     padding: 10px 20px;
 }
 

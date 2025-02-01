@@ -8,4 +8,9 @@
     <!-- Folder where production build objects will be placed -->
     <BuildOutputFolder>$(MSBuildProjectDirectory)\dist</BuildOutputFolder>
   </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="public\fonts\" />
+    <Folder Include="src\components\Header\" />
+    <Folder Include="src\components\Footer\" />
+  </ItemGroup>
 </Project>

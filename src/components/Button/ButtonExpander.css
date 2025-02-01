@@ -1,26 +1,34 @@
 .button-expander {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
     display: flex;
     align-items: center;
-    width: fit-content; /* Set a fixed width when collapsed */
+    z-index: 1000;
+    width: fit-content;
 }
 
 .expander-content {
+    margin-right: 0px;
+    transition: transform 0.5s ease-in-out, visibility 0.5s ease-in-out; /* Transition both */
+    visibility: hidden; /* Important: Hide initially */
     display: flex;
+    flex-direction: row;
+    background-color: lightblue;
+    padding: 10px;
     white-space: nowrap;
-    flex-shrink: 0;
+    top: 0;
+    z-index: 1;
+    overflow: hidden;
+    border-radius: 5px;
+    transform-origin: right center; /* Set transform origin */
 }
 
 .expander-toggle {
-    padding: 10px;
+    padding: 5px 5px;
+    border: 1px solid gray;
+    background-color: lightgray;
     cursor: pointer;
-    border: none;
-    background-color: #eee;
-    border-radius: 5px;
-}
-
-.button-expander.expanded .expander-toggle {
-    /* Add styles for expanded state */
+    z-index: 2; /* Ensure toggle is above content */
+    position: relative; /* Needed for z-index to work */
 }
