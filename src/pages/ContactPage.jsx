@@ -3,6 +3,7 @@ import emailjs from '@emailjs/browser';
 import ReCAPTCHA from 'react-google-recaptcha';
 import { useOutletContext } from 'react-router-dom';
 import { emailjsConfig } from '../fbconfig'; 
+import './ContactPage.css';
 
 function Contact() {
     const [name, setName] = useState('');
@@ -13,7 +14,6 @@ function Contact() {
     const [recaptchaToken, setRecaptchaToken] = useState(null);
 
     const sitekey = import.meta.env.VITE_APP_RECAPTCHA_SITE_KEY
-    console.log(sitekey)
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -50,7 +50,7 @@ function Contact() {
     };
 
     return (
-        <div className="page-content layout-main">
+        <div className="page-content contact-form">
             <h1>Contact</h1>
             <p>Reach out to talk</p>
 
@@ -108,7 +108,6 @@ function Contact() {
                     <button type="submit">Send Message</button>
                 </form>
             )}
-
         </div>
     );
 }
