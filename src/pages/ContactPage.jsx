@@ -65,8 +65,6 @@ function Contact() {
     return (
         <div className="page-content layout-main">
             <div className="contact-form">
-                
-
                 {isSubmitted ? (
                     <p>Thank you for your message! I will be in touch soon.</p>
                 ) : (

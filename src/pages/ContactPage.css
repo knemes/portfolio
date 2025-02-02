@@ -3,6 +3,7 @@
     flex-direction: column;
     align-items: center;
     padding: 20px;
+    padding-top: 40px;
 }
 
     .contact-form h1 {
@@ -52,7 +53,7 @@
 
     .contact-form textarea {
         padding: 0px;
-        height: 100px;
+        height: 160px;
         width: 100%;
         min-width: 75px;
         resize: none;
@@ -60,7 +61,8 @@
         padding-left: 10px;
         border: none;
         font-family: 'EngineerHand';
-        font-size: 16px
+        font-size: 16px;
+        margin-bottom: 36px;
     }
 
     .contact-form button {
@@ -72,7 +74,7 @@
         cursor: pointer;
         font-family: 'EngineerHand';
         width: 100px;
-        margin-top: 26px;
+        margin-top: 20px;
         font-size: 24px;
     }
 
@@ -81,7 +83,7 @@
     }
 
     .contact-form form {
-        width: calc(50% - 20px);
+        width: 50%;
         max-width: 650px;
     }
 
