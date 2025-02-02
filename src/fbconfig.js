@@ -17,7 +17,12 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app); 
 const user = auth.currentUser;
-console.log(user);
 const storage = getStorage(app);
 
 export { storage }; 
+
+export const emailjsConfig = {
+    serviceID: import.meta.env.VITE_EMAILJS_SERVICE_ID,
+    templateID: import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+    userID: import.meta.env.VITE_EMAILJS_USER_ID,
+}; 
