@@ -9,9 +9,11 @@ function Contact() {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [message, setMessage] = useState('');
-    const [social, setSocial] = useState('');
+    const [subject, setSubject] = useState('');
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [recaptchaToken, setRecaptchaToken] = useState(null);
+    const [characterCount, setCharacterCount] = useState(0);
+    const characterLimit = 712;
 
     const sitekey = import.meta.env.VITE_APP_RECAPTCHA_SITE_KEY
 
@@ -27,7 +29,7 @@ function Contact() {
             from_name: name,
             from_email: email,
             message: message,
-            social_media: social,
+            from_subject: subject
         };
 
         try {
@@ -49,65 +51,84 @@ function Contact() {
         setRecaptchaToken(token);
     };
 
-    return (
-        <div className="page-content contact-form">
-            <h1>Contact</h1>
-            <p>Reach out to talk</p>
+    const handleInputChange = (event) => {
+        const newMessage = event.target.value;
+        if (newMessage.length <= characterLimit) {
+            setMessage(newMessage);
+            setCharacterCount(newMessage.length);
+        } else {
+            setMessage(newMessage.slice(0, characterLimit));
+            setCharacterCount(characterLimit);
+        }
+    };
 
-            {isSubmitted ? (
-                <p>Thank you for your message! I will be in touch soon.</p>
-            ) : (
-                <form onSubmit={handleSubmit}>
-                    <div>
-                        <label htmlFor="name">Name:</label>
-                        <input
-                            type="text"
-                            id="name"
-                            name="name"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            required
-                        />
-                    </div>
-                    <div>
-                        <label htmlFor="email">Email:</label>
-                        <input
-                            type="email"
-                            id="email"
-                            name="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                        />
-                    </div>
-                    <div>
-                        <label htmlFor="message">Message:</label>
-                        <textarea
-                            id="message"
-                            name="message"
-                            rows="5"
-                            value={message}
-                            onChange={(e) => setMessage(e.target.value)}
-                            required
-                        />
-                    </div>
-                    <div>
-                        <label htmlFor="social">Social Media Links (Optional):</label>
-                        <input
-                            type="text"
-                            id="social"
-                            name="social"
-                            value={social}
-                            onChange={(e) => setSocial(e.target.value)}
-                        />
-                        </div>
-                        <ReCAPTCHA
-                            sitekey={ sitekey }
-                            onChange={handleRecaptchaChange}
-                        />
-                    <button type="submit">Send Message</button>
-                </form>
-            )}
+    return (
+        <div className="page-content layout-main">
+            <div className="contact-form">
+                
+
+                {isSubmitted ? (
+                    <p>Thank you for your message! I will be in touch soon.</p>
+                ) : (
+                        <form onSubmit={handleSubmit}>
+                            <h1>Get In Touch!</h1>
+                            <p>Use the form below to jot down your details. Look forward to connecting with you!</p>
+                            <div className="input-wrapper">
+                                <input
+                                type="text"
+                                id="name"
+                                name="name"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                                    required
+                                
+                                />
+                                <label htmlFor="name">Name:</label>
+                            </div>
+                            <div className="input-wrapper">                                
+                                <input
+                                    type="email"
+                                    id="email"
+                                    name="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                        required
+                                />
+                                <label htmlFor="email">Email:</label>
+                            </div>
+                            <div className="input-wrapper">                                
+                                <input
+                                    type="subject"
+                                    id="subject"
+                                    name="subject"
+                                    value={subject}
+                                    onChange={(e) => setSubject(e.target.value)}
+                                    required
+                                />
+                                <label htmlFor="subject">Subject:</label>
+                            </div>
+                            <div className="input-wrapper">
+                                <textarea 
+                                    id="message"
+                                    name="message"
+                                    rows="5"
+                                    value={message}
+                                        onChange={(e) => {
+                                            setMessage(e.target.value)
+                                            handleInputChange(e);
+                                        }}
+                                        required
+                                />
+                                <label htmlFor="message">Message:</label>
+                            </div>
+                            <ReCAPTCHA className="g-recaptcha"
+                                sitekey={ sitekey }
+                                onChange={handleRecaptchaChange}
+                            />
+                            <button type="submit">Submit</button>
+                    </form>
+                )}
+            </div>
         </div>
     );
 }
