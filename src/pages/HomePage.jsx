@@ -17,9 +17,9 @@ function Home() {
                 <p>
                     Here, you'll find a collection of my work, from
                     <b> computational explorations</b> to <b>creative coding projects</b>.
-                    Feel free to <b>annotate</b> anywhere directly using the draw palette.
-                    Any annotations you create can be saved and sent to me via the
-                    <b> contact</b> page - I'm eager to see your <b>perspective</b>!
+                    Feel free to <b>sketch</b> or annotate anywhere using the draw palette in the right corner.
+                    Any drawings you create can be saved as well and sent to me via the
+                    <b> contact</b> page! - I'm eager to see your <b>perspective</b>!
                 </p>
                 <p>
                     I believe in a <b>rigorous</b>, <b>fast-footed</b> approach to

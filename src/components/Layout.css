@@ -37,7 +37,7 @@ canvas {
     right: 100px; /* Match container padding */
     z-index: 5; /* Ensure page is above canvas */
     background-color: transparent;
-    overflow-y: auto;
+    overflow-y: hidden;
     padding: 20px;
     color: black;
 }

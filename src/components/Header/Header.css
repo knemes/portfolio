@@ -24,6 +24,10 @@ nav a {
     margin-bottom: 0;
 }
 
+header nav a:hover {
+    color: red;
+}
+
 .left-links {
     display: flex;
     gap: 20px;
