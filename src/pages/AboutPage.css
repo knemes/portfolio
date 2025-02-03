@@ -1,0 +1,50 @@
+#abuot {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    max-width: 800px;
+    max-height: 100%;
+    margin: 0 auto;
+    margin-top: 65px;
+    padding: 2rem;
+    flex-grow: 1;
+    overflow-y: hidden;
+    font-family: 'EngineerHand';
+}
+
+@media (max-width: 590px) {
+    #about {
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+}
+
+#about h1 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+}
+
+#about p {
+    margin-top: 8px;
+    font-size: 1rem;
+    line-height: 1.15;
+    max-width: 800px;
+    margin-bottom: 16px;
+}
+
+.button {
+    text-align: left;
+    display: inline-block;
+    color: black;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 1rem;
+    font-size: 1.5rem;
+    transition: background-color 0.3s ease;
+    font-family: 'EngineerHand';
+}
+
+    .button:hover {
+        color: red;
+    }
