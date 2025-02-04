@@ -1,4 +1,4 @@
-#abuot {
+#about {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -6,7 +6,7 @@
     max-width: 800px;
     max-height: 100%;
     margin: 0 auto;
-    margin-top: 65px;
+    margin-top: 0px;
     padding: 2rem;
     flex-grow: 1;
     overflow-y: hidden;
@@ -20,18 +20,19 @@
     }
 }
 
-#about h1 {
-    font-size: 2rem;
-    margin-bottom: 2rem;
-}
+    #about h1 {
+        font-size: 2rem;
+        margin-bottom: 2rem;
+    }
 
-#about p {
-    margin-top: 8px;
-    font-size: 1rem;
-    line-height: 1.15;
-    max-width: 800px;
-    margin-bottom: 16px;
-}
+    #about p {
+        margin-top: 8px;
+        font-size: 1rem;
+        line-height: 1.15;
+        max-width: 800px;
+        margin-bottom: 16px;
+        font-family: 'EngineerHand';
+    }
 
 .button {
     text-align: left;

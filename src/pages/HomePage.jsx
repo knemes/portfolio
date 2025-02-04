@@ -25,7 +25,7 @@ function Home() {
                     <b>problem-solving</b>, and I hope this sketchbook provides valuable
                     insights into my <b>design philosophy</b>.
                 </p>
-                <a href="/about" className="button">Learn More</a>
+                <a href="/about" className="button">About Me</a>
             </section>
         </div>
     );
