@@ -1,0 +1,13 @@
+.project-card p{
+    width: 250px; /* Set the width */
+    height: 350px; /* Set the height */
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 1rem;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer; /* Change cursor to pointer on hover */
+}
+

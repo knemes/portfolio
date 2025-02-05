@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.VisualStudio.JavaScript.Sdk/1.0.1738743">
+﻿<Project Sdk="Microsoft.VisualStudio.JavaScript.Sdk/1.0.1738743">
   <PropertyGroup>
     <StartupCommand>npm run dev</StartupCommand>
     <JavaScriptTestRoot>src\</JavaScriptTestRoot>
@@ -12,5 +12,6 @@
     <Folder Include="public\fonts\" />
     <Folder Include="src\components\Header\" />
     <Folder Include="src\components\Footer\" />
+    <Folder Include="src\components\Thumbnail\" />
   </ItemGroup>
 </Project>

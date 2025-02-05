@@ -17,7 +17,7 @@ function Header() {
                 </nav>
                 <nav className="right-links regular-links"> {/* Class for regular links */}
                     <Link to="/about">About</Link>
-                    <Link to="/project">Projects</Link>
+                    <Link to="/projects">Projects</Link>
                     <Link to="/contact">Contact</Link>
                 </nav>
                 <button className="dropdown-button" onClick={toggleDropdown}>
@@ -26,7 +26,7 @@ function Header() {
                 {isDropdownOpen && (
                     <div className="dropdown-menu"> {/* Dropdown menu */}
                         <Link to="/about">About</Link>
-                        <Link to="/project">Projects</Link>
+                        <Link to="/projects">Projects</Link>
                         <Link to="/contact">Contact</Link>
                     </div>
                 )}

@@ -1,15 +1,18 @@
-useEffect(() => {
-        const handleResize = () => {
-            if (canvasRef.current) {
-                canvasRef.current.width = window.innerWidth;
-                canvasRef.current.height = window.innerHeight;
-            }
-        };
-
-        window.addEventListener('resize', handleResize);
-        handleResize();
-
-        return () => {
-            window.removeEventListener('resize', handleResize);
-        };
-    }, []);
+    //Getting an image from Firebase
+    //useEffect(() => {
+    //    const getImageFromStorage = async () => {
+    //        try {
+    //            // Replace 'path/to/your/image.jpg' with the actual path to your image in Firebase Storage
+    //            const imageRef = ref(storage, 'IMG_3300.png');
+    //            const url = await getDownloadURL(imageRef);
+    //            setImageUrl(url);
+    //        } catch (error) {
+    //            console.error("Error getting image URL:", error);
+    //        }
+    //    };
+    //
+    //    getImageFromStorage();
+    //}, []); 
+    //<div>
+    //{ imageUrl && <img src={imageUrl} alt="Project Image" /> }
+    //</div >
