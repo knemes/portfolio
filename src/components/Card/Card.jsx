@@ -6,8 +6,12 @@ import './Card.css'
 const Card = () => {
     return (
         <div className="project-card">
-            <div>
-            <p>hello</p>
+            <div className="image-container">
+                <Thumbnail />
+            </div>
+            <div className="text-container">
+                <h3>Project Title</h3>
+                <p>Short project description</p>
             </div>
         </div>
     );

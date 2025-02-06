@@ -1,13 +1,29 @@
-.project-card p{
-    width: 250px; /* Set the width */
-    height: 350px; /* Set the height */
+.project-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 245px;
+    height: 345px;
     text-align: center;
     border: 1px solid #ccc;
-    border-radius: 5px;
     padding: 1rem;
-    background-color: white;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    cursor: pointer; /* Change cursor to pointer on hover */
+    cursor: pointer; 
+    overflow: hidden;
+}
+
+.project-card img {
+    transition: transform 0.3s ease-in-out; 
+}
+
+.image-container {
+    flex: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.text-container {
+    flex: 1;
+    padding: 10px;
 }
 
