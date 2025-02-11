@@ -1,5 +1,5 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Graph from './Graph/Graph';
 import './Layout.css';
@@ -12,6 +12,31 @@ function Layout({ isDrawing, setIsDrawing, pencilColor, setPencilColor, lines, s
     const [mousePos, setMousePos] = useState({ x: -100, y: -100 });
     const isMouseDown = useRef(false);
     const canvasRef = useRef(null);
+    const mainContainerRef = useRef(null);
+    const location = useLocation();
+
+    const handleNavigation = (sectionId) => { 
+        if (mainContainerRef.current) {
+            const sections = Array.from(mainContainerRef.current.children);
+            const targetSection = sections.find(section => section.id === sectionId);
+            if (targetSection) {
+                targetSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    };
+
+    useEffect(() => {
+        const path = location.pathname;
+        const sectionId = path.replace("/", "");
+
+        if (mainContainerRef.current) {
+            const sections = Array.from(mainContainerRef.current.children);
+            const targetSection = sections.find(section => section.id === sectionId);
+            if (targetSection) {
+                targetSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    }, [location.pathname, mainContainerRef]); 
 
     const [hasMounted, setHasMounted] = useState(false);
 
@@ -108,14 +133,14 @@ function Layout({ isDrawing, setIsDrawing, pencilColor, setPencilColor, lines, s
 
     return (
         <div className='layout-container'> {/* Flexbox for layout */}
-            <Header />
+            <Header handleNavigation={handleNavigation} />
             <div className="canvas-container layout-main" >
                 <canvas
                     ref={canvasRef}
                     style={{
                         width: '100%',
                         height: '100%',
-                        display: 'block', // Remove any default inline spacing'
+                        display: 'block',
                     }}
                 />
                 {hasMounted && <Graph

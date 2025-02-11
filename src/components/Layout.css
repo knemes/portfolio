@@ -18,9 +18,19 @@
 
 .layout-main {
     flex-grow: 1;
-    display: flex;
-    flex-direction: column;
+    display: flex; /* Enable flexbox */
+    flex-direction: row; /* Horizontal layout is KEY */
+    overflow-x: auto; /* Enable horizontal scrolling */
+    scroll-snap-type: x mandatory; /* Optional: For smooth snapping */
+    -webkit-overflow-scrolling: touch; /* Optional: For iOS scrolling */
 }
+
+    .layout-main > * { /* Target direct children (your sections) */
+        scroll-snap-align: start; /* Optional: For smooth snapping */
+        flex-shrink: 0;
+        width: 100vw; /* Or a specific width like 100% or a fixed pixel value */
+        height: 100%; /* Or a specific height if you want to control it */
+    }
 
 canvas {
     position: absolute;
