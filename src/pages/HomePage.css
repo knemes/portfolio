@@ -9,7 +9,7 @@
     margin-top: 65px;
     padding: 2rem;
     flex-grow: 1;
-    overflow-y: hidden;
+    overflow: hidden;
     font-family: 'EngineerHand';
 }
 

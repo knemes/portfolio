@@ -8,28 +8,29 @@
 }
 
 .canvas-container {
-    flex-grow: 1; /* Allow canvas to take up available space */
-    position: relative;
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    flex-shrink: 0;
+    /* Remove display: flex or change to flex-direction: row; */
+    overflow: hidden; /* or remove the overflow property entirely */
+    width: 100%; /* or a value that accommodates the sections */
+    height: 100%; /* or 100vh */
+    position: static; /* or remove the position property entirely */
 }
 
 .layout-main {
     flex-grow: 1;
     display: flex; /* Enable flexbox */
     flex-direction: row; /* Horizontal layout is KEY */
-    overflow-x: auto; /* Enable horizontal scrolling */
     scroll-snap-type: x mandatory; /* Optional: For smooth snapping */
     -webkit-overflow-scrolling: touch; /* Optional: For iOS scrolling */
+    width: 400vw;
+    overflow-x: auto;
 }
 
-    .layout-main > * { /* Target direct children (your sections) */
+    .layout-main > section { /* Target direct children (your sections) */
         scroll-snap-align: start; /* Optional: For smooth snapping */
         flex-shrink: 0;
         width: 100vw; /* Or a specific width like 100% or a fixed pixel value */
         height: 100%; /* Or a specific height if you want to control it */
+        overflow: hidden;
     }
 
 canvas {
@@ -39,15 +40,23 @@ canvas {
     height: 100%;
 }
 
-.page-content { /* Style for the page content overlay */
-    position: absolute; /* Absolutely position the page content */
-    top: 60px; /* Match header height + padding */
-    bottom: 60px; /* Match footer height + padding */
-    left: 100px; /* Match container padding */
-    right: 100px; /* Match container padding */
-    z-index: 5; /* Ensure page is above canvas */
+.page-content {
+    display: flex; /* Ensure page-content is a flex container */
+    flex-direction: column; /* Align content vertically within page-content */
+    width: 100%; /* Fill the section */
+    height: 100%; /* Fill the section */
+    top: 0; /* No longer needed */
+    bottom: 0; /* No longer needed */
+    left: 0; /* No longer needed */
+    right: 0; /* No longer needed */
+    z-index: 5; /* Keep if needed for layering */
     background-color: transparent;
-    overflow-y: hidden;
+    overflow: hidden; /* Changed to auto so content can scroll*/
     padding: 20px;
     color: black;
+}
+
+.active { /* For active link highlighting */
+    font-weight: bold;
+    color: blue;
 }

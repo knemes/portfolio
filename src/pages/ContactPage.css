@@ -4,6 +4,7 @@
     align-items: center;
     padding: 20px;
     padding-top: 40px;
+    overflow: hidden;
 }
 
     .contact-form h1 {

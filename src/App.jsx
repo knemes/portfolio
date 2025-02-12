@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import ButtonExpander from './components/Button/ButtonExpander';
 import Layout from './components/Layout';
 import Home from './pages/HomePage';
@@ -20,7 +20,6 @@ function App() {
         setLines([]);
         setBackgroundLines([]);
     };
-    console.log('About To Render App')
     return (
         <div>
             <div className="background-overlay"></div>

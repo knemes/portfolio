@@ -1,10 +1,14 @@
-import React, { useState, useRef, useCallback, useEffect } from 'react';
+import React, { useState, useRef, useCallback, useEffect, useLayoutEffect } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Graph from './Graph/Graph';
 import './Layout.css';
 import Header from './Header/Header';
 import Footer from './Footer/Footer';
+import Home from '../pages/HomePage'; // Import your page components
+import About from '../pages/AboutPage';
+import Project from '../pages/ProjectPage';
+import Contact from '../pages/ContactPage';
 
 function Layout({ isDrawing, setIsDrawing, pencilColor, setPencilColor, lines, setLines, backgroundLines, setBackgroundLines, clearCanvas }) {
     const [canvasWidth, setCanvasWidth] = useState(window.innerWidth - 200);
@@ -15,28 +19,31 @@ function Layout({ isDrawing, setIsDrawing, pencilColor, setPencilColor, lines, s
     const mainContainerRef = useRef(null);
     const location = useLocation();
 
-    const handleNavigation = (sectionId) => { 
-        if (mainContainerRef.current) {
-            const sections = Array.from(mainContainerRef.current.children);
-            const targetSection = sections.find(section => section.id === sectionId);
-            if (targetSection) {
-                targetSection.scrollIntoView({ behavior: 'smooth' });
-            }
-        }
-    };
-
-    useEffect(() => {
+    useLayoutEffect(() => {
         const path = location.pathname;
-        const sectionId = path.replace("/", "");
+        let sectionId = path.replace("/", "");
+        sectionId = sectionId.replace(/[^a-z0-9-_]/g, ""); // Sanitize (important!)
 
         if (mainContainerRef.current) {
-            const sections = Array.from(mainContainerRef.current.children);
-            const targetSection = sections.find(section => section.id === sectionId);
-            if (targetSection) {
-                targetSection.scrollIntoView({ behavior: 'smooth' });
+            if (sectionId) { // Check if sectionId is NOT empty
+                const targetSection = mainContainerRef.current.querySelector(`#${sectionId}`);
+                if (targetSection) {
+                    mainContainerRef.current.scrollTo({
+                        left: targetSection.offsetLeft,
+                        behavior: 'smooth',
+                    });
+                }
+            } else { // Handle empty sectionId (root path)
+                const firstSection = mainContainerRef.current.querySelector('section');
+                if (firstSection) {
+                    mainContainerRef.current.scrollTo({
+                        left: 0,
+                        behavior: 'smooth',
+                    });
+                }
             }
         }
-    }, [location.pathname, mainContainerRef]); 
+    }, [location.pathname, mainContainerRef]);
 
     const [hasMounted, setHasMounted] = useState(false);
 
@@ -133,8 +140,8 @@ function Layout({ isDrawing, setIsDrawing, pencilColor, setPencilColor, lines, s
 
     return (
         <div className='layout-container'> {/* Flexbox for layout */}
-            <Header handleNavigation={handleNavigation} />
-            <div className="canvas-container layout-main" >
+            <Header />
+            <div className="canvas-container layout-main" ref={ mainContainerRef } >
                 <canvas
                     ref={canvasRef}
                     style={{
@@ -149,8 +156,12 @@ function Layout({ isDrawing, setIsDrawing, pencilColor, setPencilColor, lines, s
                     isDrawing={isDrawing}
                     lines={lines}
                     backgroundLines={backgroundLines} />}
+                <section id="keaton-nemes"> <div className="page-content"> <Home isDrawing={isDrawing} setIsDrawing={setIsDrawing} pencilColor={pencilColor} setPencilColor={setPencilColor} lines={lines} setLines={setLines} backgroundLines={backgroundLines} setBackgroundLines={setBackgroundLines} clearCanvas={clearCanvas} /> </div> </section>
+                <section id="about"> <div className="page-content"> <About isDrawing={isDrawing} setIsDrawing={setIsDrawing} pencilColor={pencilColor} setPencilColor={setPencilColor} lines={lines} setLines={setLines} backgroundLines={backgroundLines} setBackgroundLines={setBackgroundLines} clearCanvas={clearCanvas} /> </div> </section>
+                <section id="projects"> <div className="page-content"> <Project isDrawing={isDrawing} setIsDrawing={setIsDrawing} pencilColor={pencilColor} setPencilColor={setPencilColor} lines={lines} setLines={setLines} backgroundLines={backgroundLines} setBackgroundLines={setBackgroundLines} clearCanvas={clearCanvas} /> </div> </section>
+                <section id="contact"> <div className="page-content"> <Contact isDrawing={isDrawing} setIsDrawing={setIsDrawing} pencilColor={pencilColor} setPencilColor={setPencilColor} lines={lines} setLines={setLines} backgroundLines={backgroundLines} setBackgroundLines={setBackgroundLines} clearCanvas={clearCanvas} /> </div> </section>
+                <Outlet />
             </div>
-            <Outlet context={{ isDrawing, toggleDrawingMode, setPencilColor, clearCanvas, pencilColor }} />            
             <Footer />
         </div>
     );
