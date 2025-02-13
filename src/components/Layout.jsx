@@ -141,14 +141,9 @@ function Layout({ isDrawing, setIsDrawing, pencilColor, setPencilColor, lines, s
     return (
         <div className='layout-container'> {/* Flexbox for layout */}
             <Header />
-            <div className="canvas-container layout-main" ref={ mainContainerRef } >
+            <div className="canvas-container" >
                 <canvas
                     ref={canvasRef}
-                    style={{
-                        width: '100%',
-                        height: '100%',
-                        display: 'block',
-                    }}
                 />
                 {hasMounted && <Graph
                     canvas={canvasRef.current}
@@ -156,11 +151,12 @@ function Layout({ isDrawing, setIsDrawing, pencilColor, setPencilColor, lines, s
                     isDrawing={isDrawing}
                     lines={lines}
                     backgroundLines={backgroundLines} />}
+            </div>
+            <div className="layout-main" ref={ mainContainerRef } >
                 <section id="keaton-nemes"> <div className="page-content"> <Home isDrawing={isDrawing} setIsDrawing={setIsDrawing} pencilColor={pencilColor} setPencilColor={setPencilColor} lines={lines} setLines={setLines} backgroundLines={backgroundLines} setBackgroundLines={setBackgroundLines} clearCanvas={clearCanvas} /> </div> </section>
                 <section id="about"> <div className="page-content"> <About isDrawing={isDrawing} setIsDrawing={setIsDrawing} pencilColor={pencilColor} setPencilColor={setPencilColor} lines={lines} setLines={setLines} backgroundLines={backgroundLines} setBackgroundLines={setBackgroundLines} clearCanvas={clearCanvas} /> </div> </section>
                 <section id="projects"> <div className="page-content"> <Project isDrawing={isDrawing} setIsDrawing={setIsDrawing} pencilColor={pencilColor} setPencilColor={setPencilColor} lines={lines} setLines={setLines} backgroundLines={backgroundLines} setBackgroundLines={setBackgroundLines} clearCanvas={clearCanvas} /> </div> </section>
                 <section id="contact"> <div className="page-content"> <Contact isDrawing={isDrawing} setIsDrawing={setIsDrawing} pencilColor={pencilColor} setPencilColor={setPencilColor} lines={lines} setLines={setLines} backgroundLines={backgroundLines} setBackgroundLines={setBackgroundLines} clearCanvas={clearCanvas} /> </div> </section>
-                <Outlet />
             </div>
             <Footer />
         </div>

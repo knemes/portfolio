@@ -2,17 +2,16 @@
 .layout-container {
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
-    width: 100vw;
+    width: 100%;
     position: relative;
+    overflow: hidden;
 }
 
 .canvas-container {
     /* Remove display: flex or change to flex-direction: row; */
-    overflow: hidden; /* or remove the overflow property entirely */
-    width: 100%; /* or a value that accommodates the sections */
-    height: 100%; /* or 100vh */
-    position: static; /* or remove the position property entirely */
+    width: 100%;
+    height: 100%;
+    position: static;
 }
 
 .layout-main {
@@ -21,7 +20,8 @@
     flex-direction: row; /* Horizontal layout is KEY */
     scroll-snap-type: x mandatory; /* Optional: For smooth snapping */
     -webkit-overflow-scrolling: touch; /* Optional: For iOS scrolling */
-    width: 400vw;
+    width: 100%;
+    height: 100%;
     overflow-x: auto;
 }
 
@@ -41,19 +41,13 @@ canvas {
 }
 
 .page-content {
-    display: flex; /* Ensure page-content is a flex container */
-    flex-direction: column; /* Align content vertically within page-content */
-    width: 100%; /* Fill the section */
-    height: 100%; /* Fill the section */
-    top: 0; /* No longer needed */
-    bottom: 0; /* No longer needed */
-    left: 0; /* No longer needed */
-    right: 0; /* No longer needed */
-    z-index: 5; /* Keep if needed for layering */
-    background-color: transparent;
-    overflow: hidden; /* Changed to auto so content can scroll*/
+    display: flex;
+    flex-direction: column;
+    width: 100%; /* Make sure content fills the section width */
+    height: 100%; /* Make sure content fills the section height */
     padding: 20px;
     color: black;
+    overflow: hidden;
 }
 
 .active { /* For active link highlighting */
