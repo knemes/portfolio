@@ -22,13 +22,11 @@ const Header = React.forwardRef(function HeaderFn(props, ref) {
     return (
         <header className="header">
             <div className="header-content">
-                <nav className="left-links">
-                    <a href="#keaton-nemes" className={activeSection === "keaton-nemes" ? "active" : ""}>Keaton Nemes</a>
-                </nav>
-                <nav className="right-links regular-links" ref={ref}> 
-                    <a href="#about" className={activeSection === "about" ? "active" : ""}>About</a>
-                    <a href="#projects" className={activeSection === "projects" ? "active" : ""}>Projects</a>
-                    <a href="#contact" className={activeSection === "contact" ? "active" : ""}>Contact</a>
+                <nav className="regular-links" ref={ref}> 
+                    <a href="#keaton-nemes" className={'left-links ${activeSection === "keaton-nemes" ? "active" : ""}'}>Keaton Nemes</a>
+                    <a href="#about" className={'right-links ${activeSection === "about" ? "active" : ""}'}>About</a>
+                    <a href="#projects" className={'right-links ${activeSection === "projects" ? "active" : ""}'}>Projects</a>
+                    <a href="#contact" className={'right-links ${activeSection === "contact" ? "active" : ""}'}>Contact</a>
                 </nav>
                 <button className="dropdown-button" onClick={toggleDropdown}>
                     Menu

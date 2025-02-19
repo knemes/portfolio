@@ -146,11 +146,11 @@ function Layout({ isDrawing, setIsDrawing, pencilColor, setPencilColor, lines, s
         if (mainContainer && navLinksContainer) { // Check if refs are available
             const sections = mainContainer.querySelectorAll('section');
             const navLinks = navLinksContainer.querySelectorAll('a'); // Select the <a> links
-            console.log("navLinks:", navLinks); // Check what links are found
 
             const observer = new IntersectionObserver(
                 (entries) => {
                     entries.forEach((entry) => {
+                        console.log("Entry:", entry); // Check what links are found
                         if (entry.isIntersecting) {
                             const activeSectionId = entry.target.id;
 
@@ -163,7 +163,7 @@ function Layout({ isDrawing, setIsDrawing, pencilColor, setPencilColor, lines, s
                     });
                 },
                 {
-                    threshold: 0.5, // Adjust as needed
+                    threshold: 1, // Adjust as needed
                 }
             );
 
