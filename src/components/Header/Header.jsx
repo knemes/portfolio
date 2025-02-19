@@ -3,13 +3,14 @@ import { Link, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import './Header.css';
 
-function Header() {
-    const [isDropdownOpen, setIsDropdownOpen] = React.useState(false);
+const Header = React.forwardRef(function HeaderFn(props, ref) {
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [activeSection, setActiveSection] = useState(null);
+    const location = useLocation();
 
     const toggleDropdown = () => {
         setIsDropdownOpen(!isDropdownOpen);
-    }
+    };
 
     useEffect(() => {
         const path = location.pathname;
@@ -20,29 +21,28 @@ function Header() {
 
     return (
         <header className="header">
-            <div className="header-content"> {/* Container for header content */}
+            <div className="header-content">
                 <nav className="left-links">
-                    <Link to="/" className={activeSection === "keaton-nemes" ? "active" : ""}>Keaton Nemes</Link>
+                    <a href="#keaton-nemes" className={activeSection === "keaton-nemes" ? "active" : ""}>Keaton Nemes</a>
                 </nav>
-                <nav className="right-links regular-links"> {/* Class for regular links */}
-                    <Link to="/about" className={activeSection === "about" ? "active" : ""}>About</Link>
-                    <Link to="/projects" className={activeSection === "projects" ? "active" : ""}>Projects</Link>
-                    <Link to="/contact" className={activeSection === "contact" ? "active" : ""}>Contact</Link>
+                <nav className="right-links regular-links" ref={ref}> 
+                    <a href="#about" className={activeSection === "about" ? "active" : ""}>About</a>
+                    <a href="#projects" className={activeSection === "projects" ? "active" : ""}>Projects</a>
+                    <a href="#contact" className={activeSection === "contact" ? "active" : ""}>Contact</a>
                 </nav>
                 <button className="dropdown-button" onClick={toggleDropdown}>
                     Menu
                 </button>
                 {isDropdownOpen && (
-                    <div className="dropdown-menu"> 
-                        <Link to="/about" className={activeSection === "about" ? "active" : ""}>About</Link>
-                        <Link to="/projects" className={activeSection === "projects" ? "active" : ""}>Projects</Link>
-                        <Link to="/contact" className={activeSection === "contact" ? "active" : ""}>Contact</Link>
+                    <div className="dropdown-menu">
+                        <a href="#about" className={activeSection === "about" ? "active" : ""}>About</a>
+                        <a href="#projects" className={activeSection === "projects" ? "active" : ""}>Projects</a>
+                        <a href="#contact" className={activeSection === "contact" ? "active" : ""}>Contact</a>
                     </div>
                 )}
-                {/* Add other header elements (logo, search bar, etc.) */}
             </div>
         </header>
     );
-}
+});
 
 export default Header;

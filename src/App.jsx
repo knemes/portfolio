@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, createRoot} from 'react';
 import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import ButtonExpander from './components/Button/ButtonExpander';
 import Layout from './components/Layout';
@@ -15,6 +15,11 @@ function App() {
     const [pencilColor, setPencilColor] = useState('black');
     const [lines, setLines] = useState([]);
     const [backgroundLines, setBackgroundLines] = useState([]);
+
+    createRoot.render(
+        <App />,
+        document.getElementById('root')
+    );
 
     const clearCanvas = () => {
         setLines([]);

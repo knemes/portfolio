@@ -18,6 +18,7 @@ function Layout({ isDrawing, setIsDrawing, pencilColor, setPencilColor, lines, s
     const canvasRef = useRef(null);
     const mainContainerRef = useRef(null);
     const location = useLocation();
+    const navLinksRef = useRef(null);
 
     useLayoutEffect(() => {
         const path = location.pathname;
@@ -138,9 +139,45 @@ function Layout({ isDrawing, setIsDrawing, pencilColor, setPencilColor, lines, s
         setHasMounted(true);
     }, []);
 
+    useEffect(() => {
+        const mainContainer = mainContainerRef.current;
+        const navLinksContainer = navLinksRef.current; // Get the container for the links
+
+        if (mainContainer && navLinksContainer) { // Check if refs are available
+            const sections = mainContainer.querySelectorAll('section');
+            const navLinks = navLinksContainer.querySelectorAll('a'); // Select the <a> links
+            console.log("navLinks:", navLinks); // Check what links are found
+
+            const observer = new IntersectionObserver(
+                (entries) => {
+                    entries.forEach((entry) => {
+                        if (entry.isIntersecting) {
+                            const activeSectionId = entry.target.id;
+
+                            navLinks.forEach((link) => link.classList.remove('active'));
+                            const activeLink = navLinksContainer.querySelector(`a[href="#${activeSectionId}"]`);
+                            if (activeLink) {
+                                activeLink.classList.add('active');
+                            }
+                        }
+                    });
+                },
+                {
+                    threshold: 0.5, // Adjust as needed
+                }
+            );
+
+            sections.forEach((section) => observer.observe(section));
+
+            return () => {
+                sections.forEach((section) => observer.unobserve(section));
+            };
+        }
+    }, [mainContainerRef, navLinksRef]);
+
     return (
         <div className='layout-container'> {/* Flexbox for layout */}
-            <Header />
+            <Header ref={navLinksRef} />
             <div className="canvas-container" >
                 <canvas
                     ref={canvasRef}
