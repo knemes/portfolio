@@ -27,10 +27,10 @@ canvas {
     flex-grow: 1;
     display: flex; /* Enable flexbox */
     flex-direction: row; /* Horizontal layout is KEY */
-    scroll-snap-type: x mandatory; /* Optional: For smooth snapping */
     -webkit-overflow-scrolling: touch; /* Optional: For iOS scrolling */
     width: 100%;
     overflow-x: auto;
+    scroll-behavior: smooth;
 }
 
     .layout-main > section { /* Target direct children (your sections) */

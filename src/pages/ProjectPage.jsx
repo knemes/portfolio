@@ -9,7 +9,7 @@ function Project() {
 
     return (
         <div className="page-content layout-main">
-            <div className="project">
+            <div id="proejcts" className="project">
                 <h1>Projects</h1>
                 <div className="project project-grid">
                     <Card />

@@ -13,6 +13,7 @@ import Contact from '../pages/ContactPage';
 function Layout({ isDrawing, setIsDrawing, pencilColor, setPencilColor, lines, setLines, backgroundLines, setBackgroundLines, clearCanvas }) {
     const [canvasWidth, setCanvasWidth] = useState(window.innerWidth - 200);
     const [canvasHeight, setCanvasHeight] = useState(window.innerHeight - 200);
+    const [scrollCount, setScrollCount] = useState(0);
     const [mousePos, setMousePos] = useState({ x: -100, y: -100 });
     const isMouseDown = useRef(false);
     const canvasRef = useRef(null);
@@ -150,7 +151,6 @@ function Layout({ isDrawing, setIsDrawing, pencilColor, setPencilColor, lines, s
             const observer = new IntersectionObserver(
                 (entries) => {
                     entries.forEach((entry) => {
-                        console.log("Entry:", entry); // Check what links are found
                         if (entry.isIntersecting) {
                             const activeSectionId = entry.target.id;
 
@@ -163,7 +163,7 @@ function Layout({ isDrawing, setIsDrawing, pencilColor, setPencilColor, lines, s
                     });
                 },
                 {
-                    threshold: 1, // Adjust as needed
+                    threshold: 0.5,
                 }
             );
 
@@ -175,9 +175,41 @@ function Layout({ isDrawing, setIsDrawing, pencilColor, setPencilColor, lines, s
         }
     }, [mainContainerRef, navLinksRef]);
 
+    useEffect(() => {
+        if (mainContainerRef.current) {
+            const mainContainer = mainContainerRef.current;
+            const sectionWidth = window.innerWidth; // Assuming sections are full viewport width
+
+            const handleWheel = (e) => {
+                if (e.deltaY !== 0) {
+                    e.preventDefault();
+
+                    setScrollCount((prevCount) => prevCount + (e.deltaY > 0 ? 1 : -1));
+
+                    const currentPage = Math.round(mainContainer.scrollLeft / sectionWidth);
+                    const targetPage = currentPage + (e.deltaY > 0 ? 1 : -1);
+                    const targetScrollLeft = targetPage * sectionWidth;
+
+                    mainContainer.scrollTo({
+                        left: targetScrollLeft,
+                        behavior: 'smooth',
+                    });
+
+                    setScrollCount(0); // Reset after each page scroll
+                }
+            };
+
+            mainContainer.addEventListener('wheel', handleWheel);
+
+            return () => {
+                mainContainer.removeEventListener('wheel', handleWheel);
+            };
+        }
+    }, [mainContainerRef]);
+
     return (
         <div className='layout-container'> {/* Flexbox for layout */}
-            <Header ref={navLinksRef} />
+            <Header ref={navLinksRef} mainContainerRef={mainContainerRef} />
             <div className="canvas-container" >
                 <canvas
                     ref={canvasRef}

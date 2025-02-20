@@ -7,6 +7,13 @@ const Header = React.forwardRef(function HeaderFn(props, ref) {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [activeSection, setActiveSection] = useState(null);
     const location = useLocation();
+    const mainContainerRef = React.useRef(null);
+
+    useEffect(() => {
+        if (props.mainContainerRef) {
+            mainContainerRef.current = props.mainContainerRef.current;
+        }
+    }, [props.mainContainerRef]);
 
     const toggleDropdown = () => {
         setIsDropdownOpen(!isDropdownOpen);
@@ -23,10 +30,10 @@ const Header = React.forwardRef(function HeaderFn(props, ref) {
         <header className="header">
             <div className="header-content">
                 <nav className="regular-links" ref={ref}> 
-                    <a href="#keaton-nemes" className={'left-links ${activeSection === "keaton-nemes" ? "active" : ""}'}>Keaton Nemes</a>
-                    <a href="#about" className={'right-links ${activeSection === "about" ? "active" : ""}'}>About</a>
-                    <a href="#projects" className={'right-links ${activeSection === "projects" ? "active" : ""}'}>Projects</a>
-                    <a href="#contact" className={'right-links ${activeSection === "contact" ? "active" : ""}'}>Contact</a>
+                    <a href="#keaton-nemes" className={`left-links ${activeSection === "keaton-nemes" ? "active" : ""}`}>Keaton Nemes</a>
+                    <a href="#about" className={`right-links ${activeSection === "about" ? "active" : ""}`}>About</a>
+                    <a href="#projects" className={`right-links ${activeSection === "projects" ? "active" : ""}`}>Projects</a>
+                    <a href="#contact" className={`right-links ${activeSection === "contact" ? "active" : ""}`}>Contact</a>
                 </nav>
                 <button className="dropdown-button" onClick={toggleDropdown}>
                     Menu
@@ -42,5 +49,9 @@ const Header = React.forwardRef(function HeaderFn(props, ref) {
         </header>
     );
 });
+
+Header.propTypes = {
+    mainContainerRef: PropTypes.shape({ current: PropTypes.instanceOf(Element) }), // Add mainContainerRef propType
+};
 
 export default Header;

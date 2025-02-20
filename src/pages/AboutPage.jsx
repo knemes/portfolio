@@ -6,7 +6,7 @@ function About() {
 
     return (
         <div className="page-content layout-main">
-            <section className="about">
+            <section id="about" className="about">
                 <h1>About Me</h1>
                 <p>Growing up amidst the stunning landscapes of Frank Lloyd Wright's rural Wisconsin and the vast prairies of central Montana fostered
                     a deep appreciation for both the natural world and the built environment. Experiences like skiing, kayaking, and backpacking instilled

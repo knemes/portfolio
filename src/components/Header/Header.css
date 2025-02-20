@@ -7,17 +7,23 @@
     left: 95px;
     right: 95px;
     height: 75px;
-    display: flex;
-    align-items: flex-end; /* Align items vertically */
-    justify-content: space-between; /* Distribute space between left and right navs */
+    align-items: center; /* Align items vertically */
 }
 
 .header-content {
     display: flex;
     justify-content: space-between; /* Distribute space between left and right */
-    align-items: flex-end; /* Vertically center content */
+    align-items: center; /* Vertically center content */
     width: 100%;
     margin: 0 auto;
+    margin-top: 30px;
+}
+
+.regular-links { /* Styles for regular links */
+    display: grid;
+    grid-template-columns: auto 1fr auto auto auto; /* Grid layout */
+    align-items: center; /* Vertically align items */
+    width: 100%;
 }
 
 nav a {
@@ -33,25 +39,31 @@ header nav a:hover {
 }
 
 .left-links {
-    display: flex;
-    gap: 20px;
-    align-items: flex-end;
     font-size: 2rem;
     font-family: 'ArchitectsDaughter'; /* Add font-family */
+    grid-column: 1;
 }
 
 .right-links {
-    display: flex;
-    gap: 20px;
-    align-items: flex-end;
+    text-decoration: none;
+    color: #555;
+    margin-right: 2px;
     font-size: 2rem;
     font-family: 'EngineerHand';
 }
 
-.regular-links { /* Styles for regular links */
-    display: flex;
-    gap: 20px;
-}
+    .right-links:nth-child(2) {
+        grid-column: 3;
+    }
+
+    .right-links:nth-child(3) {
+        grid-column: 4;
+    }
+
+    .right-links:nth-child(4) {
+        grid-column: 5;
+        margin-right: 10px;
+    }
 
 .right-content { /* Styles for the container of button and links */
     display: flex;

@@ -6,7 +6,7 @@ function Home() {
 
     return (
         <div className="page-content layout-main">
-            <section className="home">
+            <section id="keaton-nemes" className="home">
                 <h1>Welcome to my online sketchbook.</h1>
                 <p>
                     I'm a <b>computational designer</b>, <b>creative coder</b>, and aspiring <b>woodworker</b> passionate about the
