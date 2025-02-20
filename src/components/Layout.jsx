@@ -20,6 +20,7 @@ function Layout({ isDrawing, setIsDrawing, pencilColor, setPencilColor, lines, s
     const mainContainerRef = useRef(null);
     const location = useLocation();
     const navLinksRef = useRef(null);
+    const sectionWidthRef = useRef(window.innerWidth);
 
     useLayoutEffect(() => {
         const path = location.pathname;
@@ -177,8 +178,7 @@ function Layout({ isDrawing, setIsDrawing, pencilColor, setPencilColor, lines, s
 
     useEffect(() => {
         if (mainContainerRef.current) {
-            const mainContainer = mainContainerRef.current;
-            const sectionWidth = window.innerWidth; // Assuming sections are full viewport width
+            const mainContainer = mainContainerRef.current; // Assuming sections are full viewport width
 
             const handleWheel = (e) => {
                 if (e.deltaY !== 0) {
@@ -186,9 +186,9 @@ function Layout({ isDrawing, setIsDrawing, pencilColor, setPencilColor, lines, s
 
                     setScrollCount((prevCount) => prevCount + (e.deltaY > 0 ? 1 : -1));
 
-                    const currentPage = Math.round(mainContainer.scrollLeft / sectionWidth);
+                    const currentPage = Math.round(mainContainer.scrollLeft / sectionWidthRef.current);
                     const targetPage = currentPage + (e.deltaY > 0 ? 1 : -1);
-                    const targetScrollLeft = targetPage * sectionWidth;
+                    const targetScrollLeft = targetPage * sectionWidthRef.current;
 
                     mainContainer.scrollTo({
                         left: targetScrollLeft,
@@ -199,7 +199,25 @@ function Layout({ isDrawing, setIsDrawing, pencilColor, setPencilColor, lines, s
                 }
             };
 
+            const scrollToCurrentSection = () => {
+                const scrollLeft = mainContainer.scrollLeft;
+                const sectionIndex = Math.round(scrollLeft / sectionWidthRef.current);
+                const targetScrollLeft = sectionIndex * sectionWidthRef.current;
+
+                mainContainer.scrollTo({
+                    left: targetScrollLeft,
+                    behavior: 'smooth',
+                });
+            };
+
+            const handleResize = () => {
+                sectionWidthRef.current = window.innerWidth; // Update sectionWidth
+                scrollToCurrentSection();
+            };
+
+            window.addEventListener('resize', handleResize);
             mainContainer.addEventListener('wheel', handleWheel);
+
 
             return () => {
                 mainContainer.removeEventListener('wheel', handleWheel);
