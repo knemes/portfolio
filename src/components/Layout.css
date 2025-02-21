@@ -29,15 +29,15 @@ canvas {
     flex-direction: row; /* Horizontal layout is KEY */
     -webkit-overflow-scrolling: touch; /* Optional: For iOS scrolling */
     width: 100%;
-    overflow-x: auto;
+    overflow: hidden;
     scroll-behavior: smooth;
+    height: calc(100vh - 150px);
 }
 
-    .layout-main > section { /* Target direct children (your sections) */
+    .layout-main > section {
         scroll-snap-align: start; /* Optional: For smooth snapping */
         flex-shrink: 0;
         width: 100vw; /* Or a specific width like 100% or a fixed pixel value */
-        overflow: hidden;
     }
 
 .page-content {
@@ -45,7 +45,7 @@ canvas {
     flex-direction: column;
     width: 100%; /* Make sure content fills the section width */
     height: 100%; /* Make sure content fills the section height */
-    padding: 20px;
     color: black;
-    overflow: hidden;
+    overflow-y: auto;
+    overflow-x: hidden;
 }

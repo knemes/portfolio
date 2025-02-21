@@ -5,10 +5,10 @@
     position: relative;
     z-index: 10;
     Bottom: 0px;
-    left: 75px;
-    right: 0;
     height: 75px;
+    left: 95px;
     overflow: hidden;
+    width: calc(100% - 95px);
 }
 
 .footer-content {

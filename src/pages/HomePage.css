@@ -5,8 +5,6 @@
     justify-content: flex-start;
     max-width: 800px;
     margin: 0 auto;
-    margin-top: 65px;
-    padding: 2rem;
     flex-grow: 1;
     overflow: hidden;
     font-family: 'EngineerHand';
@@ -21,14 +19,11 @@
 
     .home h1 {
         font-size: 2rem;
-        margin-bottom: 2rem;
     }
 
     .home p {
-        margin-top: 8px;
         font-size: 1rem;
         line-height: 1.15;
-        margin-bottom: 16px;
     }
 
 .button {

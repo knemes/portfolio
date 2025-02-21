@@ -1,13 +1,13 @@
 .header {
     background-color: transparent;
     /* position: absolute; Remove this! */
-    position: fixed; /* Or position: sticky; */
+    position: relative; /* Or position: sticky; */
     z-index: 10;
     top: 0;
-    left: 95px;
-    right: 95px;
     height: 75px;
     align-items: center; /* Align items vertically */
+    width: calc(100% - 190px);
+    margin: 0 auto;
 }
 
 .header-content {

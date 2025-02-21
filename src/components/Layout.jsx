@@ -10,7 +10,7 @@ import About from '../pages/AboutPage';
 import Project from '../pages/ProjectPage';
 import Contact from '../pages/ContactPage';
 
-function Layout({ isDrawing, setIsDrawing, pencilColor, setPencilColor, lines, setLines, backgroundLines, setBackgroundLines, clearCanvas }) {
+function Layout({ isDrawing, setIsDrawing, pencilColor, setPencilColor, lines, setLines, backgroundLines, setBackgroundLines, clearCanvas, children }) {
     const [canvasWidth, setCanvasWidth] = useState(window.innerWidth - 200);
     const [canvasHeight, setCanvasHeight] = useState(window.innerHeight - 200);
     const [scrollCount, setScrollCount] = useState(0);
@@ -21,6 +21,8 @@ function Layout({ isDrawing, setIsDrawing, pencilColor, setPencilColor, lines, s
     const location = useLocation();
     const navLinksRef = useRef(null);
     const sectionWidthRef = useRef(window.innerWidth);
+    const totalPages = React.Children.toArray(children).length;
+    const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
 
     useLayoutEffect(() => {
         const path = location.pathname;
@@ -190,9 +192,19 @@ function Layout({ isDrawing, setIsDrawing, pencilColor, setPencilColor, lines, s
                     const targetPage = currentPage + (e.deltaY > 0 ? 1 : -1);
                     const targetScrollLeft = targetPage * sectionWidthRef.current;
 
+                    // Calculate and update currentSectionIndex AFTER scrollTo
+                    //const scrollLeft = mainContainer.scrollLeft;
+                    //const sectionIndex = Math.round(scrollLeft / sectionWidthRef.current);
+                    //setCurrentSectionIndex(sectionIndex);
+
                     mainContainer.scrollTo({
                         left: targetScrollLeft,
                         behavior: 'smooth',
+                    });
+
+                    requestAnimationFrame(() => {
+                        const sectionIndex = Math.max(0, targetPage);
+                        setCurrentSectionIndex(sectionIndex);
                     });
 
                     setScrollCount(0); // Reset after each page scroll
@@ -207,7 +219,12 @@ function Layout({ isDrawing, setIsDrawing, pencilColor, setPencilColor, lines, s
                 mainContainer.scrollTo({
                     left: targetScrollLeft,
                     behavior: 'smooth',
+                });       
+                
+                requestAnimationFrame(() => {
+                    setCurrentSectionIndex(sectionIndex);
                 });
+
             };
 
             const handleResize = () => {
@@ -245,7 +262,7 @@ function Layout({ isDrawing, setIsDrawing, pencilColor, setPencilColor, lines, s
                 <section id="projects"> <div className="page-content"> <Project isDrawing={isDrawing} setIsDrawing={setIsDrawing} pencilColor={pencilColor} setPencilColor={setPencilColor} lines={lines} setLines={setLines} backgroundLines={backgroundLines} setBackgroundLines={setBackgroundLines} clearCanvas={clearCanvas} /> </div> </section>
                 <section id="contact"> <div className="page-content"> <Contact isDrawing={isDrawing} setIsDrawing={setIsDrawing} pencilColor={pencilColor} setPencilColor={setPencilColor} lines={lines} setLines={setLines} backgroundLines={backgroundLines} setBackgroundLines={setBackgroundLines} clearCanvas={clearCanvas} /> </div> </section>
             </div>
-            <Footer />
+            <Footer currentPage={currentSectionIndex + 1} totalPages={totalPages} />
         </div>
     );
 }
@@ -272,6 +289,7 @@ Layout.propTypes = {
             })
         )
     ).isRequired,
+    children: PropTypes.node.isRequired,
 };
 
 export default Layout;

@@ -1,25 +1,10 @@
 import { useLocation } from 'react-router-dom';
 import './Footer.css'; 
 import SocialLinks from '../SocialLinks';
+import PropTypes from 'prop-types';
 
 
-function Footer() {
-    const location = useLocation();
-
-    const getPageNumber = () => {
-        switch (location.pathname) {
-            case '/':
-                return '1';
-            case '/about':
-                return '2';
-            case '/project':
-                return '3';
-            case '/contact':
-                return '4';
-            default:
-                return '';
-        }
-    };
+function Footer({ currentPage, totalPages }) {
 
     return (
         <footer className="footer"> 
@@ -27,10 +12,15 @@ function Footer() {
                 <SocialLinks />
             </div>
             <div className="footer-content">
-                <p className="page-number"><sup>{getPageNumber()}</sup>/<sub>4</sub></p>
+                <p className="page-number"><sup>{currentPage}</sup>/<sub>{totalPages}</sub></p>
             </div>
         </footer>
     );
 }
+
+Footer.propTypes = {
+    currentPage: PropTypes.number.isRequired,
+    totalPages: PropTypes.number.isRequired,
+};
 
 export default Footer;
