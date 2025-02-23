@@ -1,5 +1,4 @@
 import React, { useState, useRef, useCallback, useEffect, useLayoutEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Graph from './Graph/Graph';
 import './Layout.css';
@@ -18,39 +17,11 @@ function Layout({ isDrawing, setIsDrawing, pencilColor, setPencilColor, lines, s
     const isMouseDown = useRef(false);
     const canvasRef = useRef(null);
     const mainContainerRef = useRef(null);
-    const location = useLocation();
-    const navigate = useNavigate();
     const navLinksRef = useRef(null);
     const sectionWidthRef = useRef(window.innerWidth);
     const [totalPages, setTotalPages] = useState(0);
     const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
     const projectSectionRef = useRef(null);
-
-    useLayoutEffect(() => {
-        const path = location.pathname;
-        let sectionId = path.replace("/", "");
-        sectionId = sectionId.replace(/[^a-z0-9-_]/g, ""); // Sanitize (important!)
-
-        if (mainContainerRef.current) {
-            if (sectionId) { // Check if sectionId is NOT empty
-                const targetSection = mainContainerRef.current.querySelector(`#${sectionId}`);
-                if (targetSection) {
-                    mainContainerRef.current.scrollTo({
-                        left: targetSection.offsetLeft,
-                        behavior: 'smooth',
-                    });
-                }
-            } else { // Handle empty sectionId (root path)
-                const firstSection = mainContainerRef.current.querySelector('section');
-                if (firstSection) {
-                    mainContainerRef.current.scrollTo({
-                        left: 0,
-                        behavior: 'smooth',
-                    });
-                }
-            }
-        }
-    }, [location.pathname, mainContainerRef]);
 
     const updateCurrentSectionIndex = (sectionIndex) => {
         setCurrentSectionIndex(sectionIndex);
@@ -192,7 +163,7 @@ function Layout({ isDrawing, setIsDrawing, pencilColor, setPencilColor, lines, s
         }
     }, [mainContainerRef, navLinksRef]);
 
-    //handleWheel for horizontal scrolling and resizing
+    //Main navigation effect handleWheel for horizontal scrolling and resizing and state updating
     useEffect(() => {
         if (mainContainerRef.current) {
             const mainContainer = mainContainerRef.current;
