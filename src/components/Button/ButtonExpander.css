@@ -1,34 +1,70 @@
 .button-expander {
-    position: absolute;
-    bottom: 0px;
-    right: 0px;
+    position: fixed;
+    bottom: 20px;
+    right: 110px;
+    z-index: 1000;
+}
+
+.expander-button {
+    width: 40px;
+    height: 40px;
+    --button-width: 40px; /* Set CSS variable */
+    --button-height: 40px;
+    border-radius: 50%;
+    border: none;
+    background-color: transparent;
     display: flex;
     align-items: center;
-    z-index: 1000;
-    width: fit-content;
-}
-
-.expander-content {
-    margin-right: 0px;
-    transition: transform 0.5s ease-in-out, visibility 0.5s ease-in-out; /* Transition both */
-    visibility: hidden; /* Important: Hide initially */
-    display: flex;
-    flex-direction: row;
-    background-color: lightblue;
-    padding: 10px;
-    white-space: nowrap;
-    top: 0;
-    z-index: 1;
-    overflow: hidden;
-    border-radius: 5px;
-    transform-origin: right center; /* Set transform origin */
-}
-
-.expander-toggle {
-    padding: 5px 5px;
-    border: 1px solid gray;
-    background-color: lightgray;
+    justify-content: center;
+    opacity: 80%;
     cursor: pointer;
-    z-index: 2; /* Ensure toggle is above content */
-    position: relative; /* Needed for z-index to work */
+    transition: transform 0.2s ease, opacity 1s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
+
+    .expander-button:hover {
+        transform: scale(1.1);
+        opacity: 100%;
+    }
+
+    .expander-button:active {
+    }
+
+    .expander-button .pencil-icon {
+        width: var(--button-width); /* Use CSS variable */
+        height: var(--button-height);
+        object-fit: fill; /* Prevents stretching */
+        overflow: visible;
+    }
+
+.palette {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    margin-top: 8px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+    z-index: 1000;
+}
+
+    .palette.open {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
+    .palette button {
+        margin-right: 8px;
+        padding: 8px 16px;
+        border: none;
+        border-radius: 4px;
+        background-color: #e0e0e0;
+        cursor: pointer;
+    }
