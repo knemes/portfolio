@@ -1,8 +1,15 @@
 import React from 'react';
-import { useOutletContext } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import HandwrittenLink from '../components/HandwrittenLink/HandwrittenLink';
 import './HomePage.css';
 
 function Home() {
+    const scrollToProjects = () => {
+        const projectsSection = document.getElementById('projects');
+        if (projectsSection) {
+            projectsSection.scrollIntoView({ behavior: 'smooth' });
+        }
+    };
 
     return (
         <div className="page-content layout-main">
@@ -25,7 +32,7 @@ function Home() {
                     <b>problem-solving</b>, and I hope this sketchbook provides valuable
                     insights into my <b>design philosophy</b>.
                 </p>
-                <a href="/about" className="button">About Me</a>
+                <HandwrittenLink text="View Projects" href="#projects" onClick={scrollToProjects} />
             </section>
         </div>
     );

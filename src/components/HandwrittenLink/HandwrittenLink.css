@@ -1,0 +1,23 @@
+.handwritten-link {
+    color: black;
+}
+
+.handwritten-link span {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.handwritten-link .text-letter {
+    font-family: 'EngineerHand';
+    font-size: 1.25em;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.handwritten-link .arrow {
+    font-family: Arial, sans-serif;
+    font-size: 1.25em;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+

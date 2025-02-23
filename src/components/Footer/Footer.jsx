@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 
 
 function Footer({ currentPage, totalPages }) {
-
     return (
         <footer className="footer"> 
             <div className="social-media-container">

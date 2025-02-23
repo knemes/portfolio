@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useOutletContext } from 'react-router-dom';
 import { ref, getDownloadURL } from 'firebase/storage';
 import { storage } from '../fbconfig'; 
 import Card from '../components/Card/Card';

@@ -1,8 +1,14 @@
 import React from 'react';
-import { useOutletContext } from 'react-router-dom';
 import './AboutPage.css';
+import HandwrittenLink from '../components/HandwrittenLink/HandwrittenLink';
 
 function About() {
+    const scrollToContact = () => {
+        const contactSection = document.getElementById('contact');
+        if (contactSection) {
+            contactSection.scrollIntoView({ behavior: 'smooth' });
+        }
+    };
 
     return (
         <div className="page-content layout-main">
@@ -27,7 +33,9 @@ function About() {
                     pushing the boundaries of creativity and efficiency in design.
                 </p>
                 <p>"Do your work, and I shall know you. Do your work, and you shall reinforce yourself." - Emerson</p>
-                <a href="/projects" className="button">Projects</a>
+                <p>
+                    Want to get in touch? <HandwrittenLink text="Contact Me" href="#contact" onClick={scrollToContact} />
+                </p>
             </section>
         </div>
     );

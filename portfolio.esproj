@@ -12,6 +12,7 @@
     <Folder Include="public\fonts\" />
     <Folder Include="src\components\Header\" />
     <Folder Include="src\components\Footer\" />
+    <Folder Include="src\components\HandwrittenLink\" />
     <Folder Include="src\components\Thumbnail\" />
   </ItemGroup>
 </Project>

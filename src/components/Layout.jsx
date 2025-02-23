@@ -1,5 +1,5 @@
 import React, { useState, useRef, useCallback, useEffect, useLayoutEffect } from 'react';
-import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Graph from './Graph/Graph';
 import './Layout.css';
@@ -19,10 +19,12 @@ function Layout({ isDrawing, setIsDrawing, pencilColor, setPencilColor, lines, s
     const canvasRef = useRef(null);
     const mainContainerRef = useRef(null);
     const location = useLocation();
+    const navigate = useNavigate();
     const navLinksRef = useRef(null);
     const sectionWidthRef = useRef(window.innerWidth);
-    const totalPages = React.Children.toArray(children).length;
+    const [totalPages, setTotalPages] = useState(0);
     const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
+    const projectSectionRef = useRef(null);
 
     useLayoutEffect(() => {
         const path = location.pathname;
@@ -49,6 +51,10 @@ function Layout({ isDrawing, setIsDrawing, pencilColor, setPencilColor, lines, s
             }
         }
     }, [location.pathname, mainContainerRef]);
+
+    const updateCurrentSectionIndex = (sectionIndex) => {
+        setCurrentSectionIndex(sectionIndex);
+    };
 
     const [hasMounted, setHasMounted] = useState(false);
 
@@ -113,6 +119,7 @@ function Layout({ isDrawing, setIsDrawing, pencilColor, setPencilColor, lines, s
         }
     };
 
+    //handleResize
     useEffect(() => {
         const handleResize = () => {
             setCanvasWidth(window.innerWidth);
@@ -127,6 +134,7 @@ function Layout({ isDrawing, setIsDrawing, pencilColor, setPencilColor, lines, s
         };
     }, []);
 
+    //mouseUp, mouseDown
     useEffect(() => {
         window.addEventListener('mousemove', handleMouseMove);
         window.addEventListener('mouseup', handleMouseUp);
@@ -139,16 +147,18 @@ function Layout({ isDrawing, setIsDrawing, pencilColor, setPencilColor, lines, s
         };
     }, [handleMouseMove, handleMouseUp, handleMouseDown]);
 
+    //setHasMounted
     useEffect(() => {
         setHasMounted(true);
     }, []);
 
+    //navlinks and observer for scrolling
     useEffect(() => {
         const mainContainer = mainContainerRef.current;
         const navLinksContainer = navLinksRef.current; // Get the container for the links
 
         if (mainContainer && navLinksContainer) { // Check if refs are available
-            const sections = mainContainer.querySelectorAll('section');
+            const sections = mainContainer.querySelectorAll('.layout-main > section.top-level-section');
             const navLinks = navLinksContainer.querySelectorAll('a'); // Select the <a> links
 
             const observer = new IntersectionObserver(
@@ -161,6 +171,10 @@ function Layout({ isDrawing, setIsDrawing, pencilColor, setPencilColor, lines, s
                             const activeLink = navLinksContainer.querySelector(`a[href="#${activeSectionId}"]`);
                             if (activeLink) {
                                 activeLink.classList.add('active');
+                                const sectionIndex = Array.from(sections).findIndex(section => section.id === activeSectionId);
+                                if (sectionIndex !== -1) {
+                                    updateCurrentSectionIndex(sectionIndex);
+                                }
                             }
                         }
                     });
@@ -178,9 +192,14 @@ function Layout({ isDrawing, setIsDrawing, pencilColor, setPencilColor, lines, s
         }
     }, [mainContainerRef, navLinksRef]);
 
+    //handleWheel for horizontal scrolling and resizing
     useEffect(() => {
         if (mainContainerRef.current) {
-            const mainContainer = mainContainerRef.current; // Assuming sections are full viewport width
+            const mainContainer = mainContainerRef.current;
+
+            const sections = mainContainer.querySelectorAll('.layout-main > section.top-level-section');
+            const calculatedTotalPages = sections.length;
+            setTotalPages(calculatedTotalPages);
 
             const handleWheel = (e) => {
                 if (e.deltaY !== 0) {
@@ -203,11 +222,26 @@ function Layout({ isDrawing, setIsDrawing, pencilColor, setPencilColor, lines, s
                     });
 
                     requestAnimationFrame(() => {
-                        const sectionIndex = Math.max(0, targetPage);
+                        const sectionIndex = Math.min(Math.max(0, targetPage), calculatedTotalPages - 1);
                         setCurrentSectionIndex(sectionIndex);
+
+                        const sections = mainContainer.querySelectorAll('.layout-main > section.top-level-section');
+                        if (sections[sectionIndex]) {
+                            const sectionId = sections[sectionIndex].id;
+                            window.history.pushState(null, '', `#${sectionId}`);
+                            window.dispatchEvent(new HashChangeEvent('hashchange'));
+                        }
                     });
 
-                    setScrollCount(0); // Reset after each page scroll
+                    setScrollCount(0); 
+
+                    if (mainContainerRef.current) {
+                        const sections = mainContainerRef.current.querySelectorAll('.layout-main > section.top-level-section');
+                        if (sections[currentSectionIndex]) {
+                            const sectionId = sections[currentSectionIndex].id;
+                            window.history.replaceState(null, '', `#${sectionId}`);
+                        }
+                    }
                 }
             };
 
@@ -223,6 +257,12 @@ function Layout({ isDrawing, setIsDrawing, pencilColor, setPencilColor, lines, s
                 
                 requestAnimationFrame(() => {
                     setCurrentSectionIndex(sectionIndex);
+                    const sections = mainContainer.querySelectorAll('.layout-main > section.top-level-section');
+                    if (sections[sectionIndex]) {
+                        const sectionId = sections[sectionIndex].id;
+                        window.history.pushState(null, '', `#${sectionId}`);
+                        window.dispatchEvent(new HashChangeEvent('hashchange'));
+                    }
                 });
 
             };
@@ -232,13 +272,48 @@ function Layout({ isDrawing, setIsDrawing, pencilColor, setPencilColor, lines, s
                 scrollToCurrentSection();
             };
 
+            const handlePopstate = () => {
+                const hash = window.location.hash;
+                if (hash) {
+                    const sectionId = hash.replace('#', '');
+                    const targetSection = mainContainerRef.current.querySelector(`#${sectionId}`);
+                    if (targetSection) {
+                        targetSection.scrollIntoView({ behavior: 'smooth' });
+
+                        const sections = mainContainerRef.current.querySelectorAll('.layout-main > section.top-level-section');
+                        const sectionIndex = Array.from(sections).findIndex(section => section.id === sectionId);
+                        if (sectionIndex >= 0) {
+                            setCurrentSectionIndex(sectionIndex);
+                            mainContainerRef.current.scrollTo({
+                                left: sectionIndex * sectionWidthRef.current,
+                                behavior: 'smooth',
+                            })
+                        }
+                    }
+                }
+            };
+
+            window.addEventListener('popstate', handlePopstate);
             window.addEventListener('resize', handleResize);
             mainContainer.addEventListener('wheel', handleWheel);
 
+            if (sections[currentSectionIndex]) {
+                const sectionId = sections[currentSectionIndex].id;
+                window.history.replaceState(null, '', `#${sectionId}`);
+            }
 
             return () => {
                 mainContainer.removeEventListener('wheel', handleWheel);
+                window.removeEventListener('popstate', handlePopstate);
             };
+        }
+    }, [mainContainerRef]);
+
+    //setTotalPages
+    useEffect(() => {
+        if (mainContainerRef.current) {
+            const sections = mainContainerRef.current.querySelectorAll('.layout-main > section.top-level-section');
+            setTotalPages(sections.length);
         }
     }, [mainContainerRef]);
 
@@ -256,11 +331,11 @@ function Layout({ isDrawing, setIsDrawing, pencilColor, setPencilColor, lines, s
                     lines={lines}
                     backgroundLines={backgroundLines} />}
             </div>
-            <div className="layout-main" ref={ mainContainerRef } >
-                <section id="keaton-nemes"> <div className="page-content"> <Home isDrawing={isDrawing} setIsDrawing={setIsDrawing} pencilColor={pencilColor} setPencilColor={setPencilColor} lines={lines} setLines={setLines} backgroundLines={backgroundLines} setBackgroundLines={setBackgroundLines} clearCanvas={clearCanvas} /> </div> </section>
-                <section id="about"> <div className="page-content"> <About isDrawing={isDrawing} setIsDrawing={setIsDrawing} pencilColor={pencilColor} setPencilColor={setPencilColor} lines={lines} setLines={setLines} backgroundLines={backgroundLines} setBackgroundLines={setBackgroundLines} clearCanvas={clearCanvas} /> </div> </section>
-                <section id="projects"> <div className="page-content"> <Project isDrawing={isDrawing} setIsDrawing={setIsDrawing} pencilColor={pencilColor} setPencilColor={setPencilColor} lines={lines} setLines={setLines} backgroundLines={backgroundLines} setBackgroundLines={setBackgroundLines} clearCanvas={clearCanvas} /> </div> </section>
-                <section id="contact"> <div className="page-content"> <Contact isDrawing={isDrawing} setIsDrawing={setIsDrawing} pencilColor={pencilColor} setPencilColor={setPencilColor} lines={lines} setLines={setLines} backgroundLines={backgroundLines} setBackgroundLines={setBackgroundLines} clearCanvas={clearCanvas} /> </div> </section>
+            <div className="layout-main" ref={mainContainerRef} >
+                <section id="keaton-nemes" className="top-level-section" > <div className="page-content"> <Home /> </div> </section>
+                <section id="projects" className="top-level-section" ref={projectSectionRef}> <div className="page-content"> <Project isDrawing={isDrawing} setIsDrawing={setIsDrawing} pencilColor={pencilColor} setPencilColor={setPencilColor} lines={lines} setLines={setLines} backgroundLines={backgroundLines} setBackgroundLines={setBackgroundLines} clearCanvas={clearCanvas} /> </div> </section>
+                <section id="about" className="top-level-section"> <div className="page-content"> <About isDrawing={isDrawing} setIsDrawing={setIsDrawing} pencilColor={pencilColor} setPencilColor={setPencilColor} lines={lines} setLines={setLines} backgroundLines={backgroundLines} setBackgroundLines={setBackgroundLines} clearCanvas={clearCanvas} /> </div> </section>
+                <section id="contact" className="top-level-section"> <div className="page-content"> <Contact isDrawing={isDrawing} setIsDrawing={setIsDrawing} pencilColor={pencilColor} setPencilColor={setPencilColor} lines={lines} setLines={setLines} backgroundLines={backgroundLines} setBackgroundLines={setBackgroundLines} clearCanvas={clearCanvas} /> </div> </section>
             </div>
             <Footer currentPage={currentSectionIndex + 1} totalPages={totalPages} />
         </div>
@@ -288,8 +363,7 @@ Layout.propTypes = {
                 color: PropTypes.string,
             })
         )
-    ).isRequired,
-    children: PropTypes.node.isRequired,
+    ).isRequired
 };
 
 export default Layout;

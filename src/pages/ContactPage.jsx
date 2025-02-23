@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import emailjs from '@emailjs/browser';
 import ReCAPTCHA from 'react-google-recaptcha';
-import { useOutletContext } from 'react-router-dom';
 import { emailjsConfig } from '../fbconfig'; 
 import './ContactPage.css';
 
