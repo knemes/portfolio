@@ -2,41 +2,27 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import './ButtonExpander.css';
 import PencilIcon from '../../assets/SVG/PencilIcon.svg';
+import ColorWheel from '../../assets/SVG/ColorWheel.svg'
 
 function ButtonExpander({ children, isDrawing, setIsDrawing, toggleLabel = '>', collapseLabel = '<' }) {
-    const [isPaletteOpen, setIsPaletteOpen] = useState(false);
     const paletteRef = useRef(null);
 
-    const togglePalette = () => {
-        setIsPaletteOpen(!isPaletteOpen);
-        if (!isPaletteOpen) {
-            setIsDrawing(true)
-        } else {
-            setIsDrawing(false)
-        }
+    const toggleDrawing = () => {
+        setIsDrawing(!isDrawing);
     };
-
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (paletteRef.current && !paletteRef.current.contains(event.target) && !event.target.closest('.button-expander')) {
-                setIsPaletteOpen(false);
-            }
-        };
-
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
-    }, []);
 
     return (
         <div className="button-expander" >
-            <button className="expander-button" onClick={togglePalette}>
+            <div className={`island ${isDrawing ? 'open' : ''}`}>
+                <button className="island-button">B</button>
+                <button className="island-button"><img src={ColorWheel} alt="Color Button" /></button>
+                <button className="island-button">E</button>
+                <button className="island-button">S</button>
+                <button className="island-button">T</button>
+            </div>
+            <button className="expander-button" onClick={toggleDrawing}>
                 <img src={PencilIcon} alt="Drawing Tool" className="pencil-icon" />
             </button>
-            <div ref={paletteRef} className={`palette ${isPaletteOpen ? 'open' : ''}`}>
-                {children}
-            </div>
         </div>
     );
 }

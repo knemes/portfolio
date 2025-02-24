@@ -1,20 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 361 361">
+<svg id="Layer_2" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 361 361">
+  <!-- Generator: Adobe Illustrator 29.3.0, SVG Export Plug-In . SVG Version: 2.1.0 Build 146)  -->
   <defs>
     <style>
-      .cls-1 {
-        stroke: #fff;
+      .st0 {
         stroke-miterlimit: 10;
+        stroke-width: 1px;
+      }
+
+      .st0, .st1, .st2 {
+        fill: #333;
+        stroke: #fff;
+      }
+
+      .st1 {
+        stroke-miterlimit: 10;
+      }
+
+      .st2 {
+        stroke-miterlimit: 10;
+        stroke-width: 1px;
       }
     </style>
   </defs>
-  <g id="Layer_1-2" data-name="Layer 1">
+  <g id="Layer_1-2">
     <g>
-      <path class="cls-1" d="M101.8,211.38c-6.72,17.63,33.01,57.53,52.69,49.66l80.63-80.95-50.74-51.54-82.59,82.83Z"/>
-      <path class="cls-1" d="M108.41,249.41c-10.53-11.16-12.86-22.8-12.86-22.8l-10.03,51.16,51.71-9.29s-16.34-5.83-28.82-19.07Z"/>
-      <rect class="cls-1" x="212.75" y="102.87" width="24.18" height="72.28" transform="translate(-32.43 199.74) rotate(-45.01)"/>
-      <path class="cls-1" d="M180.5.5C81.09.5.5,81.09.5,180.5s80.59,180,180,180,180-80.59,180-180S279.91.5,180.5.5ZM154.42,272.66l-68.87,13.73c-3.91.78-8.79.83-8.73-4.44l14.05-70.75L244.4,56.2l64.18,62.94-154.17,153.51Z"/>
-      <rect class="cls-1" x="233.42" y="73.35" width="41.87" height="72.28" transform="translate(-2.94 211.89) rotate(-44.99)"/>
+      <path class="st1" d="M101.8,211.4c-6.7,17.6,33,57.5,52.7,49.7l80.6-80.9-50.7-51.5-82.6,82.8h0Z"/>
+      <path class="st1" d="M108.4,249.4c-10.5-11.2-12.9-22.8-12.9-22.8l-10,51.2,51.7-9.3s-16.3-5.8-28.8-19.1h0Z"/>
+      <rect class="st0" x="212.8" y="102.9" width="24.2" height="72.3" transform="translate(-32.4 199.7) rotate(-45)"/>
+      <path class="st1" d="M180.5.5C81.1.5.5,81.1.5,180.5s80.6,180,180,180,180-80.6,180-180S279.9.5,180.5.5ZM154.4,272.7l-68.9,13.7c-3.9.8-8.8.8-8.7-4.4l14.1-70.8L244.4,56.2l64.2,62.9-154.2,153.5h0Z"/>
+      <rect class="st2" x="233.4" y="73.4" width="41.9" height="72.3" transform="translate(-2.9 211.9) rotate(-45)"/>
     </g>
   </g>
 </svg>

@@ -35,10 +35,6 @@ function App() {
                 toggleLabel={isDrawing ? "Stop Drawing" : "Start Drawing"}
                 collapseLabel="Close"
             >
-                <button onClick={() => setPencilColor('red')} style={{ backgroundColor: 'red' }}>Red</button>
-                <button onClick={() => setPencilColor('blue')} style={{ backgroundColor: 'blue' }}>Blue</button>
-                <button onClick={() => setPencilColor('green')} style={{ backgroundColor: 'green' }}>Green</button>
-                <button onClick={clearCanvas}>Clear Canvas</button>
             </ButtonExpander>
         </div>
     );

@@ -1,18 +1,4 @@
-    //Getting an image from Firebase
-    //useEffect(() => {
-    //    const getImageFromStorage = async () => {
-    //        try {
-    //            // Replace 'path/to/your/image.jpg' with the actual path to your image in Firebase Storage
-    //            const imageRef = ref(storage, 'IMG_3300.png');
-    //            const url = await getDownloadURL(imageRef);
-    //            setImageUrl(url);
-    //        } catch (error) {
-    //            console.error("Error getting image URL:", error);
-    //        }
-    //    };
-    //
-    //    getImageFromStorage();
-    //}, []); 
-    //<div>
-    //{ imageUrl && <img src={imageUrl} alt="Project Image" /> }
-    //</div >
+    <button onClick={() => setPencilColor('red')} style={{ backgroundColor: 'red' }}>Red</button>
+    <button onClick={() => setPencilColor('blue')} style={{ backgroundColor: 'blue' }}>Blue</button>
+    <button onClick={() => setPencilColor('green')} style={{ backgroundColor: 'green' }}>Green</button>
+    <button onClick={clearCanvas}>Clear Canvas</button>

@@ -1,15 +1,21 @@
 .draw-button {
     position: fixed;
+    width: 34px;
+    height: 34px;
     bottom: 20px;
     right: 20px;
     z-index: 1001; /* Above content */
     padding: 10px 20px;
+    border-radius: 50%;
 }
 
 .draw-options {
     position: fixed;
+    width: 34px;
+    height: 34px;
     bottom: 20px;
     right: 100px;
     z-index: 2;
     gap: 10px;
+    border-radius: 50%;
 }
