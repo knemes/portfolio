@@ -2,7 +2,12 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import './ButtonExpander.css';
 import PencilIcon from '../../assets/SVG/PencilIcon.svg';
-import ColorWheel from '../../assets/SVG/ColorWheel.svg'
+import ColorWheel from '../../assets/SVG/ColorWheel.svg';
+import EraserIcon from '../../assets/SVG/EraserIcon.svg';
+import SaveIcon from '../../assets/SVG/SaveIcon.svg';
+import TrashIcon from '../../assets/SVG/TrashIcon.svg';
+import BrushIcon from '../../assets/SVG/BrushIcon.svg';
+
 
 function ButtonExpander({ children, isDrawing, setIsDrawing, toggleLabel = '>', collapseLabel = '<' }) {
     const paletteRef = useRef(null);
@@ -14,11 +19,11 @@ function ButtonExpander({ children, isDrawing, setIsDrawing, toggleLabel = '>', 
     return (
         <div className="button-expander" >
             <div className={`island ${isDrawing ? 'open' : ''}`}>
-                <button className="island-button">B</button>
+                <button className="island-button"><img src={BrushIcon} alt="Brush Icon" /></button>
                 <button className="island-button"><img src={ColorWheel} alt="Color Button" /></button>
-                <button className="island-button">E</button>
-                <button className="island-button">S</button>
-                <button className="island-button">T</button>
+                <button className="island-button"><img src={EraserIcon} alt="Eraser Button" /></button>
+                <button className="island-button"><img src={SaveIcon} alt="Save Button" /></button>
+                <button className="island-button"><img src={TrashIcon} alt="Trash Button" /></button>
             </div>
             <button className="expander-button" onClick={toggleDrawing}>
                 <img src={PencilIcon} alt="Drawing Tool" className="pencil-icon" />
