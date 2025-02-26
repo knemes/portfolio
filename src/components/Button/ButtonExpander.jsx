@@ -9,17 +9,43 @@ import TrashIcon from '../../assets/SVG/TrashIcon.svg';
 import BrushIcon from '../../assets/SVG/BrushIcon.svg';
 
 
-function ButtonExpander({ children, isDrawing, setIsDrawing, toggleLabel = '>', collapseLabel = '<' }) {
-    const paletteRef = useRef(null);
+function ButtonExpander({ children, isDrawing, setIsDrawing}) {
+    const [brushOptionsOpen, setBrushOptionsOpen] = useState(false);
+    const [selectedBrush, setSelectedBrush] = useState(null);
 
     const toggleDrawing = () => {
         setIsDrawing(!isDrawing);
     };
 
+    const toggleBrushOptions = () => {
+        setBrushOptionsOpen(!brushOptionsOpen);
+    };
+
+    const handleBrushSelection = (brush) => {
+        setSelectedBrush(brush);
+        console.log('selected brush:', brush);
+    };
+
     return (
         <div className="button-expander" >
             <div className={`island ${isDrawing ? 'open' : ''}`}>
-                <button className="island-button"><img src={BrushIcon} alt="Brush Icon" /></button>
+                <button className="island-button" onClick={toggleBrushOptions}><img src={BrushIcon} alt="Brush Icon" /></button>
+                {brushOptionsOpen && (
+                    <div className="brush-options">
+                        <button className={`brush-button
+                        ${selectedBrush === 'Pencil' ? 'active' : ''}`}
+                            onClick={() => handleBrushSelection('Pencil')}
+                        >P1</button>
+                        <button className={`brush-button
+                        ${selectedBrush === 'Brush' ? 'active' : ''}`}
+                            onClick={() => handleBrushSelection('Brush')}
+                        >B</button>
+                        <button className={`brush-button
+                        ${selectedBrush === 'Pen' ? 'active' : ''}`}
+                            onClick={() => handleBrushSelection('Pen')}
+                        >P2</button>
+                    </div>
+                )}
                 <button className="island-button"><img src={ColorWheel} alt="Color Button" /></button>
                 <button className="island-button"><img src={EraserIcon} alt="Eraser Button" /></button>
                 <button className="island-button"><img src={SaveIcon} alt="Save Button" /></button>
