@@ -63,7 +63,7 @@
     transition: height 0.5s ease-in-out, transform 0.3s ease-in-out;
     transform: scaleY(0);
     transform-origin: bottom;
-    z-index: 999;
+    z-index: 997;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -103,52 +103,74 @@
     opacity: 1;
 }
 
-        .island.open .island-button:hover {
-            transform: scale(1.1);
-        }
+    .island.open .island-button:hover {
+        transform: scale(1.1);
+    }
+
+    .island-button:focus {
+        border: none;
+        outline: none; 
+    }
 
 .brush-options {
     position: absolute;
-    left: 36px; /* Position to the left of the brush button */
+    left: 36px;
     top: 6px;
     height: 36px;
     background-color: #DCDCDC;
     border-radius: 17px 17px 17px 17px;
-    transform: translateX(-100%); /* Slide out initially */
-    transition: transform 0.3s ease-in-out;
+    transform: translateX(-100%);
+    transition: width 0.5s ease-in-out, transform 0.3s ease-in-out;
     display: flex;
     flex-direction: row-reverse;
     justify-content: flex-start;
-    padding-right: 42px;
-    z-index: 997;
+    padding-right: 34px;
+    z-index: 998;
 }
 
     .brush-options.open {
-        transform: translateX(0); /* Slide in when open */
+        transform: translateX(0); 
     }
 
 .brush-button {
     position: relative;
-    display: block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 36px;
     height: 36px;
     --button-width: 36px;
     --button-height: 36px;
     background-color: transparent;
-    border: 0;
+    border: none;
     border-radius: 50%;
     cursor: pointer;
     transition: transform 0.3s ease-in-out, opacity 0.6s ease-in-out;
     z-index: 999;
     top: 0;
-    transform: scale(.7);
+    opacity: 1;
+    margin-right: 6px;
 }
 
-.brush-button.active {
-    background-color: red; /* Your desired background color */
-}
+    .brush-button img {
+        width: 25px;
+        height: 25px;
+        object-fit: contain;
+    }
 
-.brush-options.open .brush-button {
-    transform: translateY(0); /* Add transform: translateY(0) */
+    .brush-button.active {
+        background-image: radial-gradient(circle, red 50%, transparent 51%); 
+        background-size: 25px 25px; 
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+
+    .brush-button:focus {
+        border: none;
+        outline: none; 
+    }
+
+.brush-button:hover {
+    transform: scale(1.1); 
     opacity: 1;
 }

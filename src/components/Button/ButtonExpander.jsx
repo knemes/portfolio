@@ -7,11 +7,16 @@ import EraserIcon from '../../assets/SVG/EraserIcon.svg';
 import SaveIcon from '../../assets/SVG/SaveIcon.svg';
 import TrashIcon from '../../assets/SVG/TrashIcon.svg';
 import BrushIcon from '../../assets/SVG/BrushIcon.svg';
+import MarkerBrush from '../../assets/SVG/MarkerBrush.svg';
+import PencilBrush from '../../assets/SVG/PencilBrush.svg';
+import HighlighterBrush from '../../assets/SVG/HighlighterBrush.svg';
 
 
 function ButtonExpander({ children, isDrawing, setIsDrawing}) {
     const [brushOptionsOpen, setBrushOptionsOpen] = useState(false);
-    const [selectedBrush, setSelectedBrush] = useState(null);
+    const [selectedBrush, setSelectedBrush] = useState('Pencil');
+    const brushOptionsRef = useRef(null);
+    const brushButtonRef = useRef(null);
 
     const toggleDrawing = () => {
         setIsDrawing(!isDrawing);
@@ -26,24 +31,50 @@ function ButtonExpander({ children, isDrawing, setIsDrawing}) {
         console.log('selected brush:', brush);
     };
 
+    const handleClickOutside = (event) => {
+        if (brushButtonRef.current && brushButtonRef.current.contains(event.target)) {
+            return; // Ignore click if it's the brush button or its children
+        }
+        if (brushOptionsRef.current && !brushOptionsRef.current.contains(event.target)) {
+            setBrushOptionsOpen(false);
+        }
+    };
+
+    useEffect(() => {
+        if (brushOptionsOpen) {
+            document.addEventListener('mousedown', handleClickOutside);
+        } else {
+            document.removeEventListener('mousedown', handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [brushOptionsOpen]);
+
     return (
         <div className="button-expander" >
             <div className={`island ${isDrawing ? 'open' : ''}`}>
-                <button className="island-button" onClick={toggleBrushOptions}><img src={BrushIcon} alt="Brush Icon" /></button>
+                <button className="island-button" onClick={toggleBrushOptions} ref={brushButtonRef}>
+                    <img src={BrushIcon} alt="Brush Icon" />
+                </button>
                 {brushOptionsOpen && (
-                    <div className="brush-options">
+                    <div className="brush-options" ref={brushOptionsRef}>
                         <button className={`brush-button
                         ${selectedBrush === 'Pencil' ? 'active' : ''}`}
                             onClick={() => handleBrushSelection('Pencil')}
-                        >P1</button>
+                        ><img src={PencilBrush} alt="Pencil Button" />
+                        </button>
                         <button className={`brush-button
-                        ${selectedBrush === 'Brush' ? 'active' : ''}`}
-                            onClick={() => handleBrushSelection('Brush')}
-                        >B</button>
+                        ${selectedBrush === 'Marker' ? 'active' : ''}`}
+                            onClick={() => handleBrushSelection('Marker')}
+                        ><img src={MarkerBrush} alt="Marker Button" />
+                        </button>
                         <button className={`brush-button
-                        ${selectedBrush === 'Pen' ? 'active' : ''}`}
-                            onClick={() => handleBrushSelection('Pen')}
-                        >P2</button>
+                        ${selectedBrush === 'Highlight' ? 'active' : ''}`}
+                            onClick={() => handleBrushSelection('Highlight')}
+                        ><img src={HighlighterBrush} alt="Highlight Button" />
+                        </button>
                     </div>
                 )}
                 <button className="island-button"><img src={ColorWheel} alt="Color Button" /></button>
