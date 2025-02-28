@@ -18,6 +18,16 @@ function ButtonExpander({ children, isDrawing, setIsDrawing}) {
     const brushOptionsRef = useRef(null);
     const brushButtonRef = useRef(null);
 
+    // Color Picker State
+    const [colorPickerOpen, setColorPickerOpen] = useState(false);
+    const [hue, setHue] = useState(35);
+    const [color, setColor] = useState(`hsl(${hue}, 100%, 50%)`);
+    const colorPickerRef = useRef(null);
+    const colorButtonRef = useRef(null);
+    const sliderRef = useRef(null);
+    const sliderMax = 362;
+    const sliderMin = 0;
+
     const toggleDrawing = () => {
         setIsDrawing(!isDrawing);
     };
@@ -33,12 +43,99 @@ function ButtonExpander({ children, isDrawing, setIsDrawing}) {
 
     const handleClickOutside = (event) => {
         if (brushButtonRef.current && brushButtonRef.current.contains(event.target)) {
-            return; // Ignore click if it's the brush button or its children
+            return;
         }
         if (brushOptionsRef.current && !brushOptionsRef.current.contains(event.target)) {
             setBrushOptionsOpen(false);
         }
+        if (colorButtonRef.current && colorButtonRef.current.contains(event.target)) {
+            return; 
+        }
+        if (colorPickerRef.current && !colorPickerRef.current.contains(event.target)) {
+            setColorPickerOpen(false);
+        }
     };
+
+    // Color Picker Handlers
+    const toggleColorPicker = () => {
+        setColorPickerOpen(!colorPickerOpen);
+    };
+
+    const handleHueChange = (event) => {
+        const newHue = parseInt(event.target.value);
+        setHue(newHue);
+        updateSliderThumbColor(newHue);
+    };
+
+    const updateSliderThumbColor = (hue) => {
+        const slider = sliderRef.current;
+
+        if (!slider) {
+            return;
+        }
+
+        const sliderRect = slider.getBoundingClientRect();
+        const colorPicker = colorPickerRef.current; // Get the color picker element
+        const colorPickerStyle = getComputedStyle(colorPicker);
+        const colorPickerPaddingRight = parseInt(colorPickerStyle.paddingRight);
+
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        const sliderWidth = sliderRect.width;
+        canvas.width = sliderWidth;
+        canvas.height = 1;
+
+        const gradient = ctx.createLinearGradient(0, 0, sliderWidth, 0);
+        gradient.addColorStop(.125, 'white');
+        gradient.addColorStop(.25, 'black');
+        gradient.addColorStop(.375, 'hsl(0, 100%, 50%)');
+        gradient.addColorStop(.5, 'hsl(60, 100%, 50%)');
+        gradient.addColorStop(.625, 'hsl(120, 100%, 50%)');
+        gradient.addColorStop(.75, 'hsl(180, 100%, 50%)');
+        gradient.addColorStop(.875, 'hsl(240, 100%, 50%)');
+        gradient.addColorStop(1, 'hsl(300, 100%, 50%)');
+
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, sliderWidth, 1);
+
+        const percentage = (hue - sliderMin) / (sliderMax - sliderMin);
+        let pixelX = Math.round(percentage * sliderWidth);
+        let adjustedPixelX = pixelX - colorPickerPaddingRight;
+        adjustedPixelX = Math.max(0, Math.min(adjustedPixelX, sliderWidth - 1));
+
+        pixelX = pixelX - colorPickerPaddingRight;
+        console.log("pixelX:", adjustedPixelX);
+        const pixelData = ctx.getImageData(adjustedPixelX, 0, 1, 1).data;
+        console.log("pixelData:", pixelData);
+        const rgbToHsl = (r, g, b) => {
+            r /= 255, g /= 255, b /= 255;
+            const max = Math.max(r, g, b), min = Math.min(r, g, b);
+            let h, s, l = (max + min) / 2;
+            if (max === min) {
+                h = s = 0;
+            } else {
+                const d = max - min;
+                s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+                switch (max) {
+                    case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+                    case g: h = (b - r) / d + 2; break;
+                    case b: h = (r - g) / d + 4; break;
+                }
+                h /= 6;
+            }
+            const hsl = `hsl(${h * 360}, ${s * 100}%, ${l * 100}%)`; // Declare and assign hsl
+            console.log(`rgbToHsl(${r * 255}, ${g * 255}, ${b * 255}) => ${hsl}`);
+            return `hsl(${h * 360}, ${s * 100}%, ${l * 100}%)`;
+        };
+        const thumbColor = rgbToHsl(pixelData[0], pixelData[1], pixelData[2]);
+
+        document.documentElement.style.setProperty('--thumb-color', thumbColor);
+        document.documentElement.style.setProperty('--thumb-border-color', 'black');
+    };
+
+    useEffect(() => {
+        updateSliderThumbColor(hue); // Initial thumb color
+    }, []);
 
     useEffect(() => {
         if (brushOptionsOpen) {
@@ -50,7 +147,7 @@ function ButtonExpander({ children, isDrawing, setIsDrawing}) {
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
-    }, [brushOptionsOpen]);
+    }, [brushOptionsOpen, colorPickerOpen]);
 
     return (
         <div className="button-expander" >
@@ -77,7 +174,20 @@ function ButtonExpander({ children, isDrawing, setIsDrawing}) {
                         </button>
                     </div>
                 )}
-                <button className="island-button"><img src={ColorWheel} alt="Color Button" /></button>
+                <button className="island-button" onClick={toggleColorPicker} ref={colorButtonRef}><img src={ColorWheel} alt="Color Button" /></button>
+                {colorPickerOpen && (
+                    <div className="color-picker" ref={colorPickerRef}>
+                    <input 
+                            type="range"
+                            min={sliderMin}
+                            max={sliderMax}
+                            value={hue}
+                            onChange={handleHueChange}
+                            className="color-slider"
+                            ref={sliderRef}
+                        />
+                    </div>
+                )}
                 <button className="island-button"><img src={EraserIcon} alt="Eraser Button" /></button>
                 <button className="island-button"><img src={SaveIcon} alt="Save Button" /></button>
                 <button className="island-button"><img src={TrashIcon} alt="Trash Button" /></button>

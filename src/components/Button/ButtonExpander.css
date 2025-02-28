@@ -120,12 +120,13 @@
     background-color: #DCDCDC;
     border-radius: 17px 17px 17px 17px;
     transform: translateX(-100%);
-    transition: width 0.5s ease-in-out, transform 0.3s ease-in-out;
+    transition: height 0.5s ease-in-out, transform 0.3s ease-in-out;
     display: flex;
     flex-direction: row-reverse;
     justify-content: flex-start;
     padding-right: 34px;
     z-index: 998;
+    overflow: hidden;
 }
 
     .brush-options.open {
@@ -174,3 +175,76 @@
     transform: scale(1.1); 
     opacity: 1;
 }
+
+.color-picker {
+    position: absolute;
+    left: 36px;
+    top: 6px;
+    height: 36px;
+    background-color: #DCDCDC;
+    border-radius: 17px 17px 17px 17px;
+    transform: translateX(-100%);
+    transition: height 0.5s ease-in-out, transform 0.3s ease-in-out;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-start;
+    padding-right: 34px;
+    padding-left: 10px;
+    padding-top: 10px;
+    z-index: 998;
+    overflow: hidden;
+}
+
+    .color-picker.open {
+        transform: translateX(0);
+    }
+
+.color-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 200px;
+    height: 12px;
+    background: linear-gradient( 
+        to right, 
+    white, 
+    black, 
+    hsl(0, 100%, 50%), 
+    hsl(60, 100%, 50%), 
+    hsl(120, 100%, 50%), 
+    hsl(180, 100%, 50%), 
+    hsl(240, 100%, 50%), 
+    hsl(300, 100%, 50%) );
+    border-radius: 5px;
+    outline: none;
+}
+
+    .color-slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        border: 1px solid #333333; /* Consolidate border */
+        border-radius: 50%;
+        cursor: pointer;
+        background: var(--thumb-color, hsl(0, 100%, 50%)); /* Remove #fff background */
+    }
+
+    .color-slider::-moz-range-thumb {
+        width: 20px;
+        height: 20px;
+        border: 1px solid #333333; /* Consolidate border */
+        border-radius: 50%;
+        cursor: pointer;
+        background: var(--thumb-color, hsl(0, 100%, 50%)); /* Remove #fff background */
+    }
+
+    .color-slider canvas, .color-slider canvas * {
+        background-color: transparent !important;
+        opacity: 1 !important;
+        filter: none !important;
+        mix-blend-mode: normal !important;
+        box-shadow: none !important;
+        border: none !important;
+        outline: none !important;
+        transform: none !important;
+    }
