@@ -86,27 +86,27 @@ function ButtonExpander({ children, isDrawing, setIsDrawing}) {
         canvas.height = 1;
 
         const gradient = ctx.createLinearGradient(0, 0, sliderWidth, 0);
-        gradient.addColorStop(.125, 'white');
-        gradient.addColorStop(.25, 'black');
-        gradient.addColorStop(.375, 'hsl(0, 100%, 50%)');
-        gradient.addColorStop(.5, 'hsl(60, 100%, 50%)');
-        gradient.addColorStop(.625, 'hsl(120, 100%, 50%)');
-        gradient.addColorStop(.75, 'hsl(180, 100%, 50%)');
-        gradient.addColorStop(.875, 'hsl(240, 100%, 50%)');
-        gradient.addColorStop(1, 'hsl(300, 100%, 50%)');
+        gradient.addColorStop(0, 'hsl(0, 0%, 100%)');      // white
+        gradient.addColorStop(0.125, 'hsl(0, 0%, 0%)');     // black
+        gradient.addColorStop(0.25, 'hsl(0, 100%, 50%)');   // red
+        gradient.addColorStop(0.375, 'hsl(60, 100%, 50%)');  // yellow
+        gradient.addColorStop(0.5, 'hsl(120, 100%, 50%)');  // green
+        gradient.addColorStop(0.625, 'hsl(180, 100%, 50%)'); // teal
+        gradient.addColorStop(0.75, 'hsl(240, 100%, 50%)');  // blue
+        gradient.addColorStop(0.875, 'hsl(300, 100%, 50%)'); // purple
+        gradient.addColorStop(1, 'hsl(300, 100%, 50%)'); 
 
         ctx.fillStyle = gradient;
         ctx.fillRect(0, 0, sliderWidth, 1);
 
-        const percentage = (hue - sliderMin) / (sliderMax - sliderMin);
+        const percentage = (hue - sliderMin) / (sliderMax - sliderMin); // percentage relative to slider's range
         let pixelX = Math.round(percentage * sliderWidth);
-        let adjustedPixelX = pixelX - colorPickerPaddingRight;
-        adjustedPixelX = Math.max(0, Math.min(adjustedPixelX, sliderWidth - 1));
 
-        pixelX = pixelX - colorPickerPaddingRight;
-        console.log("pixelX:", adjustedPixelX);
-        const pixelData = ctx.getImageData(adjustedPixelX, 0, 1, 1).data;
-        console.log("pixelData:", pixelData);
+        const adjustmentFactor = .875; // Adjust this value as needed
+        pixelX = Math.round(pixelX * adjustmentFactor);
+
+
+        const pixelData = ctx.getImageData(pixelX, 0, 1, 1).data;
         const rgbToHsl = (r, g, b) => {
             r /= 255, g /= 255, b /= 255;
             const max = Math.max(r, g, b), min = Math.min(r, g, b);
@@ -123,8 +123,6 @@ function ButtonExpander({ children, isDrawing, setIsDrawing}) {
                 }
                 h /= 6;
             }
-            const hsl = `hsl(${h * 360}, ${s * 100}%, ${l * 100}%)`; // Declare and assign hsl
-            console.log(`rgbToHsl(${r * 255}, ${g * 255}, ${b * 255}) => ${hsl}`);
             return `hsl(${h * 360}, ${s * 100}%, ${l * 100}%)`;
         };
         const thumbColor = rgbToHsl(pixelData[0], pixelData[1], pixelData[2]);
