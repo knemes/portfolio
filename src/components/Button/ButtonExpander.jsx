@@ -20,7 +20,7 @@ function ButtonExpander({ children, isDrawing, setIsDrawing}) {
 
     // Color Picker State
     const [colorPickerOpen, setColorPickerOpen] = useState(false);
-    const [hue, setHue] = useState(35);
+    const [hue, setHue] = useState(50);
     const [color, setColor] = useState(`hsl(${hue}, 100%, 50%)`);
     const colorPickerRef = useRef(null);
     const colorButtonRef = useRef(null);
@@ -77,7 +77,6 @@ function ButtonExpander({ children, isDrawing, setIsDrawing}) {
         const sliderRect = slider.getBoundingClientRect();
         const colorPicker = colorPickerRef.current; // Get the color picker element
         const colorPickerStyle = getComputedStyle(colorPicker);
-        const colorPickerPaddingRight = parseInt(colorPickerStyle.paddingRight);
 
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
@@ -132,8 +131,8 @@ function ButtonExpander({ children, isDrawing, setIsDrawing}) {
     };
 
     useEffect(() => {
-        updateSliderThumbColor(hue); // Initial thumb color
-    }, []);
+        updateSliderThumbColor(hue); // Set initial thumb color
+    },);
 
     useEffect(() => {
         if (brushOptionsOpen) {
