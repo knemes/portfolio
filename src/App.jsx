@@ -1,5 +1,5 @@
 import React, { useState} from 'react';
-import ButtonExpander from './components/Button/ButtonExpander';
+import DrawPalette from './components/Button/DrawPalette';
 import Layout from './components/Layout';
 import './App.css'
 import './fonts.css'
@@ -7,35 +7,62 @@ import './fonts.css'
 function App() {
     console.log("About To Render");
     const [isDrawing, setIsDrawing] = useState(false);
-    const [pencilColor, setPencilColor] = useState('black');
+    const [currentDrawColor, setDrawColor] = useState('black');
     const [lines, setLines] = useState([]);
     const [backgroundLines, setBackgroundLines] = useState([]);
+    const [selectedBrush, setSelectedBrush] = useState('Pencil');
+    const [eraserEnabled, setEraserEnabled] = useState(false);
 
-    const clearCanvas = () => {
+    const handleBrushSelection = (brush) => {
+        setSelectedBrush(brush);
+    };
+
+    const handleColorChange = (color) => {
+        setDrawColor(color);
+    };
+
+    const handleEraser = () => {
+        setEraserEnabled(!eraserEnabled);
+    };
+
+    const handleSave = () => {
+        // Implement save logic here
+    };
+
+    const handleTrash = () => {
         setLines([]);
         setBackgroundLines([]);
     };
+
     return (
         <div>
             <div className="background-overlay"></div>
             <Layout
                 isDrawing={isDrawing}
                 setIsDrawing={setIsDrawing}
-                pencilColor={pencilColor}
-                setPencilColor={setPencilColor}
                 lines={lines}
                 setLines={setLines}
                 backgroundLines={backgroundLines}
                 setBackgroundLines={setBackgroundLines}
-                clearCanvas={clearCanvas}
+                selectedBrush={selectedBrush}
+                onBrushSelection={handleBrushSelection}
+                currentColor={currentDrawColor}
+                setDrawColor={setDrawColor}
+                eraserEnabled={eraserEnabled}
+                onToggleEraser={handleEraser}
+                onSave={handleSave}
+                onTrash={handleTrash}
             />
-            <ButtonExpander
+            <DrawPalette
                 isDrawing={isDrawing}
                 setIsDrawing={setIsDrawing}
-                toggleLabel={isDrawing ? "Stop Drawing" : "Start Drawing"}
-                collapseLabel="Close"
+                onBrushSelection={handleBrushSelection}
+                onColorChange={handleColorChange}
+                onToggleEraser={handleEraser}
+                onSave={handleSave}
+                onTrash={handleTrash}
             >
-            </ButtonExpander>
+            </DrawPalette>
         </div>
     );
 }

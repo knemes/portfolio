@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import './ButtonExpander.css';
+import './DrawPalette.css';
 import PencilIcon from '../../assets/SVG/PencilIcon.svg';
 import ColorWheel from '../../assets/SVG/ColorWheel.svg';
 import EraserIcon from '../../assets/SVG/EraserIcon.svg';
@@ -12,7 +12,7 @@ import PencilBrush from '../../assets/SVG/PencilBrush.svg';
 import HighlighterBrush from '../../assets/SVG/HighlighterBrush.svg';
 
 
-function ButtonExpander({ children, isDrawing, setIsDrawing}) {
+function DrawPalette({ isDrawing, setIsDrawing, onBrushSelection, onColorChange, onToggleEraser, onSave, onTrash}) {
     const [brushOptionsOpen, setBrushOptionsOpen] = useState(false);
     const [selectedBrush, setSelectedBrush] = useState('Pencil');
     const brushOptionsRef = useRef(null);
@@ -21,7 +21,6 @@ function ButtonExpander({ children, isDrawing, setIsDrawing}) {
     // Color Picker State
     const [colorPickerOpen, setColorPickerOpen] = useState(false);
     const [hue, setHue] = useState(50);
-    const [color, setColor] = useState(`hsl(${hue}, 100%, 50%)`);
     const colorPickerRef = useRef(null);
     const colorButtonRef = useRef(null);
     const sliderRef = useRef(null);
@@ -38,25 +37,25 @@ function ButtonExpander({ children, isDrawing, setIsDrawing}) {
 
     const handleBrushSelection = (brush) => {
         setSelectedBrush(brush);
-        console.log('selected brush:', brush);
+        onBrushSelection(brush);
     };
 
     const handleClickOutside = (event) => {
         if (brushButtonRef.current && brushButtonRef.current.contains(event.target)) {
-            return;
+            setColorPickerOpen(false);
         }
         if (brushOptionsRef.current && !brushOptionsRef.current.contains(event.target)) {
             setBrushOptionsOpen(false);
         }
+
         if (colorButtonRef.current && colorButtonRef.current.contains(event.target)) {
-            return; 
+            setBrushOptionsOpen(false);
         }
         if (colorPickerRef.current && !colorPickerRef.current.contains(event.target)) {
             setColorPickerOpen(false);
         }
     };
 
-    // Color Picker Handlers
     const toggleColorPicker = () => {
         setColorPickerOpen(!colorPickerOpen);
     };
@@ -65,6 +64,7 @@ function ButtonExpander({ children, isDrawing, setIsDrawing}) {
         const newHue = parseInt(event.target.value);
         setHue(newHue);
         updateSliderThumbColor(newHue);
+        onColorChange(newHue)
     };
 
     const updateSliderThumbColor = (hue) => {
@@ -75,9 +75,6 @@ function ButtonExpander({ children, isDrawing, setIsDrawing}) {
         }
 
         const sliderRect = slider.getBoundingClientRect();
-        const colorPicker = colorPickerRef.current; // Get the color picker element
-        const colorPickerStyle = getComputedStyle(colorPicker);
-
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
         const sliderWidth = sliderRect.width;
@@ -130,12 +127,24 @@ function ButtonExpander({ children, isDrawing, setIsDrawing}) {
         document.documentElement.style.setProperty('--thumb-border-color', 'black');
     };
 
+    const handleEraserToggle = () => {
+        onToggleEraser();
+    };
+
+    const handleSaveToggle = () => {
+        onSave();
+    };
+
+    const handleTrashToggle = () => {
+        onTrash();
+    };
+
     useEffect(() => {
         updateSliderThumbColor(hue); // Set initial thumb color
     },);
 
     useEffect(() => {
-        if (brushOptionsOpen) {
+        if (brushOptionsOpen || colorPickerOpen) {
             document.addEventListener('mousedown', handleClickOutside);
         } else {
             document.removeEventListener('mousedown', handleClickOutside);
@@ -185,9 +194,9 @@ function ButtonExpander({ children, isDrawing, setIsDrawing}) {
                         />
                     </div>
                 )}
-                <button className="island-button"><img src={EraserIcon} alt="Eraser Button" /></button>
-                <button className="island-button"><img src={SaveIcon} alt="Save Button" /></button>
-                <button className="island-button"><img src={TrashIcon} alt="Trash Button" /></button>
+                <button className="island-button" onClick={handleEraserToggle}><img src={EraserIcon} alt="Eraser Button" /></button>
+                <button className="island-button" onClick={handleSaveToggle}><img src={SaveIcon} alt="Save Button" /></button>
+                <button className="island-button" onClick={handleTrashToggle}><img src={TrashIcon} alt="Trash Button" /></button>
             </div>
             <button className="expander-button" onClick={toggleDrawing}>
                 <img src={PencilIcon} alt="Drawing Tool" className="pencil-icon" />
@@ -196,13 +205,15 @@ function ButtonExpander({ children, isDrawing, setIsDrawing}) {
     );
 }
 
-ButtonExpander.propTypes = {
+DrawPalette.propTypes = {
     children: PropTypes.node.isRequired,
-    expandDirection: PropTypes.oneOf(['left', 'right', 'up', 'down']),
     isDrawing: PropTypes.bool.isRequired,
     setIsDrawing: PropTypes.func.isRequired,
-    toggleLabel: PropTypes.string,
-    collapseLabel: PropTypes.string,
+    onBrushSelection: PropTypes.func.isRequired,
+    onColorChange: PropTypes.func.isRequired,
+    onToggleEraser: PropTypes.func.isRequired,
+    onSave: PropTypes.func.isRequired,
+    onTrash: PropTypes.func.isRequired,
 };
 
-export default ButtonExpander;
+export default DrawPalette;

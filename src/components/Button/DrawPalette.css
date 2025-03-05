@@ -115,7 +115,7 @@
 .brush-options {
     position: absolute;
     left: 36px;
-    top: 6px;
+    top: 3px;
     height: 36px;
     background-color: #DCDCDC;
     border-radius: 17px 17px 17px 17px;
@@ -127,7 +127,7 @@
     padding-right: 34px;
     z-index: 998;
     overflow: hidden;
-    margin-bottom: 2px;
+    margin-top: 2px;
 }
 
     .brush-options.open {
@@ -181,7 +181,7 @@
     position: absolute;
     left: 36px;
     top: 6px;
-    height: 24px;
+    height: 26px;
     background-color: #DCDCDC;
     border-radius: 17px 17px 17px 17px;
     transform: translateX(-100%);
@@ -218,6 +218,7 @@
         hsl(300, 100%, 50%) );
     border-radius: 5px;
     outline: none;
+    margin-top: 2px;
 }
 
     .color-slider::-webkit-slider-thumb {
