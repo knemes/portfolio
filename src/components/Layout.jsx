@@ -9,12 +9,10 @@ import About from '../pages/AboutPage';
 import Project from '../pages/ProjectPage';
 import Contact from '../pages/ContactPage';
 
-function Layout({ isDrawing, setIsDrawing, pencilColor, setPencilColor, lines, setLines, backgroundLines, setBackgroundLines, clearCanvas, children }) {
+function Layout({ isDrawing, lines, setLines, backgroundLines, setBackgroundLines, selectedBrush, currentDrawColor, eraserEnabled, saveTriggered, trashTriggered }) {
+    const [hasMounted, setHasMounted] = useState(false);
     const [canvasWidth, setCanvasWidth] = useState(window.innerWidth - 200);
     const [canvasHeight, setCanvasHeight] = useState(window.innerHeight - 200);
-    const [scrollCount, setScrollCount] = useState(0);
-    const [mousePos, setMousePos] = useState({ x: -100, y: -100 });
-    const isMouseDown = useRef(false);
     const canvasRef = useRef(null);
     const mainContainerRef = useRef(null);
     const navLinksRef = useRef(null);
@@ -22,73 +20,17 @@ function Layout({ isDrawing, setIsDrawing, pencilColor, setPencilColor, lines, s
     const [totalPages, setTotalPages] = useState(0);
     const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
     const projectSectionRef = useRef(null);
+    const [scrollCount, setScrollCount] = useState(0);
 
     const updateCurrentSectionIndex = (sectionIndex) => {
         setCurrentSectionIndex(sectionIndex);
     };
 
-    const [hasMounted, setHasMounted] = useState(false);
-
-    const getCanvasCoords = useCallback((e) => {
-        if (!canvasRef.current) return null;
-        const rect = canvasRef.current.getBoundingClientRect();
-        return { x: e.clientX - rect.left, y: e.clientY - rect.top };
-    }, []);
-
-    const handleMouseDown = useCallback((e) => {
-        if (isDrawing) {
-            isMouseDown.current = true;
-            const coords = getCanvasCoords(e);
-            if (coords) {
-                setLines([[{ ...coords, color: pencilColor, originalColor: pencilColor }]]);
-            }
+    useEffect(() => {
+        if (canvasRef.current) {
+            setHasMounted(true);
         }
-    }, [isDrawing, pencilColor, getCanvasCoords]);
-
-    const handleMouseUp = useCallback(() => {
-        if (isDrawing) {
-            isMouseDown.current = false;
-            if (lines.length > 0 && lines[0].length > 0) {
-                setBackgroundLines(prevBackgroundLines => [...prevBackgroundLines, lines[0]]);
-            }
-            setLines([]);
-        }
-    }, [isDrawing, lines]);
-
-    const handleMouseMove = useCallback((e) => {
-        setMousePos({ x: e.clientX, y: e.clientY });
-        if (isDrawing && isMouseDown.current) {
-            const coords = getCanvasCoords(e);
-            if (coords) {
-                setLines(prevLines => {
-                    if (prevLines.length === 0) {
-                        return [[{ ...coords, color: pencilColor, originalColor: pencilColor }]];
-                    }
-                    const lastLine = prevLines[prevLines.length - 1];
-                    return [...prevLines.slice(0, -1), [...lastLine, { ...coords, color: pencilColor, originalColor: pencilColor }]];
-                });
-            }
-        }
-    }, [isDrawing, isMouseDown, pencilColor, getCanvasCoords]);
-
-    const toggleDrawingMode = () => {
-        setIsDrawing(!isDrawing);
-        if (isDrawing) {
-            setBackgroundLines(prevBackgroundLines =>
-                prevBackgroundLines.map(line =>
-                    line.map(point => ({ ...point, color: 'rgba(0,0,0,0.1)' }))
-                )
-            );
-            setLines([]);
-        } else {
-            setBackgroundLines(prevBackgroundLines =>
-                prevBackgroundLines.map(line => {
-                    const originalColor = line[0].originalColor || 'black';
-                    return line.map(point => ({ ...point, color: originalColor }));
-                })
-            );
-        }
-    };
+    }, [canvasRef]);
 
     //handleResize
     useEffect(() => {
@@ -103,24 +45,6 @@ function Layout({ isDrawing, setIsDrawing, pencilColor, setPencilColor, lines, s
         return () => {
             window.removeEventListener('resize', handleResize);
         };
-    }, []);
-
-    //mouseUp, mouseDown
-    useEffect(() => {
-        window.addEventListener('mousemove', handleMouseMove);
-        window.addEventListener('mouseup', handleMouseUp);
-        window.addEventListener('mousedown', handleMouseDown)
-
-        return () => {
-            window.removeEventListener('mousemove', handleMouseMove);
-            window.removeEventListener('mouseup', handleMouseUp);
-            window.removeEventListener('mousedown', handleMouseDown)
-        };
-    }, [handleMouseMove, handleMouseUp, handleMouseDown]);
-
-    //setHasMounted
-    useEffect(() => {
-        setHasMounted(true);
     }, []);
 
     //navlinks and observer for scrolling
@@ -297,16 +221,54 @@ function Layout({ isDrawing, setIsDrawing, pencilColor, setPencilColor, lines, s
                 />
                 {hasMounted && <Graph
                     canvas={canvasRef.current}
-                    mousePos={mousePos}
                     isDrawing={isDrawing}
                     lines={lines}
-                    backgroundLines={backgroundLines} />}
+                    setLines={setLines}
+                    backgroundLines={backgroundLines}
+                    setBackgroundLines={setBackgroundLines}
+                    selectedBrush={selectedBrush}
+                    currentDrawColor={currentDrawColor}
+                    eraserEnabled={eraserEnabled}
+                    />}
             </div>
             <div className="layout-main" ref={mainContainerRef} >
                 <section id="keaton-nemes" className="top-level-section" > <div className="page-content"> <Home /> </div> </section>
-                <section id="projects" className="top-level-section" ref={projectSectionRef}> <div className="page-content"> <Project isDrawing={isDrawing} setIsDrawing={setIsDrawing} pencilColor={pencilColor} setPencilColor={setPencilColor} lines={lines} setLines={setLines} backgroundLines={backgroundLines} setBackgroundLines={setBackgroundLines} clearCanvas={clearCanvas} /> </div> </section>
-                <section id="about" className="top-level-section"> <div className="page-content"> <About isDrawing={isDrawing} setIsDrawing={setIsDrawing} pencilColor={pencilColor} setPencilColor={setPencilColor} lines={lines} setLines={setLines} backgroundLines={backgroundLines} setBackgroundLines={setBackgroundLines} clearCanvas={clearCanvas} /> </div> </section>
-                <section id="contact" className="top-level-section"> <div className="page-content"> <Contact isDrawing={isDrawing} setIsDrawing={setIsDrawing} pencilColor={pencilColor} setPencilColor={setPencilColor} lines={lines} setLines={setLines} backgroundLines={backgroundLines} setBackgroundLines={setBackgroundLines} clearCanvas={clearCanvas} /> </div> </section>
+                <section id="projects" className="top-level-section" ref={projectSectionRef}> <div className="page-content">
+                    <Project isDrawing={isDrawing}
+                    lines={lines}
+                    setLines={setLines}
+                    backgroundLines={backgroundLines}
+                    setBackgroundLines={setBackgroundLines}
+                    selectedBrush={selectedBrush}
+                    currentDrawColor={currentDrawColor}
+                    eraserEnabled={eraserEnabled}
+                    saveTriggered={saveTriggered}
+                        trashTriggered={trashTriggered}
+                    /> </div> </section>
+                <section id="about" className="top-level-section"> <div className="page-content">
+                    <About isDrawing={isDrawing}
+                    lines={lines}
+                    setLines={setLines}
+                    backgroundLines={backgroundLines}
+                    setBackgroundLines={setBackgroundLines}
+                    selectedBrush={selectedBrush}
+                    currentDrawColor={currentDrawColor}
+                    eraserEnabled={eraserEnabled}
+                    saveTriggered={saveTriggered}
+                        trashTriggered={trashTriggered}
+                    /> </div> </section>
+                <section id="contact" className="top-level-section"> <div className="page-content">
+                    <Contact isDrawing={isDrawing}
+                    lines={lines}
+                    setLines={setLines}
+                    backgroundLines={backgroundLines}
+                    setBackgroundLines={setBackgroundLines}
+                    selectedBrush={selectedBrush}
+                    currentDrawColor={currentDrawColor}
+                    eraserEnabled={eraserEnabled}
+                    saveTriggered={saveTriggered}
+                        trashTriggered={trashTriggered}
+                    /> </div> </section>
             </div>
             <Footer currentPage={currentSectionIndex + 1} totalPages={totalPages} />
         </div>
@@ -315,17 +277,12 @@ function Layout({ isDrawing, setIsDrawing, pencilColor, setPencilColor, lines, s
 
 Layout.propTypes = {
     isDrawing: PropTypes.bool.isRequired,
-    setIsDrawing: PropTypes.func.isRequired,
-    pencilColor: PropTypes.string.isRequired,
-    setPencilColor: PropTypes.func.isRequired,
-    clearCanvas: PropTypes.func.isRequired,
     lines: PropTypes.arrayOf(PropTypes.shape({
         x: PropTypes.number.isRequired,
         y: PropTypes.number.isRequired,
         color: PropTypes.string
     })).isRequired,
     setLines: PropTypes.func.isRequired,
-    setBackgroundLines: PropTypes.func.isRequired,
     backgroundLines: PropTypes.arrayOf(
         PropTypes.arrayOf( // Array of lines
             PropTypes.shape({ // Each line is an array of points
@@ -334,7 +291,13 @@ Layout.propTypes = {
                 color: PropTypes.string,
             })
         )
-    ).isRequired
+    ).isRequired,
+    setBackgroundLines: PropTypes.func.isRequired,
+    selectedBrush: PropTypes.string.isRequired,
+    currentDrawColor: PropTypes.string.isRequired,
+    eraserEnabled: PropTypes.bool.isRequired,
+    saveTriggered: PropTypes.bool.isRequired,
+    trashTriggered: PropTypes.bool.isRequired
 };
 
 export default Layout;

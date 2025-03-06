@@ -12,6 +12,8 @@ function App() {
     const [backgroundLines, setBackgroundLines] = useState([]);
     const [selectedBrush, setSelectedBrush] = useState('Pencil');
     const [eraserEnabled, setEraserEnabled] = useState(false);
+    const [saveTriggered, setSaveTriggered] = useState(false);
+    const [trashTriggered, setTrashTriggered] = useState(false);
 
     const handleBrushSelection = (brush) => {
         setSelectedBrush(brush);
@@ -26,12 +28,11 @@ function App() {
     };
 
     const handleSave = () => {
-        // Implement save logic here
+        setSaveTriggered(true);
     };
 
     const handleTrash = () => {
-        setLines([]);
-        setBackgroundLines([]);
+        setTrashTriggered(true);
     };
 
     return (
@@ -39,19 +40,15 @@ function App() {
             <div className="background-overlay"></div>
             <Layout
                 isDrawing={isDrawing}
-                setIsDrawing={setIsDrawing}
                 lines={lines}
                 setLines={setLines}
                 backgroundLines={backgroundLines}
                 setBackgroundLines={setBackgroundLines}
                 selectedBrush={selectedBrush}
-                onBrushSelection={handleBrushSelection}
-                currentColor={currentDrawColor}
-                setDrawColor={setDrawColor}
+                currentDrawColor={currentDrawColor}
                 eraserEnabled={eraserEnabled}
-                onToggleEraser={handleEraser}
-                onSave={handleSave}
-                onTrash={handleTrash}
+                saveTriggered={saveTriggered}
+                trashTriggered={trashTriggered}
             />
             <DrawPalette
                 isDrawing={isDrawing}

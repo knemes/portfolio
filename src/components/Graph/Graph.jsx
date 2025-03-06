@@ -1,9 +1,55 @@
-import React, { useRef, useLayoutEffect, useCallback } from 'react';
+import React, { useState, useRef, useLayoutEffect, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import './Graph.css';
 
-function Graph({ canvas, mousePos, isDrawing, lines, backgroundLines }) {
+function Graph({ canvas, isDrawing, lines, setLines, backgroundLines, setBackgroundLines, selectedBrush, currentDrawColor, eraserEnabled, saveTriggered, trashTriggered }) {
     //const canvasRef = useRef(null);
+    console.log("About To Render");
+    const [mousePos, setMousePos] = useState({ x: -100, y: -100 });
+    const [hasMounted, setHasMounted] = useState(false);
+    const isMouseDown = useRef(false);
+
+    const getCanvasCoords = useCallback((e) => {
+        if (!canvas) return null;
+        const rect = canvas.getBoundingClientRect();
+        return { x: e.clientX - rect.left, y: e.clientY - rect.top };
+    }, [canvas]);
+
+    const handleMouseDown = useCallback((e) => {
+        if (isDrawing) {
+            isMouseDown.current = true;
+            const coords = getCanvasCoords(e);
+            if (coords) {
+                setLines([[{ ...coords, color: currentDrawColor, originalColor: currentDrawColor }]]);
+            }
+        }
+    }, [isDrawing, currentDrawColor, getCanvasCoords, setLines]);
+
+    const handleMouseUp = useCallback(() => {
+        if (isDrawing) {
+            isMouseDown.current = false;
+            if (lines.length > 0 && lines[0].length > 0) {
+                setBackgroundLines(prevBackgroundLines => [...prevBackgroundLines, lines[0]]);
+            }
+            setLines([]);
+        }
+    }, [isDrawing, lines, setLines, setBackgroundLines]);
+
+    const handleMouseMove = useCallback((e) => {
+        setMousePos({ x: e.clientX, y: e.clientY });
+        if (isDrawing && isMouseDown.current) {
+            const coords = getCanvasCoords(e);
+            if (coords) {
+                setLines(prevLines => {
+                    if (prevLines.length === 0) {
+                        return [[{ ...coords, color: currentDrawColor, originalColor: currentDrawColor }]];
+                    }
+                    const lastLine = prevLines[prevLines.length - 1];
+                    return [...prevLines.slice(0, -1), [...lastLine, { ...coords, color: currentDrawColor, originalColor: currentDrawColor }]];
+                });
+            }
+        }
+    }, [isDrawing, isMouseDown, currentDrawColor, getCanvasCoords]);
 
     const warp = useCallback((x, y) => {
         //const canvas = canvasRef.current;
@@ -221,25 +267,41 @@ function Graph({ canvas, mousePos, isDrawing, lines, backgroundLines }) {
         drawLines();
     }, [drawLines, lines, backgroundLines]);
 
-    if (!canvas) {
-        return null; // Don't render anything if the canvas ref is not yet set
+    //mouseUp, mouseDown
+    useEffect(() => {
+        window.addEventListener('mousemove', handleMouseMove);
+        window.addEventListener('mouseup', handleMouseUp);
+        window.addEventListener('mousedown', handleMouseDown)
+
+        return () => {
+            window.removeEventListener('mousemove', handleMouseMove);
+            window.removeEventListener('mouseup', handleMouseUp);
+            window.removeEventListener('mousedown', handleMouseDown)
+        };
+    }, [handleMouseMove, handleMouseUp, handleMouseDown]);
+
+    //setHasMounted
+    useEffect(() => {
+        setHasMounted(true);
+    }, []);
+
+    if (!canvas || !hasMounted) {
+        return null;
     }
 
     return null;
 }
 
+
 Graph.propTypes = {
     canvas: PropTypes.instanceOf(HTMLCanvasElement),
-    mousePos: PropTypes.shape({
-        x: PropTypes.number.isRequired,
-        y: PropTypes.number.isRequired,
-    }),
     isDrawing: PropTypes.bool.isRequired,
     lines: PropTypes.arrayOf(PropTypes.shape({
         x: PropTypes.number.isRequired,
         y: PropTypes.number.isRequired,
         color: PropTypes.string
     })).isRequired,
+    setLines: PropTypes.func.isRequired,
     backgroundLines: PropTypes.arrayOf(
         PropTypes.arrayOf( // Array of lines
             PropTypes.shape({ // Each line is an array of points
@@ -249,6 +311,12 @@ Graph.propTypes = {
             })
         )
     ).isRequired,
+    setBackgroundLines: PropTypes.func.isRequired,
+    selectedBrush: PropTypes.string.isRequired,
+    currentColor: PropTypes.string.isRequired,
+    eraserEnabled: PropTypes.bool.isRequired,
+    saveTriggered: PropTypes.bool.isRequired,
+    trashTriggered: PropTypes.bool.isRequired
 };
 
 export default Graph;
