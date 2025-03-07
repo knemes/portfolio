@@ -59,7 +59,6 @@
     background-color: #DCDCDC;
     border-radius: 17px 17px 17px 17px;
     height: 0;
-    overflow: hidden;
     transition: height 0.5s ease-in-out, transform 0.3s ease-in-out;
     transform: scaleY(0);
     transform-origin: bottom;
@@ -111,6 +110,13 @@
         border: none;
         outline: none; 
     }
+
+.island-button.active-tool {
+    background-image: url('../../assets/SVG/ActiveBackground.svg');
+    background-repeat: no-repeat;
+    background-size: 75% 75%;
+    background-position: center 15px;
+}
 
 .brush-options {
     position: absolute;

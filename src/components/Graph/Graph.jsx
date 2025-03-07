@@ -4,7 +4,6 @@ import './Graph.css';
 
 function Graph({ canvas, isDrawing, lines, setLines, backgroundLines, setBackgroundLines, selectedBrush, currentDrawColor, eraserEnabled, saveTriggered, trashTriggered }) {
     //const canvasRef = useRef(null);
-    console.log("About To Render");
     const [mousePos, setMousePos] = useState({ x: -100, y: -100 });
     const [hasMounted, setHasMounted] = useState(false);
     const isMouseDown = useRef(false);
@@ -20,7 +19,7 @@ function Graph({ canvas, isDrawing, lines, setLines, backgroundLines, setBackgro
             isMouseDown.current = true;
             const coords = getCanvasCoords(e);
             if (coords) {
-                setLines([[{ ...coords, color: currentDrawColor, originalColor: currentDrawColor }]]);
+                setLines([[{ ...coords, color: `hsl(${currentDrawColor}, 100%, 50%)` }]]);
             }
         }
     }, [isDrawing, currentDrawColor, getCanvasCoords, setLines]);
@@ -42,10 +41,10 @@ function Graph({ canvas, isDrawing, lines, setLines, backgroundLines, setBackgro
             if (coords) {
                 setLines(prevLines => {
                     if (prevLines.length === 0) {
-                        return [[{ ...coords, color: currentDrawColor, originalColor: currentDrawColor }]];
+                        return [[{ ...coords, color: `hsl(${currentDrawColor}, 100%, 50%)` }]];
                     }
                     const lastLine = prevLines[prevLines.length - 1];
-                    return [...prevLines.slice(0, -1), [...lastLine, { ...coords, color: currentDrawColor, originalColor: currentDrawColor }]];
+                    return [...prevLines.slice(0, -1), [...lastLine, { ...coords, color: currentDrawColor}]];
                 });
             }
         }
@@ -196,7 +195,7 @@ function Graph({ canvas, isDrawing, lines, setLines, backgroundLines, setBackgro
         drawGrid();
         //ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear before redrawing lines
 
-        const drawWarpedLine = (line, color) => { // Helper function
+        const drawWarpedLine = (line, color) => {
             ctx.beginPath();
             ctx.strokeStyle = color;
             let warpedStart = warp(line[0].x, line[0].y);
@@ -208,9 +207,9 @@ function Graph({ canvas, isDrawing, lines, setLines, backgroundLines, setBackgro
             ctx.stroke();
         };
 
-        const drawLine = (line, color) => {
+        const drawLine = (line) => {
             ctx.beginPath();
-            ctx.strokeStyle = color;
+            ctx.strokeStyle = line[0].color;
             ctx.moveTo(line[0].x, line[0].y);
             for (let i = 1; i < line.length; i++) {
                 ctx.lineTo(line[i].x, line[i].y);
@@ -235,7 +234,7 @@ function Graph({ canvas, isDrawing, lines, setLines, backgroundLines, setBackgro
             });
         }
 
-    }, [canvas, lines, backgroundLines, drawGrid, isDrawing, warp]);
+    }, [canvas, lines, backgroundLines, drawGrid, isDrawing, warp, currentDrawColor]);
 
     useLayoutEffect(() => { // Use useLayoutEffect here!
         //const canvas = canvasRef.current;
@@ -313,7 +312,7 @@ Graph.propTypes = {
     ).isRequired,
     setBackgroundLines: PropTypes.func.isRequired,
     selectedBrush: PropTypes.string.isRequired,
-    currentColor: PropTypes.string.isRequired,
+    currentDrawColor: PropTypes.string.isRequired,
     eraserEnabled: PropTypes.bool.isRequired,
     saveTriggered: PropTypes.bool.isRequired,
     trashTriggered: PropTypes.bool.isRequired
