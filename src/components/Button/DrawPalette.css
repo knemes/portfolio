@@ -114,8 +114,8 @@
 .island-button.active-tool {
     background-image: url('../../assets/SVG/ActiveBackground.svg');
     background-repeat: no-repeat;
-    background-size: 75% 75%;
-    background-position: center 15px;
+    background-size: 102% 102%;
+    background-position: center 11px;
 }
 
 .brush-options {
