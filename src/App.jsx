@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React, { useState, useRef, useEffect} from 'react';
 import DrawPalette from './components/Button/DrawPalette';
 import Layout from './components/Layout';
 import './App.css'
@@ -7,34 +7,31 @@ import './fonts.css'
 function App() {
     console.log("About To Render");
     const [isDrawing, setIsDrawing] = useState(false);
-    const [currentDrawColor, setDrawColor] = useState('black');
     const [lines, setLines] = useState([]);
     const [backgroundLines, setBackgroundLines] = useState([]);
-    const [selectedBrush, setSelectedBrush] = useState('Pencil');
-    const [eraserEnabled, setEraserEnabled] = useState(false);
-    const [saveTriggered, setSaveTriggered] = useState(false);
-    const [trashTriggered, setTrashTriggered] = useState(false);
+    const DrawPaletteRef = useRef(null);
+    const [trigger, setTrigger] = useState(false);
 
-    const handleBrushSelection = (brush) => {
-        setSelectedBrush(brush);
+    const [drawingState, setDrawingState] = useState({
+        selectedBrush: "Pencil",
+        currentDrawColor: "black",
+        eraserEnabled: false,
+        saveTriggered: false,
+        trashTriggered: false,
+    });
+
+    const getDrawingState = () => {
+        if (DrawPaletteRef.current) {
+            return DrawPaletteRef.current.getDrawingState();
+        }
+        return drawingState;
     };
 
-    const handleColorChange = (color) => {
-        setDrawColor(color);
+    const triggerUpdate = () => {
+        setDrawingState(getDrawingState());
     };
 
-    const handleEraser = () => {
-        setEraserEnabled(!eraserEnabled);
-    };
-
-    const handleSave = () => {
-        setSaveTriggered(true);
-    };
-
-    const handleTrash = () => {
-        setTrashTriggered(true);
-    };
-
+    console.log('Eraser Enabled:', drawingState.eraserEnabled);
     return (
         <div>
             <div className="background-overlay"></div>
@@ -44,22 +41,18 @@ function App() {
                 setLines={setLines}
                 backgroundLines={backgroundLines}
                 setBackgroundLines={setBackgroundLines}
-                selectedBrush={selectedBrush}
-                currentDrawColor={currentDrawColor}
-                eraserEnabled={eraserEnabled}
-                saveTriggered={saveTriggered}
-                trashTriggered={trashTriggered}
+                selectedBrush={drawingState.selectedBrush}
+                currentDrawColor={drawingState.currentDrawColor}
+                eraserEnabled={drawingState.eraserEnabled}
+                saveTriggered={drawingState.saveTriggered}
+                trashTriggered={drawingState.trashTriggered}
             />
             <DrawPalette
+                ref={DrawPaletteRef}
                 isDrawing={isDrawing}
                 setIsDrawing={setIsDrawing}
-                onBrushSelection={handleBrushSelection}
-                onColorChange={handleColorChange}
-                onToggleEraser={handleEraser}
-                onSave={handleSave}
-                onTrash={handleTrash}
-            >
-            </DrawPalette>
+                triggerUpdate={triggerUpdate}
+            />
         </div>
     );
 }

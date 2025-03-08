@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useEffect, useImperativeHandle } from 'react';
 import PropTypes from 'prop-types';
 import './DrawPalette.css';
 import PencilIcon from '../../assets/SVG/PencilIcon.svg';
@@ -13,7 +13,7 @@ import HighlighterBrush from '../../assets/SVG/HighlighterBrush.svg';
 import BrushIconActive from '../../assets/SVG/BrushIconActive.svg';
 import EraserIconActive from '../../assets/SVG/EraserIconActive.svg';
 
-function DrawPalette({ isDrawing, setIsDrawing, onBrushSelection, onColorChange, onToggleEraser, onSave, onTrash}) {
+const DrawPalette = React.forwardRef(({ isDrawing, setIsDrawing, triggerUpdate }, ref) => {
     const [brushOptionsOpen, setBrushOptionsOpen] = useState(false);
     const [selectedBrush, setSelectedBrush] = useState('Pencil');
     const brushOptionsRef = useRef(null);
@@ -28,8 +28,18 @@ function DrawPalette({ isDrawing, setIsDrawing, onBrushSelection, onColorChange,
     const sliderMax = 362;
     const sliderMin = 0;
 
+    const [eraserEnabled, setEraserEnabled] = useState(false);
+    const [saveTriggered, setSaveTriggered] = useState(false);
+    const [trashTriggered, setTrashTriggered] = useState(false);
+
     // Selected Tool State
     const [activeTool, setActiveTool] = useState('brush');
+
+
+    const handleBrushSelection = (brush) => {
+        setSelectedBrush(brush);
+        triggerUpdate();
+    };
 
     const toggleDrawing = () => {
         setIsDrawing(!isDrawing);
@@ -38,11 +48,7 @@ function DrawPalette({ isDrawing, setIsDrawing, onBrushSelection, onColorChange,
     const toggleBrushOptions = () => {
         setBrushOptionsOpen(!brushOptionsOpen);
         setActiveTool('brush');
-    };
-
-    const handleBrushSelection = (brush) => {
-        setSelectedBrush(brush);
-        onBrushSelection(brush);
+        setEraserEnabled(false);
     };
 
     const handleClickOutside = (event) => {
@@ -69,7 +75,7 @@ function DrawPalette({ isDrawing, setIsDrawing, onBrushSelection, onColorChange,
         const newHue = parseInt(event.target.value);
         setHue(newHue);
         updateSliderThumbColor(newHue);
-        onColorChange(newHue)
+        triggerUpdate();
     };
 
     const updateSliderThumbColor = (hue) => {
@@ -95,7 +101,7 @@ function DrawPalette({ isDrawing, setIsDrawing, onBrushSelection, onColorChange,
         gradient.addColorStop(0.625, 'hsl(180, 100%, 50%)'); // teal
         gradient.addColorStop(0.75, 'hsl(240, 100%, 50%)');  // blue
         gradient.addColorStop(0.875, 'hsl(300, 100%, 50%)'); // purple
-        gradient.addColorStop(1, 'hsl(300, 100%, 50%)'); 
+        gradient.addColorStop(1, 'hsl(300, 100%, 50%)');
 
         ctx.fillStyle = gradient;
         ctx.fillRect(0, 0, sliderWidth, 1);
@@ -133,16 +139,17 @@ function DrawPalette({ isDrawing, setIsDrawing, onBrushSelection, onColorChange,
     };
 
     const handleEraserToggle = () => {
-        onToggleEraser();
-        setActiveTool('eraser')
+        setEraserEnabled(true);
+        setActiveTool("eraser");
+        triggerUpdate();
     };
 
     const handleSaveToggle = () => {
-        onSave();
+        setSaveTriggered(true);
     };
 
     const handleTrashToggle = () => {
-        onTrash();
+        setTrashTriggered(true);
     };
 
     useEffect(() => {
@@ -160,6 +167,20 @@ function DrawPalette({ isDrawing, setIsDrawing, onBrushSelection, onColorChange,
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, [brushOptionsOpen, colorPickerOpen]);
+
+    useEffect(() => {
+        triggerUpdate();
+    }, [eraserEnabled, hue]);
+
+    useImperativeHandle(ref, () => ({
+        getDrawingState: () => ({
+            selectedBrush,
+            currentDrawColor: hue,
+            eraserEnabled,
+            saveTriggered,
+            trashTriggered,
+        }),
+    }));
 
     return (
         <div className="button-expander" >
@@ -197,7 +218,7 @@ function DrawPalette({ isDrawing, setIsDrawing, onBrushSelection, onColorChange,
                 <button className="island-button" onClick={toggleColorPicker} ref={colorButtonRef}><img src={ColorWheel} alt="Color Button" /></button>
                 {colorPickerOpen && (
                     <div className="color-picker" ref={colorPickerRef}>
-                    <input 
+                        <input
                             type="range"
                             min={sliderMin}
                             max={sliderMax}
@@ -226,17 +247,14 @@ function DrawPalette({ isDrawing, setIsDrawing, onBrushSelection, onColorChange,
             </button>
         </div>
     );
-}
+});
+
+DrawPalette.displayName = 'DrawPalette';
 
 DrawPalette.propTypes = {
-    children: PropTypes.node.isRequired,
     isDrawing: PropTypes.bool.isRequired,
     setIsDrawing: PropTypes.func.isRequired,
-    onBrushSelection: PropTypes.func.isRequired,
-    onColorChange: PropTypes.func.isRequired,
-    onToggleEraser: PropTypes.func.isRequired,
-    onSave: PropTypes.func.isRequired,
-    onTrash: PropTypes.func.isRequired,
+    triggerUpdate: PropTypes.func.isRequired,
 };
 
 export default DrawPalette;

@@ -7,7 +7,6 @@ function Graph({ canvas, isDrawing, lines, setLines, backgroundLines, setBackgro
     const [mousePos, setMousePos] = useState({ x: -100, y: -100 });
     const [hasMounted, setHasMounted] = useState(false);
     const isMouseDown = useRef(false);
-
     const getCanvasCoords = useCallback((e) => {
         if (!canvas) return null;
         const rect = canvas.getBoundingClientRect();
