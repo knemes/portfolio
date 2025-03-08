@@ -111,13 +111,6 @@
         outline: none; 
     }
 
-.island-button.active-tool {
-    background-image: url('../../assets/SVG/ActiveBackground.svg');
-    background-repeat: no-repeat;
-    background-size: 102% 102%;
-    background-position: center 11px;
-}
-
 .brush-options {
     position: absolute;
     left: 36px;

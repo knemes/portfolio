@@ -10,7 +10,8 @@ import BrushIcon from '../../assets/SVG/BrushIcon.svg';
 import MarkerBrush from '../../assets/SVG/MarkerBrush.svg';
 import PencilBrush from '../../assets/SVG/PencilBrush.svg';
 import HighlighterBrush from '../../assets/SVG/HighlighterBrush.svg';
-
+import BrushIconActive from '../../assets/SVG/BrushIconActive.svg';
+import EraserIconActive from '../../assets/SVG/EraserIconActive.svg';
 
 function DrawPalette({ isDrawing, setIsDrawing, onBrushSelection, onColorChange, onToggleEraser, onSave, onTrash}) {
     const [brushOptionsOpen, setBrushOptionsOpen] = useState(false);
@@ -163,8 +164,16 @@ function DrawPalette({ isDrawing, setIsDrawing, onBrushSelection, onColorChange,
     return (
         <div className="button-expander" >
             <div className={`island ${isDrawing ? 'open' : ''}`}>
-                <button className={`island-button ${activeTool === 'brush' ? 'active-tool' : ''}`} onClick={toggleBrushOptions} ref={brushButtonRef}>
-                    <img src={BrushIcon} alt="Brush Icon" />
+                <button
+                    className={`island-button ${activeTool === 'brush' ? 'active-tool' : ''}`}
+                    onClick={toggleBrushOptions}
+                    ref={brushButtonRef}
+                >
+                    {activeTool === 'brush' ? (
+                        <img src={BrushIconActive} alt="Active Brush Icon" />
+                    ) : (
+                        <img src={BrushIcon} alt="Brush Icon" />
+                    )}
                 </button>
                 {brushOptionsOpen && (
                     <div className="brush-options" ref={brushOptionsRef}>
@@ -199,7 +208,16 @@ function DrawPalette({ isDrawing, setIsDrawing, onBrushSelection, onColorChange,
                         />
                     </div>
                 )}
-                <button className={`island-button ${activeTool === 'eraser' ? 'active-tool' : ''}`} onClick={handleEraserToggle}><img src={EraserIcon} alt="Eraser Button" /></button>
+                <button
+                    className={`island-button ${activeTool === 'eraser' ? 'active-tool' : ''}`}
+                    onClick={handleEraserToggle}
+                >
+                    {activeTool === 'eraser' ? (
+                        <img src={EraserIconActive} alt="Active Eraser Icon" />
+                    ) : (
+                        <img src={EraserIcon} alt="Eraser Button" />
+                    )}
+                </button>
                 <button className="island-button" onClick={handleSaveToggle}><img src={SaveIcon} alt="Save Button" /></button>
                 <button className="island-button" onClick={handleTrashToggle}><img src={TrashIcon} alt="Trash Button" /></button>
             </div>
