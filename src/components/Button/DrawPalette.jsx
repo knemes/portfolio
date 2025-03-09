@@ -74,7 +74,7 @@ const DrawPalette = React.forwardRef(({ isDrawing, setIsDrawing, triggerUpdate, 
         updateSliderThumbColor(newHue);
     };
 
-    const updateSliderThumbColor = (hue) => {
+    const getHueFromSlider = () => {
         const slider = sliderRef.current;
 
         if (!slider) {
@@ -128,7 +128,13 @@ const DrawPalette = React.forwardRef(({ isDrawing, setIsDrawing, triggerUpdate, 
             }
             return `hsl(${h * 360}, ${s * 100}%, ${l * 100}%)`;
         };
-        const thumbColor = rgbToHsl(pixelData[0], pixelData[1], pixelData[2]);
+
+        return rgbToHsl(pixelData[0], pixelData[1], pixelData[2]);
+    }
+
+    const updateSliderThumbColor = (hue) => {
+        
+        const thumbColor = getHueFromSlider()
 
         document.documentElement.style.setProperty('--thumb-color', thumbColor);
         document.documentElement.style.setProperty('--thumb-border-color', 'black');
@@ -168,11 +174,31 @@ const DrawPalette = React.forwardRef(({ isDrawing, setIsDrawing, triggerUpdate, 
     }, [eraserEnabled, hue, selectedBrush, saveTrigger, trashTrigger]);
 
     useImperativeHandle(ref, () => ({
-        getDrawingState: () => ({
-            selectedBrush,
-            currentDrawColor: hue,
-            eraserEnabled,
-        }),
+        getDrawingState: (previousColor, previousBrush) => {
+            const hue = getHueFromSlider();
+
+            if (selectedBrush !== previousBrush && previousColor) {
+                return {
+                    selectedBrush,
+                    currentDrawColor: previousColor,
+                    eraserEnabled,
+                };
+            }
+
+            if (typeof hue === 'undefined') {
+                return {
+                    selectedBrush,
+                    currentDrawColor: 'hsl(0, 0%, 0%)',
+                    eraserEnabled,
+                };
+            }
+
+            return {
+                selectedBrush,
+                currentDrawColor: hue,
+                eraserEnabled,
+            };
+        },
     }));
 
     return (

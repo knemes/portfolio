@@ -3,12 +3,13 @@ import PropTypes from 'prop-types';
 import html2canvas from 'html2canvas';
 import './Graph.css';
 
-function Graph({ canvas, isDrawing, backgroundLines, setBackgroundLines, selectedBrush, currentDrawColor, eraserEnabled, saveTrigger, setSaveTrigger, trashTrigger, setTrashTrigger }) {
+function Graph({ canvas, isDrawing, selectedBrush, currentDrawColor, eraserEnabled, saveTrigger, setSaveTrigger, trashTrigger, setTrashTrigger }) {
     //const canvasRef = useRef(null);
     const [mousePos, setMousePos] = useState({ x: -100, y: -100 });
     const [hasMounted, setHasMounted] = useState(false);
     const isMouseDown = useRef(false);
     const [lines, setLines] = useState([]);
+    const [backgroundLines, setBackgroundLines] = useState([]);
 
     const brushProperties = {
         Pencil: {
@@ -89,7 +90,7 @@ function Graph({ canvas, isDrawing, backgroundLines, setBackgroundLines, selecte
                 } else {
                     const brush = brushProperties[selectedBrush] || defaultBrush;
                     setLines([{
-                        points: [{ ...coords, color: `hsl(${currentDrawColor}, 100%, 50%)` }],
+                        points: [{ ...coords, color: currentDrawColor }],
                         brush: { ...brush },
                         brushType: selectedBrush
                     }]);
@@ -149,13 +150,13 @@ function Graph({ canvas, isDrawing, backgroundLines, setBackgroundLines, selecte
         const height = canvas.height;
 
         ctx.clearRect(0, 0, width, height);
-        ctx.strokeStyle = isDrawing ? '#DDDDDD' : '#EEEEEE';
+        ctx.strokeStyle = isDrawing ? '#dadad8' : '#e8e7e5';
         ctx.lineWidth = 1;
 
         const margin = 75; // Margin around the grid
         const gridWidth = width - 2 * margin;
         const gridHeight = height - 2 * margin;
-        let gridSize = 20;
+        let gridSize = 25;
 
         // Vertical lines
         for (let xIndex = 0; xIndex <= Math.floor(gridWidth / gridSize); xIndex++) {
@@ -193,13 +194,13 @@ function Graph({ canvas, isDrawing, backgroundLines, setBackgroundLines, selecte
                 if (!isDrawing) {
                     endX = x + warpX;
                     if ((xIndex == 0 || xIndex == lastx) && yIndex == lasty) {
-                        endY = y + warpY + margin + 10;
+                        endY = y + warpY + margin + 25;
                     } else {
                         endY = y + warpY;
                     }
                 } else {
                     if ((xIndex == 0 || xIndex == lastx) && yIndex == lasty) {
-                        endY = y + margin + 10;
+                        endY = y + margin + 25;
                     } else {
                         endY = y;
                     }  
@@ -242,14 +243,14 @@ function Graph({ canvas, isDrawing, backgroundLines, setBackgroundLines, selecte
                 let endY = y;
                 if (!isDrawing) {
                     if ((yIndex == 0 || yIndex == lasty) && xIndex == lastx) {
-                        endX = x + warpX + margin + 10;
+                        endX = x + warpX + margin + 25;
                     } else {
                         endX = x + warpX;
                     }
                     endY = y + warpY;
                 } else {
                     if ((yIndex == 0 || yIndex == lasty) && xIndex == lastx) {
-                        endX = x + margin + 10;
+                        endX = x + margin + 25;
                     } else {
                         endX = x;
                     }
@@ -281,7 +282,7 @@ function Graph({ canvas, isDrawing, backgroundLines, setBackgroundLines, selecte
         ctx.globalAlpha = 1;
     }, [canvas]);
 
-    const drawHighlighter = useCallback((points, color, brush) => {
+    const drawHighlighter = useCallback((points, color) => {
         if (!canvas || !canvas.getContext) return;
         const ctx = canvas.getContext('2d');
         ctx.strokeStyle = color;
@@ -334,8 +335,8 @@ function Graph({ canvas, isDrawing, backgroundLines, setBackgroundLines, selecte
         if (backgroundLines && backgroundLines.length > 0) {
             if (!isDrawing) {
                 backgroundLines.forEach(line => {
-                    if (line.brushType === 'Highlight') { // Check brushType
-                        drawHighlighter(line.points, 'rgba(0,0,0,0.1)', line.brush || brushProperties.Highlighter); // Use drawHighlighter
+                    if (line.brushType === 'Highlight') {
+                        drawHighlighter(line.points, 'rgba(0,0,0,0.1)'); 
                     } else {
                         drawWarpedLine(line, 'rgba(0,0,0,0.1)', line.brush || brushProperties.Pencil);
                     }
@@ -343,11 +344,11 @@ function Graph({ canvas, isDrawing, backgroundLines, setBackgroundLines, selecte
             } else {
                 backgroundLines.forEach(line => {
                     if (line && line.points.length > 0 && line.points[0]) {
-                        const brush = line.brush || brushProperties[selectedBrush] || defaultBrush;
+                        const brush = line.brush || brushProperties[line.brushType] || defaultBrush;
                         if (line.brushType === 'Highlight') {
-                            drawHighlighter(line.points, line.points[0].color || `hsl(${currentDrawColor}, 100%, 50%)`, brush);
+                            drawHighlighter(line.points, line.points[0].color || currentDrawColor);
                         } else {
-                            drawLine(line.points, line.points[0].color || `hsl(${currentDrawColor}, 100%, 50%)`, brush);
+                            drawLine(line.points, line.points[0].color || currentDrawColor, brush);
                         }
                     }
                 });
@@ -358,9 +359,9 @@ function Graph({ canvas, isDrawing, backgroundLines, setBackgroundLines, selecte
             lines.forEach(line => {
                 const brush = line.brush;
                 if (selectedBrush === 'Highlight') {
-                    drawHighlighter(line.points, `hsl(${currentDrawColor}, 100%, 50%)`, brush);
+                    drawHighlighter(line.points, currentDrawColor);
                 } else {
-                    drawLine(line.points, `hsl(${currentDrawColor}, 100%, 50%)`, brush);
+                    drawLine(line.points, currentDrawColor, brush);
                 }
             });
         }
@@ -378,13 +379,13 @@ function Graph({ canvas, isDrawing, backgroundLines, setBackgroundLines, selecte
                     setLines(prevLines => {
                         if (prevLines.length === 0) {
                             return [{
-                                points: [{ ...coords, color: `hsl(${currentDrawColor}, 100%, 50%)`, lineWidth: brush.lineWidth }],
+                                points: [{ ...coords, color: currentDrawColor, lineWidth: brush.lineWidth, brushType: selectedBrush }],
                                 brush: { ...brush },
                             }];
                         }
                         const lastLine = prevLines[prevLines.length - 1];
                         return [...prevLines.slice(0, -1), {
-                            points: [...lastLine.points, { ...coords, color: `hsl(${currentDrawColor}, 100%, 50%)`, lineWidth: brush.lineWidth }],
+                            points: [...lastLine.points, { ...coords, color: currentDrawColor, lineWidth: brush.lineWidth }],
                             brush: { ...lastLine.brush },
                         }];
                     });
@@ -425,7 +426,7 @@ function Graph({ canvas, isDrawing, backgroundLines, setBackgroundLines, selecte
 
     useEffect(() => {
         if (trashTrigger) {
-            setBackgroundLines();
+            setBackgroundLines([]);
             setTrashTrigger(false);
         }
     }, [trashTrigger, setBackgroundLines, setTrashTrigger]);
@@ -447,7 +448,6 @@ function Graph({ canvas, isDrawing, backgroundLines, setBackgroundLines, selecte
         }
     }, [saveTrigger, setSaveTrigger]);
 
-    //mouseUp, mouseDown
     useEffect(() => {
         window.addEventListener('mousemove', handleMouseMove);
         window.addEventListener('mouseup', handleMouseUp);
@@ -460,7 +460,6 @@ function Graph({ canvas, isDrawing, backgroundLines, setBackgroundLines, selecte
         };
     }, [handleMouseMove, handleMouseUp, handleMouseDown]);
 
-    //setHasMounted
     useEffect(() => {
         setHasMounted(true);
     }, []);
@@ -469,23 +468,12 @@ function Graph({ canvas, isDrawing, backgroundLines, setBackgroundLines, selecte
         return null;
     }
 
-    return null;
+    return 
 }
-
 
 Graph.propTypes = {
     canvas: PropTypes.instanceOf(HTMLCanvasElement),
     isDrawing: PropTypes.bool.isRequired,
-    backgroundLines: PropTypes.arrayOf(
-        PropTypes.arrayOf( // Array of lines
-            PropTypes.shape({ // Each line is an array of points
-                x: PropTypes.number.isRequired,
-                y: PropTypes.number.isRequired,
-                color: PropTypes.string,
-            })
-        )
-    ).isRequired,
-    setBackgroundLines: PropTypes.func.isRequired,
     selectedBrush: PropTypes.string.isRequired,
     currentDrawColor: PropTypes.string.isRequired,
     eraserEnabled: PropTypes.bool.isRequired,

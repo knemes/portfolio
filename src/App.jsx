@@ -7,10 +7,11 @@ import './fonts.css'
 function App() {
     console.log("About To Render");
     const [isDrawing, setIsDrawing] = useState(false);
-    const [backgroundLines, setBackgroundLines] = useState([]);
     const [saveTrigger, setSaveTrigger] = useState(false);
     const [trashTrigger, setTrashTrigger] = useState(false);
     const DrawPaletteRef = useRef(null);
+    const [previousBrush, setPreviousBrush] = useState("Pencil");
+    const [previousColor, setPreviousColor] = useState("black");
 
     const [drawingState, setDrawingState] = useState({
         selectedBrush: "Pencil",
@@ -20,14 +21,17 @@ function App() {
 
     const getDrawingState = () => {
         if (DrawPaletteRef.current) {
-            const state = DrawPaletteRef.current.getDrawingState();
+            const state = DrawPaletteRef.current.getDrawingState(previousColor, previousBrush);
             return { ...state, trashTrigger };
         }
         return { ...drawingState, trashTrigger };
     };
 
     const triggerUpdate = () => {
-        setDrawingState(getDrawingState());
+        const newState = getDrawingState();
+        setDrawingState(newState);
+        setPreviousBrush(newState.selectedBrush);
+        setPreviousColor(newState.currentDrawColor);
     };
 
     return (
@@ -35,8 +39,6 @@ function App() {
             <div className="background-overlay"></div>
             <Layout
                 isDrawing={isDrawing}
-                backgroundLines={backgroundLines}
-                setBackgroundLines={setBackgroundLines}
                 selectedBrush={drawingState.selectedBrush}
                 currentDrawColor={drawingState.currentDrawColor}
                 eraserEnabled={drawingState.eraserEnabled}

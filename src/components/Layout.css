@@ -15,6 +15,10 @@ canvas {
     height: 100%;
 }
 
+    canvas.no-select {
+        user-select: none;
+    }
+
 .canvas-container {
     /* Remove display: flex or change to flex-direction: row; */
     width: 100%;
@@ -38,6 +42,11 @@ canvas {
         scroll-snap-align: start; /* Optional: For smooth snapping */
         flex-shrink: 0;
         width: 100vw; /* Or a specific width like 100% or a fixed pixel value */
+    }
+
+    .layout-main.no-select,
+    .layout-main.no-select * { 
+        user-select: none;
     }
 
 .page-content {

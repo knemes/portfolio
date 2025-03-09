@@ -9,7 +9,7 @@ import About from '../pages/AboutPage';
 import Project from '../pages/ProjectPage';
 import Contact from '../pages/ContactPage';
 
-function Layout({ isDrawing, lines, setLines, backgroundLines, setBackgroundLines, selectedBrush, currentDrawColor, eraserEnabled, saveTrigger, setSaveTrigger, trashTrigger, setTrashTrigger }) {
+function Layout({ isDrawing, selectedBrush, currentDrawColor, eraserEnabled, saveTrigger, setSaveTrigger, trashTrigger, setTrashTrigger }) {
     const [hasMounted, setHasMounted] = useState(false);
     const [canvasWidth, setCanvasWidth] = useState(window.innerWidth - 200);
     const [canvasHeight, setCanvasHeight] = useState(window.innerHeight - 200);
@@ -218,14 +218,11 @@ function Layout({ isDrawing, lines, setLines, backgroundLines, setBackgroundLine
             <div className="canvas-container" >
                 <canvas
                     ref={canvasRef}
+                    className={isDrawing ? 'no-select' : ''}
                 />
                 {hasMounted && <Graph
                     canvas={canvasRef.current}
                     isDrawing={isDrawing}
-                    lines={lines}
-                    setLines={setLines}
-                    backgroundLines={backgroundLines}
-                    setBackgroundLines={setBackgroundLines}
                     selectedBrush={selectedBrush}
                     currentDrawColor={currentDrawColor}
                     eraserEnabled={eraserEnabled}
@@ -235,14 +232,10 @@ function Layout({ isDrawing, lines, setLines, backgroundLines, setBackgroundLine
                     setTrashTrigger={setTrashTrigger}
                     />}
             </div>
-            <div className="layout-main" ref={mainContainerRef} >
+            <div className={`layout-main ${isDrawing ? 'no-select' : ''}`} ref={mainContainerRef} >
                 <section id="keaton-nemes" className="top-level-section" > <div className="page-content"> <Home /> </div> </section>
                 <section id="projects" className="top-level-section" ref={projectSectionRef}> <div className="page-content">
                     <Project isDrawing={isDrawing}
-                    lines={lines}
-                    setLines={setLines}
-                    backgroundLines={backgroundLines}
-                    setBackgroundLines={setBackgroundLines}
                     selectedBrush={selectedBrush}
                     currentDrawColor={currentDrawColor}
                     eraserEnabled={eraserEnabled}
@@ -251,10 +244,6 @@ function Layout({ isDrawing, lines, setLines, backgroundLines, setBackgroundLine
                     /> </div> </section>
                 <section id="about" className="top-level-section"> <div className="page-content">
                     <About isDrawing={isDrawing}
-                    lines={lines}
-                    setLines={setLines}
-                    backgroundLines={backgroundLines}
-                    setBackgroundLines={setBackgroundLines}
                     selectedBrush={selectedBrush}
                     currentDrawColor={currentDrawColor}
                     eraserEnabled={eraserEnabled}
@@ -263,10 +252,6 @@ function Layout({ isDrawing, lines, setLines, backgroundLines, setBackgroundLine
                     /> </div> </section>
                 <section id="contact" className="top-level-section"> <div className="page-content">
                     <Contact isDrawing={isDrawing}
-                    lines={lines}
-                    setLines={setLines}
-                    backgroundLines={backgroundLines}
-                    setBackgroundLines={setBackgroundLines}
                     selectedBrush={selectedBrush}
                     currentDrawColor={currentDrawColor}
                     eraserEnabled={eraserEnabled}
@@ -281,22 +266,6 @@ function Layout({ isDrawing, lines, setLines, backgroundLines, setBackgroundLine
 
 Layout.propTypes = {
     isDrawing: PropTypes.bool.isRequired,
-    lines: PropTypes.arrayOf(PropTypes.shape({
-        x: PropTypes.number.isRequired,
-        y: PropTypes.number.isRequired,
-        color: PropTypes.string
-    })).isRequired,
-    setLines: PropTypes.func.isRequired,
-    backgroundLines: PropTypes.arrayOf(
-        PropTypes.arrayOf( // Array of lines
-            PropTypes.shape({ // Each line is an array of points
-                x: PropTypes.number.isRequired,
-                y: PropTypes.number.isRequired,
-                color: PropTypes.string,
-            })
-        )
-    ).isRequired,
-    setBackgroundLines: PropTypes.func.isRequired,
     selectedBrush: PropTypes.string.isRequired,
     currentDrawColor: PropTypes.string.isRequired,
     eraserEnabled: PropTypes.bool.isRequired,
