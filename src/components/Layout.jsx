@@ -9,7 +9,7 @@ import About from '../pages/AboutPage';
 import Project from '../pages/ProjectPage';
 import Contact from '../pages/ContactPage';
 
-function Layout({ isDrawing, lines, setLines, backgroundLines, setBackgroundLines, selectedBrush, currentDrawColor, eraserEnabled, saveTriggered, trashTriggered }) {
+function Layout({ isDrawing, lines, setLines, backgroundLines, setBackgroundLines, selectedBrush, currentDrawColor, eraserEnabled, saveTrigger, setSaveTrigger, trashTrigger, setTrashTrigger }) {
     const [hasMounted, setHasMounted] = useState(false);
     const [canvasWidth, setCanvasWidth] = useState(window.innerWidth - 200);
     const [canvasHeight, setCanvasHeight] = useState(window.innerHeight - 200);
@@ -229,6 +229,10 @@ function Layout({ isDrawing, lines, setLines, backgroundLines, setBackgroundLine
                     selectedBrush={selectedBrush}
                     currentDrawColor={currentDrawColor}
                     eraserEnabled={eraserEnabled}
+                    saveTrigger={saveTrigger}
+                    setSaveTrigger={setSaveTrigger}
+                    trashTrigger={trashTrigger}
+                    setTrashTrigger={setTrashTrigger}
                     />}
             </div>
             <div className="layout-main" ref={mainContainerRef} >
@@ -242,8 +246,8 @@ function Layout({ isDrawing, lines, setLines, backgroundLines, setBackgroundLine
                     selectedBrush={selectedBrush}
                     currentDrawColor={currentDrawColor}
                     eraserEnabled={eraserEnabled}
-                    saveTriggered={saveTriggered}
-                        trashTriggered={trashTriggered}
+                    saveTriggered={saveTrigger}
+                        trashTriggered={trashTrigger}
                     /> </div> </section>
                 <section id="about" className="top-level-section"> <div className="page-content">
                     <About isDrawing={isDrawing}
@@ -254,8 +258,8 @@ function Layout({ isDrawing, lines, setLines, backgroundLines, setBackgroundLine
                     selectedBrush={selectedBrush}
                     currentDrawColor={currentDrawColor}
                     eraserEnabled={eraserEnabled}
-                    saveTriggered={saveTriggered}
-                        trashTriggered={trashTriggered}
+                    saveTriggered={saveTrigger}
+                        trashTriggered={trashTrigger}
                     /> </div> </section>
                 <section id="contact" className="top-level-section"> <div className="page-content">
                     <Contact isDrawing={isDrawing}
@@ -266,8 +270,8 @@ function Layout({ isDrawing, lines, setLines, backgroundLines, setBackgroundLine
                     selectedBrush={selectedBrush}
                     currentDrawColor={currentDrawColor}
                     eraserEnabled={eraserEnabled}
-                    saveTriggered={saveTriggered}
-                        trashTriggered={trashTriggered}
+                    saveTriggered={saveTrigger}
+                        trashTriggered={trashTrigger}
                     /> </div> </section>
             </div>
             <Footer currentPage={currentSectionIndex + 1} totalPages={totalPages} />
@@ -296,8 +300,10 @@ Layout.propTypes = {
     selectedBrush: PropTypes.string.isRequired,
     currentDrawColor: PropTypes.string.isRequired,
     eraserEnabled: PropTypes.bool.isRequired,
-    saveTriggered: PropTypes.bool.isRequired,
-    trashTriggered: PropTypes.bool.isRequired
+    saveTrigger: PropTypes.bool.isRequired,
+    setSaveTrigger: PropTypes.bool.isRequired,
+    trashTrigger: PropTypes.bool.isRequired,
+    setTrashTrigger: PropTypes.bool.isRequired
 };
 
 export default Layout;

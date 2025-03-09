@@ -13,7 +13,7 @@ import HighlighterBrush from '../../assets/SVG/HighlighterBrush.svg';
 import BrushIconActive from '../../assets/SVG/BrushIconActive.svg';
 import EraserIconActive from '../../assets/SVG/EraserIconActive.svg';
 
-const DrawPalette = React.forwardRef(({ isDrawing, setIsDrawing, triggerUpdate }, ref) => {
+const DrawPalette = React.forwardRef(({ isDrawing, setIsDrawing, triggerUpdate, saveTrigger, setSaveTrigger, trashTrigger, setTrashTrigger }, ref) => {
     const [brushOptionsOpen, setBrushOptionsOpen] = useState(false);
     const [selectedBrush, setSelectedBrush] = useState('Pencil');
     const brushOptionsRef = useRef(null);
@@ -29,8 +29,6 @@ const DrawPalette = React.forwardRef(({ isDrawing, setIsDrawing, triggerUpdate }
     const sliderMin = 0;
 
     const [eraserEnabled, setEraserEnabled] = useState(false);
-    const [saveTriggered, setSaveTriggered] = useState(false);
-    const [trashTriggered, setTrashTriggered] = useState(false);
 
     // Selected Tool State
     const [activeTool, setActiveTool] = useState('brush');
@@ -38,7 +36,6 @@ const DrawPalette = React.forwardRef(({ isDrawing, setIsDrawing, triggerUpdate }
 
     const handleBrushSelection = (brush) => {
         setSelectedBrush(brush);
-        triggerUpdate();
     };
 
     const toggleDrawing = () => {
@@ -75,7 +72,6 @@ const DrawPalette = React.forwardRef(({ isDrawing, setIsDrawing, triggerUpdate }
         const newHue = parseInt(event.target.value);
         setHue(newHue);
         updateSliderThumbColor(newHue);
-        triggerUpdate();
     };
 
     const updateSliderThumbColor = (hue) => {
@@ -141,15 +137,14 @@ const DrawPalette = React.forwardRef(({ isDrawing, setIsDrawing, triggerUpdate }
     const handleEraserToggle = () => {
         setEraserEnabled(true);
         setActiveTool("eraser");
-        triggerUpdate();
     };
 
     const handleSaveToggle = () => {
-        setSaveTriggered(true);
+        setSaveTrigger(true);
     };
 
     const handleTrashToggle = () => {
-        setTrashTriggered(true);
+        setTrashTrigger(true);
     };
 
     useEffect(() => {
@@ -170,15 +165,13 @@ const DrawPalette = React.forwardRef(({ isDrawing, setIsDrawing, triggerUpdate }
 
     useEffect(() => {
         triggerUpdate();
-    }, [eraserEnabled, hue]);
+    }, [eraserEnabled, hue, selectedBrush, saveTrigger, trashTrigger]);
 
     useImperativeHandle(ref, () => ({
         getDrawingState: () => ({
             selectedBrush,
             currentDrawColor: hue,
             eraserEnabled,
-            saveTriggered,
-            trashTriggered,
         }),
     }));
 
@@ -255,6 +248,10 @@ DrawPalette.propTypes = {
     isDrawing: PropTypes.bool.isRequired,
     setIsDrawing: PropTypes.func.isRequired,
     triggerUpdate: PropTypes.func.isRequired,
+    saveTrigger: PropTypes.bool.isRequired,
+    setSaveTrigger: PropTypes.bool.isRequired,
+    trashTrigger: PropTypes.bool.isRequired,
+    setTrashTrigger: PropTypes.bool.isRequired
 };
 
 export default DrawPalette;

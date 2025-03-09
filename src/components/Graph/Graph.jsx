@@ -1,53 +1,128 @@
 import React, { useState, useRef, useLayoutEffect, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
+import html2canvas from 'html2canvas';
 import './Graph.css';
 
-function Graph({ canvas, isDrawing, lines, setLines, backgroundLines, setBackgroundLines, selectedBrush, currentDrawColor, eraserEnabled, saveTriggered, trashTriggered }) {
+function Graph({ canvas, isDrawing, backgroundLines, setBackgroundLines, selectedBrush, currentDrawColor, eraserEnabled, saveTrigger, setSaveTrigger, trashTrigger, setTrashTrigger }) {
     //const canvasRef = useRef(null);
     const [mousePos, setMousePos] = useState({ x: -100, y: -100 });
     const [hasMounted, setHasMounted] = useState(false);
     const isMouseDown = useRef(false);
+    const [lines, setLines] = useState([]);
+
+    const brushProperties = {
+        Pencil: {
+            lineWidth: 2,
+            lineCap: 'round',
+            opacity: 1,
+        },
+        Marker: {
+            lineWidth: 5,
+            lineCap: 'round',
+            opacity: 0.5,
+        },
+        Highlighter: {
+            lineWidth: 60,
+            lineCap: 'butt',
+            opacity: 0.3,
+        },
+    };
+
+    const defaultBrush = brushProperties.Pencil;
+
     const getCanvasCoords = useCallback((e) => {
         if (!canvas) return null;
         const rect = canvas.getBoundingClientRect();
         return { x: e.clientX - rect.left, y: e.clientY - rect.top };
     }, [canvas]);
 
+    const eraseIntersectingLines = useCallback((eraseCoords) => {
+        setBackgroundLines(prevLines => {
+            let newLines = [];
+            prevLines.forEach(lineObj => {
+                let currentLine = [];
+                let isErasing = false;
+                let lastValidPoint = null;
+
+                lineObj.points.forEach((point, index) => { 
+                    const dx = point.x - eraseCoords.x;
+                    const dy = point.y - eraseCoords.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+
+                    if (dist > 25) {
+                        if (isErasing && currentLine.length > 0 && lastValidPoint) {
+                            newLines.push({
+                                points: [...currentLine],
+                                brush: lineObj.brush, 
+                                brushType: lineObj.brushType,
+                            });
+                            currentLine = [];
+                            isErasing = false;
+                        }
+                        currentLine.push(point);
+                        lastValidPoint = point;
+                    } else {
+                        isErasing = true;
+                    }
+                });
+
+                if (currentLine.length > 0) {
+                    newLines.push({
+                        points: [...currentLine],
+                        brush: lineObj.brush, 
+                        brushType: lineObj.brushType,
+                    });
+                }
+            });
+            return newLines;
+        });
+    }, [setBackgroundLines]);
+
     const handleMouseDown = useCallback((e) => {
         if (isDrawing) {
             isMouseDown.current = true;
             const coords = getCanvasCoords(e);
             if (coords) {
-                setLines([[{ ...coords, color: `hsl(${currentDrawColor}, 100%, 50%)` }]]);
+                if (eraserEnabled) {
+                    eraseIntersectingLines(coords);
+                } else {
+                    const brush = brushProperties[selectedBrush] || defaultBrush;
+                    setLines([{
+                        points: [{ ...coords, color: `hsl(${currentDrawColor}, 100%, 50%)` }],
+                        brush: { ...brush },
+                        brushType: selectedBrush
+                    }]);
+                }
             }
         }
-    }, [isDrawing, currentDrawColor, getCanvasCoords, setLines]);
+    }, [isDrawing, currentDrawColor, getCanvasCoords, setLines, eraserEnabled, eraseIntersectingLines, selectedBrush, defaultBrush]);
 
     const handleMouseUp = useCallback(() => {
         if (isDrawing) {
             isMouseDown.current = false;
-            if (lines.length > 0 && lines[0].length > 0) {
-                setBackgroundLines(prevBackgroundLines => [...prevBackgroundLines, lines[0]]);
+            if (!eraserEnabled) {
+                if (lines.length > 0) {
+                    setBackgroundLines(prevBackgroundLines => {
+                        if (Array.isArray(prevBackgroundLines)) {
+                            const newBackgroundLines = [...prevBackgroundLines];
+                            lines.forEach(line => {
+                                newBackgroundLines.push({
+                                    points: line.points,
+                                    brush: line.brush,
+                                    brushType: selectedBrush,
+                                });
+                            });
+                            return newBackgroundLines;
+                        } else {
+                            return []
+                        }
+                    });
+                }
+                setLines([]);
             }
-            setLines([]);
         }
-    }, [isDrawing, lines, setLines, setBackgroundLines]);
-
-    const handleMouseMove = useCallback((e) => {
-        setMousePos({ x: e.clientX, y: e.clientY });
-        if (isDrawing && isMouseDown.current) {
-            const coords = getCanvasCoords(e);
-            if (coords) {
-                setLines(prevLines => {
-                    if (prevLines.length === 0) {
-                        return [[{ ...coords, color: `hsl(${currentDrawColor}, 100%, 50%)` }]];
-                    }
-                    const lastLine = prevLines[prevLines.length - 1];
-                    return [...prevLines.slice(0, -1), [...lastLine, { ...coords, color: currentDrawColor}]];
-                });
-            }
-        }
-    }, [isDrawing, isMouseDown, currentDrawColor, getCanvasCoords]);
+    }, [isDrawing, lines, setLines, setBackgroundLines, eraserEnabled, selectedBrush]);
 
     const warp = useCallback((x, y) => {
         //const canvas = canvasRef.current;
@@ -185,55 +260,138 @@ function Graph({ canvas, isDrawing, lines, setLines, backgroundLines, setBackgro
         }
     }, [canvas, isDrawing, warp]);
 
-    const drawLines = useCallback(() => {
-        //const canvas = canvasRef.current;
+    const drawLine = useCallback((points, color, brush) => {
         if (!canvas || !canvas.getContext) return;
         const ctx = canvas.getContext('2d');
-        ctx.lineJoin = 'round';
-        ctx.lineCap = 'round';
-        drawGrid();
-        //ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear before redrawing lines
+        if (!brush) {
+            return;
+        }
 
-        const drawWarpedLine = (line, color) => {
+        ctx.beginPath();
+        ctx.strokeStyle = color;
+        ctx.lineWidth = brush.lineWidth;
+        ctx.lineCap = brush.lineCap;
+
+        ctx.moveTo(points[0].x, points[0].y);
+        for (let i = 1; i < points.length; i++) {
+            ctx.lineTo(points[i].x, points[i].y);
+        }
+        ctx.globalAlpha = brush.opacity;
+        ctx.stroke();
+        ctx.globalAlpha = 1;
+    }, [canvas]);
+
+    const drawHighlighter = useCallback((points, color, brush) => {
+        if (!canvas || !canvas.getContext) return;
+        const ctx = canvas.getContext('2d');
+        ctx.strokeStyle = color;
+        ctx.lineCap = 'butt';
+
+        if (points.length < 2) return;
+
+        // Apply scaling transformation to the entire context
+        const scaleFactor = 6;
+        ctx.save();
+        ctx.scale(scaleFactor, scaleFactor);
+
+        ctx.beginPath();
+        ctx.moveTo(points[0].x / scaleFactor, points[0].y / scaleFactor);
+
+        for (let i = 1; i < points.length; i++) {
+            const p2 = points[i];
+
+            ctx.lineWidth = points[i].lineWidth;
+
+            ctx.lineTo(p2.x / scaleFactor, p2.y / scaleFactor); 
+        }
+        ctx.globalAlpha = 0.3; 
+        ctx.stroke(); 
+        ctx.restore(); 
+        ctx.globalAlpha = 1;
+    }, [canvas]);
+
+    const drawLines = useCallback(() => {
+        if (!canvas || !canvas.getContext) return;
+        const ctx = canvas.getContext('2d');
+        drawGrid();
+
+        const drawWarpedLine = (line, color, brush) => {
             ctx.beginPath();
             ctx.strokeStyle = color;
-            let warpedStart = warp(line[0].x, line[0].y);
-            ctx.moveTo(line[0].x + warpedStart.x, line[0].y + warpedStart.y);
-            for (let i = 1; i < line.length; i++) {
-                let warpedEnd = warp(line[i].x, line[i].y);
-                ctx.lineTo(line[i].x + warpedEnd.x, line[i].y + warpedEnd.y);
+            ctx.lineWidth = brush.lineWidth;
+            ctx.lineCap = brush.lineCap;
+            ctx.globalAlpha = brush.opacity;
+            let warpedStart = warp(line.points[0].x, line.points[0].y);
+            ctx.moveTo(line.points[0].x + warpedStart.x, line.points[0].y + warpedStart.y);
+            for (let i = 1; i < line.points.length; i++) {
+                let warpedEnd = warp(line.points[i].x, line.points[i].y);
+                ctx.lineTo(line.points[i].x + warpedEnd.x, line.points[i].y + warpedEnd.y);
             }
             ctx.stroke();
-        };
+            ctx.globalAlpha = 1;
+        }
 
-        const drawLine = (line) => {
-            ctx.beginPath();
-            ctx.strokeStyle = line[0].color;
-            ctx.moveTo(line[0].x, line[0].y);
-            for (let i = 1; i < line.length; i++) {
-                ctx.lineTo(line[i].x, line[i].y);
+        if (backgroundLines && backgroundLines.length > 0) {
+            if (!isDrawing) {
+                backgroundLines.forEach(line => {
+                    if (line.brushType === 'Highlight') { // Check brushType
+                        drawHighlighter(line.points, 'rgba(0,0,0,0.1)', line.brush || brushProperties.Highlighter); // Use drawHighlighter
+                    } else {
+                        drawWarpedLine(line, 'rgba(0,0,0,0.1)', line.brush || brushProperties.Pencil);
+                    }
+                });
+            } else {
+                backgroundLines.forEach(line => {
+                    if (line && line.points.length > 0 && line.points[0]) {
+                        const brush = line.brush || brushProperties[selectedBrush] || defaultBrush;
+                        if (line.brushType === 'Highlight') {
+                            drawHighlighter(line.points, line.points[0].color || `hsl(${currentDrawColor}, 100%, 50%)`, brush);
+                        } else {
+                            drawLine(line.points, line.points[0].color || `hsl(${currentDrawColor}, 100%, 50%)`, brush);
+                        }
+                    }
+                });
             }
-            ctx.stroke();
         }
 
-        if (!isDrawing) { // Only warp when NOT drawing
-            backgroundLines.forEach(line => {
-                drawWarpedLine(line, 'rgba(0,0,0,0.1)');
-            });
-        } else {
-            backgroundLines.forEach(line => {
-                drawLine(line, line[0].color || 'rgba(0,0,0,0.1)');
-            })
-        }
-
-        // Draw current line 
-        if (isDrawing && lines.length > 0) {
+        if (isDrawing && lines.length > 0 && !eraserEnabled) {
             lines.forEach(line => {
-                drawLine(line, line[0].color); // Use helper function
+                const brush = line.brush;
+                if (selectedBrush === 'Highlight') {
+                    drawHighlighter(line.points, `hsl(${currentDrawColor}, 100%, 50%)`, brush);
+                } else {
+                    drawLine(line.points, `hsl(${currentDrawColor}, 100%, 50%)`, brush);
+                }
             });
         }
+    }, [canvas, lines, backgroundLines, drawGrid, isDrawing, warp, currentDrawColor, eraserEnabled, selectedBrush]);
 
-    }, [canvas, lines, backgroundLines, drawGrid, isDrawing, warp, currentDrawColor]);
+    const handleMouseMove = useCallback((e) => {
+        setMousePos({ x: e.clientX, y: e.clientY });
+        if (isDrawing && isMouseDown.current) {
+            const coords = getCanvasCoords(e);
+            if (coords) {
+                if (eraserEnabled) {
+                    eraseIntersectingLines(coords);
+                } else {
+                    const brush = brushProperties[selectedBrush] || defaultBrush;
+                    setLines(prevLines => {
+                        if (prevLines.length === 0) {
+                            return [{
+                                points: [{ ...coords, color: `hsl(${currentDrawColor}, 100%, 50%)`, lineWidth: brush.lineWidth }],
+                                brush: { ...brush },
+                            }];
+                        }
+                        const lastLine = prevLines[prevLines.length - 1];
+                        return [...prevLines.slice(0, -1), {
+                            points: [...lastLine.points, { ...coords, color: `hsl(${currentDrawColor}, 100%, 50%)`, lineWidth: brush.lineWidth }],
+                            brush: { ...lastLine.brush },
+                        }];
+                    });
+                }
+            }
+        }
+    }, [isDrawing, isMouseDown, currentDrawColor, getCanvasCoords, eraserEnabled, eraseIntersectingLines, selectedBrush, defaultBrush]);
 
     useLayoutEffect(() => { // Use useLayoutEffect here!
         //const canvas = canvasRef.current;
@@ -265,6 +423,30 @@ function Graph({ canvas, isDrawing, lines, setLines, backgroundLines, setBackgro
         drawLines();
     }, [drawLines, lines, backgroundLines]);
 
+    useEffect(() => {
+        if (trashTrigger) {
+            setBackgroundLines();
+            setTrashTrigger(false);
+        }
+    }, [trashTrigger, setBackgroundLines, setTrashTrigger]);
+
+    useEffect(() => {
+        if (saveTrigger) {
+            // Capture the entire client window using html2canvas
+            html2canvas(document.body).then(capturedCanvas => { // Capture the <body> element
+                const imageData = capturedCanvas.toDataURL('image/png');
+
+                // Create a temporary link to download the image
+                const link = document.createElement('a');
+                link.href = imageData;
+                link.download = 'drawing.png';
+                link.click();
+
+                setSaveTrigger(false);
+            });
+        }
+    }, [saveTrigger, setSaveTrigger]);
+
     //mouseUp, mouseDown
     useEffect(() => {
         window.addEventListener('mousemove', handleMouseMove);
@@ -294,12 +476,6 @@ function Graph({ canvas, isDrawing, lines, setLines, backgroundLines, setBackgro
 Graph.propTypes = {
     canvas: PropTypes.instanceOf(HTMLCanvasElement),
     isDrawing: PropTypes.bool.isRequired,
-    lines: PropTypes.arrayOf(PropTypes.shape({
-        x: PropTypes.number.isRequired,
-        y: PropTypes.number.isRequired,
-        color: PropTypes.string
-    })).isRequired,
-    setLines: PropTypes.func.isRequired,
     backgroundLines: PropTypes.arrayOf(
         PropTypes.arrayOf( // Array of lines
             PropTypes.shape({ // Each line is an array of points
@@ -313,8 +489,10 @@ Graph.propTypes = {
     selectedBrush: PropTypes.string.isRequired,
     currentDrawColor: PropTypes.string.isRequired,
     eraserEnabled: PropTypes.bool.isRequired,
-    saveTriggered: PropTypes.bool.isRequired,
-    trashTriggered: PropTypes.bool.isRequired
+    saveTrigger: PropTypes.bool.isRequired,
+    setSaveTrigger: PropTypes.bool.isRequired,
+    trashTrigger: PropTypes.bool.isRequired,
+    setTrashTrigger: PropTypes.bool.isRequired
 };
 
 export default Graph;

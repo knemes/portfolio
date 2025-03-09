@@ -12,6 +12,7 @@
     <PackageJsonDependenciesEmailjsBrowser Condition="$(PackageJsonDependenciesEmailjsBrowser) == ''">^4.4.1</PackageJsonDependenciesEmailjsBrowser>
     <PackageJsonDependenciesDotenv Condition="$(PackageJsonDependenciesDotenv) == ''">^16.4.7</PackageJsonDependenciesDotenv>
     <PackageJsonDependenciesFirebase Condition="$(PackageJsonDependenciesFirebase) == ''">^11.2.0</PackageJsonDependenciesFirebase>
+    <PackageJsonDependenciesHtml2canvas Condition="$(PackageJsonDependenciesHtml2canvas) == ''">^1.4.1</PackageJsonDependenciesHtml2canvas>
     <PackageJsonDependenciesReact Condition="$(PackageJsonDependenciesReact) == ''">^18.3.1</PackageJsonDependenciesReact>
     <PackageJsonDependenciesReactDom Condition="$(PackageJsonDependenciesReactDom) == ''">^18.3.1</PackageJsonDependenciesReactDom>
     <PackageJsonDependenciesReactGoogleRecaptcha Condition="$(PackageJsonDependenciesReactGoogleRecaptcha) == ''">^3.1.0</PackageJsonDependenciesReactGoogleRecaptcha>

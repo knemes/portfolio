@@ -7,51 +7,53 @@ import './fonts.css'
 function App() {
     console.log("About To Render");
     const [isDrawing, setIsDrawing] = useState(false);
-    const [lines, setLines] = useState([]);
     const [backgroundLines, setBackgroundLines] = useState([]);
+    const [saveTrigger, setSaveTrigger] = useState(false);
+    const [trashTrigger, setTrashTrigger] = useState(false);
     const DrawPaletteRef = useRef(null);
-    const [trigger, setTrigger] = useState(false);
 
     const [drawingState, setDrawingState] = useState({
         selectedBrush: "Pencil",
         currentDrawColor: "black",
         eraserEnabled: false,
-        saveTriggered: false,
-        trashTriggered: false,
     });
 
     const getDrawingState = () => {
         if (DrawPaletteRef.current) {
-            return DrawPaletteRef.current.getDrawingState();
+            const state = DrawPaletteRef.current.getDrawingState();
+            return { ...state, trashTrigger };
         }
-        return drawingState;
+        return { ...drawingState, trashTrigger };
     };
 
     const triggerUpdate = () => {
         setDrawingState(getDrawingState());
     };
 
-    console.log('Eraser Enabled:', drawingState.eraserEnabled);
     return (
         <div>
             <div className="background-overlay"></div>
             <Layout
                 isDrawing={isDrawing}
-                lines={lines}
-                setLines={setLines}
                 backgroundLines={backgroundLines}
                 setBackgroundLines={setBackgroundLines}
                 selectedBrush={drawingState.selectedBrush}
                 currentDrawColor={drawingState.currentDrawColor}
                 eraserEnabled={drawingState.eraserEnabled}
-                saveTriggered={drawingState.saveTriggered}
-                trashTriggered={drawingState.trashTriggered}
+                saveTrigger={saveTrigger}
+                setSaveTrigger={setSaveTrigger}
+                trashTrigger={trashTrigger}
+                setTrashTrigger={setTrashTrigger}
             />
             <DrawPalette
                 ref={DrawPaletteRef}
                 isDrawing={isDrawing}
                 setIsDrawing={setIsDrawing}
                 triggerUpdate={triggerUpdate}
+                saveTrigger={saveTrigger}
+                setSaveTrigger={setSaveTrigger}
+                trashTrigger={trashTrigger}
+                setTrashTrigger={setTrashTrigger}
             />
         </div>
     );
