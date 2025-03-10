@@ -356,6 +356,7 @@ function Graph({ canvas, isDrawing, selectedBrush, currentDrawColor, eraserEnabl
         }
 
         if (isDrawing && lines.length > 0 && !eraserEnabled) {
+            console.log('Drawing')
             lines.forEach(line => {
                 const brush = line.brush;
                 if (selectedBrush === 'Highlight') {
@@ -394,8 +395,7 @@ function Graph({ canvas, isDrawing, selectedBrush, currentDrawColor, eraserEnabl
         }
     }, [isDrawing, isMouseDown, currentDrawColor, getCanvasCoords, eraserEnabled, eraseIntersectingLines, selectedBrush, defaultBrush]);
 
-    useLayoutEffect(() => { // Use useLayoutEffect here!
-        //const canvas = canvasRef.current;
+    useLayoutEffect(() => {
         if (canvas) {
             const ctx = canvas.getContext('2d');
             if (ctx) {
@@ -433,16 +433,12 @@ function Graph({ canvas, isDrawing, selectedBrush, currentDrawColor, eraserEnabl
 
     useEffect(() => {
         if (saveTrigger) {
-            // Capture the entire client window using html2canvas
-            html2canvas(document.body).then(capturedCanvas => { // Capture the <body> element
+            html2canvas(document.body).then(capturedCanvas => {
                 const imageData = capturedCanvas.toDataURL('image/png');
-
-                // Create a temporary link to download the image
                 const link = document.createElement('a');
                 link.href = imageData;
                 link.download = 'drawing.png';
                 link.click();
-
                 setSaveTrigger(false);
             });
         }
@@ -451,12 +447,12 @@ function Graph({ canvas, isDrawing, selectedBrush, currentDrawColor, eraserEnabl
     useEffect(() => {
         window.addEventListener('mousemove', handleMouseMove);
         window.addEventListener('mouseup', handleMouseUp);
-        window.addEventListener('mousedown', handleMouseDown)
+        window.addEventListener('mousedown', handleMouseDown);
 
         return () => {
             window.removeEventListener('mousemove', handleMouseMove);
             window.removeEventListener('mouseup', handleMouseUp);
-            window.removeEventListener('mousedown', handleMouseDown)
+            window.removeEventListener('mousedown', handleMouseDown);
         };
     }, [handleMouseMove, handleMouseUp, handleMouseDown]);
 
@@ -467,8 +463,7 @@ function Graph({ canvas, isDrawing, selectedBrush, currentDrawColor, eraserEnabl
     if (!canvas || !hasMounted) {
         return null;
     }
-
-    return 
+    return null;
 }
 
 Graph.propTypes = {
@@ -478,9 +473,9 @@ Graph.propTypes = {
     currentDrawColor: PropTypes.string.isRequired,
     eraserEnabled: PropTypes.bool.isRequired,
     saveTrigger: PropTypes.bool.isRequired,
-    setSaveTrigger: PropTypes.bool.isRequired,
+    setSaveTrigger: PropTypes.func.isRequired,
     trashTrigger: PropTypes.bool.isRequired,
-    setTrashTrigger: PropTypes.bool.isRequired
+    setTrashTrigger: PropTypes.func.isRequired
 };
 
 export default Graph;

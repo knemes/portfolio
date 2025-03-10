@@ -275,9 +275,9 @@ DrawPalette.propTypes = {
     setIsDrawing: PropTypes.func.isRequired,
     triggerUpdate: PropTypes.func.isRequired,
     saveTrigger: PropTypes.bool.isRequired,
-    setSaveTrigger: PropTypes.bool.isRequired,
+    setSaveTrigger: PropTypes.func.isRequired,
     trashTrigger: PropTypes.bool.isRequired,
-    setTrashTrigger: PropTypes.bool.isRequired
+    setTrashTrigger: PropTypes.func.isRequired
 };
 
 export default DrawPalette;

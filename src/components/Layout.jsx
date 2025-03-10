@@ -220,43 +220,51 @@ function Layout({ isDrawing, selectedBrush, currentDrawColor, eraserEnabled, sav
                     ref={canvasRef}
                     className={isDrawing ? 'no-select' : ''}
                 />
-                {hasMounted && <Graph
-                    canvas={canvasRef.current}
-                    isDrawing={isDrawing}
-                    selectedBrush={selectedBrush}
-                    currentDrawColor={currentDrawColor}
-                    eraserEnabled={eraserEnabled}
-                    saveTrigger={saveTrigger}
-                    setSaveTrigger={setSaveTrigger}
-                    trashTrigger={trashTrigger}
-                    setTrashTrigger={setTrashTrigger}
-                    />}
             </div>
             <div className={`layout-main ${isDrawing ? 'no-select' : ''}`} ref={mainContainerRef} >
-                <section id="keaton-nemes" className="top-level-section" > <div className="page-content"> <Home /> </div> </section>
+                <section id="keaton-nemes" className="top-level-section" > <div className="page-content">
+                    <Home
+                        isDrawing={isDrawing}
+                        selectedBrush={selectedBrush}
+                        currentDrawColor={currentDrawColor}
+                        eraserEnabled={eraserEnabled}
+                        saveTrigger={saveTrigger}
+                        setSaveTrigger={setSaveTrigger}
+                        trashTrigger={trashTrigger}
+                        setTrashTrigger={setTrashTrigger}
+                    /> </div> </section>
                 <section id="projects" className="top-level-section" ref={projectSectionRef}> <div className="page-content">
-                    <Project isDrawing={isDrawing}
-                    selectedBrush={selectedBrush}
-                    currentDrawColor={currentDrawColor}
-                    eraserEnabled={eraserEnabled}
-                    saveTriggered={saveTrigger}
-                        trashTriggered={trashTrigger}
+                    <Project 
+                        isDrawing={isDrawing}
+                        selectedBrush={selectedBrush}
+                        currentDrawColor={currentDrawColor}
+                        eraserEnabled={eraserEnabled}
+                        saveTrigger={saveTrigger}
+                        setSaveTrigger={setSaveTrigger}
+                        trashTrigger={trashTrigger}
+                        setTrashTrigger={setTrashTrigger}
                     /> </div> </section>
                 <section id="about" className="top-level-section"> <div className="page-content">
-                    <About isDrawing={isDrawing}
-                    selectedBrush={selectedBrush}
-                    currentDrawColor={currentDrawColor}
-                    eraserEnabled={eraserEnabled}
-                    saveTriggered={saveTrigger}
-                        trashTriggered={trashTrigger}
+                    <About 
+                        isDrawing={isDrawing}
+                        selectedBrush={selectedBrush}
+                        currentDrawColor={currentDrawColor}
+                        eraserEnabled={eraserEnabled}
+                        saveTrigger={saveTrigger}
+                        setSaveTrigger={setSaveTrigger}
+                        trashTrigger={trashTrigger}
+                        setTrashTrigger={setTrashTrigger}
                     /> </div> </section>
                 <section id="contact" className="top-level-section"> <div className="page-content">
-                    <Contact isDrawing={isDrawing}
-                    selectedBrush={selectedBrush}
-                    currentDrawColor={currentDrawColor}
-                    eraserEnabled={eraserEnabled}
-                    saveTriggered={saveTrigger}
-                        trashTriggered={trashTrigger}
+                    <Contact 
+                        isDrawing={isDrawing}
+                        selectedBrush={selectedBrush}
+                        currentDrawColor={currentDrawColor}
+                        eraserEnabled={eraserEnabled}
+                        saveTrigger={saveTrigger}
+                        setSaveTrigger={setSaveTrigger}
+                        trashTrigger={trashTrigger}
+                        setTrashTrigger={setTrashTrigger}
                     /> </div> </section>
             </div>
             <Footer currentPage={currentSectionIndex + 1} totalPages={totalPages} />
@@ -270,9 +278,9 @@ Layout.propTypes = {
     currentDrawColor: PropTypes.string.isRequired,
     eraserEnabled: PropTypes.bool.isRequired,
     saveTrigger: PropTypes.bool.isRequired,
-    setSaveTrigger: PropTypes.bool.isRequired,
+    setSaveTrigger: PropTypes.func.isRequired,
     trashTrigger: PropTypes.bool.isRequired,
-    setTrashTrigger: PropTypes.bool.isRequired
+    setTrashTrigger: PropTypes.func.isRequired
 };
 
 export default Layout;

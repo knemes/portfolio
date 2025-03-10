@@ -8,6 +8,7 @@
     flex-grow: 1;
     overflow: hidden;
     font-family: 'EngineerHand';
+    position: relative;
 }
 
 @media (max-width: 590px) {
