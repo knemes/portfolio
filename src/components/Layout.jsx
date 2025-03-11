@@ -15,6 +15,7 @@ function Layout({ isDrawing, selectedBrush, currentDrawColor, eraserEnabled, sav
     const [canvasHeight, setCanvasHeight] = useState(window.innerHeight - 200);
     const canvasRef = useRef(null);
     const mainContainerRef = useRef(null);
+    const homeSectionRef = useRef(null);
     const navLinksRef = useRef(null);
     const sectionWidthRef = useRef(window.innerWidth);
     const [totalPages, setTotalPages] = useState(0);
@@ -116,6 +117,11 @@ function Layout({ isDrawing, selectedBrush, currentDrawColor, eraserEnabled, sav
                         behavior: 'smooth',
                     });
 
+                    const canvas = canvasRef.current;
+                    if (canvas) {
+                        canvas.style.left = -targetScrollLeft + 'px';
+                    }
+
                     requestAnimationFrame(() => {
                         const sectionIndex = Math.min(Math.max(0, targetPage), calculatedTotalPages - 1);
                         setCurrentSectionIndex(sectionIndex);
@@ -215,15 +221,12 @@ function Layout({ isDrawing, selectedBrush, currentDrawColor, eraserEnabled, sav
     return (
         <div className='layout-container'> {/* Flexbox for layout */}
             <Header ref={navLinksRef} mainContainerRef={mainContainerRef} />
-            <div className="canvas-container" >
-                <canvas
-                    ref={canvasRef}
-                    className={isDrawing ? 'no-select' : ''}
-                />
-            </div>
             <div className={`layout-main ${isDrawing ? 'no-select' : ''}`} ref={mainContainerRef} >
                 <section id="keaton-nemes" className="top-level-section" > <div className="page-content">
-                    <Home
+                    <Home /> </div>
+                    <canvas ref={canvasRef} />
+                    {hasMounted && <Graph
+                        canvas={canvasRef.current}
                         isDrawing={isDrawing}
                         selectedBrush={selectedBrush}
                         currentDrawColor={currentDrawColor}
@@ -232,7 +235,8 @@ function Layout({ isDrawing, selectedBrush, currentDrawColor, eraserEnabled, sav
                         setSaveTrigger={setSaveTrigger}
                         trashTrigger={trashTrigger}
                         setTrashTrigger={setTrashTrigger}
-                    /> </div> </section>
+                    />}
+                </section>
                 <section id="projects" className="top-level-section" ref={projectSectionRef}> <div className="page-content">
                     <Project 
                         isDrawing={isDrawing}

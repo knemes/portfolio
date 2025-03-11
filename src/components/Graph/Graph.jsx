@@ -356,7 +356,6 @@ function Graph({ canvas, isDrawing, selectedBrush, currentDrawColor, eraserEnabl
         }
 
         if (isDrawing && lines.length > 0 && !eraserEnabled) {
-            console.log('Drawing')
             lines.forEach(line => {
                 const brush = line.brush;
                 if (selectedBrush === 'Highlight') {

@@ -4,9 +4,7 @@ import HandwrittenLink from '../components/HandwrittenLink/HandwrittenLink';
 import './HomePage.css';
 import Graph from '../components/Graph/Graph';
 
-function Home({ isDrawing, selectedBrush, currentDrawColor, eraserEnabled, saveTrigger, setSaveTrigger, trashTrigger, setTrashTrigger }) {
-    const [hasMounted, setHasMounted] = useState(false);
-    const canvasRef = useRef(null);
+function Home({}) {
 
     const scrollToProjects = () => {
         const projectsSection = document.getElementById('projects');
@@ -14,12 +12,6 @@ function Home({ isDrawing, selectedBrush, currentDrawColor, eraserEnabled, saveT
             projectsSection.scrollIntoView({ behavior: 'smooth' });
         }
     };
-
-    useEffect(() => {
-        if (canvasRef.current) {
-            setHasMounted(true);
-        }
-    }, [canvasRef]);
 
     return (
         <div className="page-content layout-main">
@@ -44,31 +36,13 @@ function Home({ isDrawing, selectedBrush, currentDrawColor, eraserEnabled, saveT
                 </p>
                 <HandwrittenLink text="View Projects" href="#projects" onClick={scrollToProjects} />
             </section>
-            <canvas ref={canvasRef} />
-            {hasMounted && <Graph
-                canvas={canvasRef.current}
-                isDrawing={isDrawing}
-                selectedBrush={selectedBrush}
-                currentDrawColor={currentDrawColor}
-                eraserEnabled={eraserEnabled}
-                saveTrigger={saveTrigger}
-                setSaveTrigger={setSaveTrigger}
-                trashTrigger={trashTrigger}
-                setTrashTrigger={setTrashTrigger}
-            />}
+            
         </div>
     );
 }
 
 Home.propTypes = {
     isDrawing: PropTypes.bool.isRequired,
-    selectedBrush: PropTypes.string.isRequired,
-    currentDrawColor: PropTypes.string.isRequired,
-    eraserEnabled: PropTypes.bool.isRequired,
-    saveTrigger: PropTypes.bool.isRequired,
-    setSaveTrigger: PropTypes.func.isRequired,
-    trashTrigger: PropTypes.bool.isRequired,
-    setTrashTrigger: PropTypes.func.isRequired
 };
 
 export default Home;
