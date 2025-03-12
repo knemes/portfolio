@@ -8,26 +8,6 @@
     overflow: hidden;
 }
 
-canvas {
-    position: absolute;
-    display: block;
-    width: 100%;
-    height: 100%;
-    transition: left 0.55s ease-out;
-}
-
-    canvas.no-select {
-        user-select: none;
-    }
-
-.canvas-container {
-    /* Remove display: flex or change to flex-direction: row; */
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    z-index: -1;
-}
-
 .layout-main {
     flex-grow: 1;
     display: flex; /* Enable flexbox */
@@ -58,4 +38,19 @@ canvas {
     color: black;
     overflow-y: auto;
     overflow-x: hidden;
+}
+
+.graph-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 100%;
+    height: 100%;
+    color: black;
+    overflow-y: auto;
+}
+
+.graph-content canvas {
+    width: 500px;
+    height: 100vh;
 }

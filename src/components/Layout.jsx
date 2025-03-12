@@ -13,9 +13,11 @@ function Layout({ isDrawing, selectedBrush, currentDrawColor, eraserEnabled, sav
     const [hasMounted, setHasMounted] = useState(false);
     const [canvasWidth, setCanvasWidth] = useState(window.innerWidth - 200);
     const [canvasHeight, setCanvasHeight] = useState(window.innerHeight - 200);
-    const canvasRef = useRef(null);
     const mainContainerRef = useRef(null);
-    const homeSectionRef = useRef(null);
+    const homeCanvasRef = useRef(null);
+    const projectCanvasRef = useRef(null);
+    const aboutCanvasRef = useRef(null);
+    const contactCanvasRef = useRef(null);
     const navLinksRef = useRef(null);
     const sectionWidthRef = useRef(window.innerWidth);
     const [totalPages, setTotalPages] = useState(0);
@@ -28,10 +30,10 @@ function Layout({ isDrawing, selectedBrush, currentDrawColor, eraserEnabled, sav
     };
 
     useEffect(() => {
-        if (canvasRef.current) {
+        if (homeCanvasRef.current) {
             setHasMounted(true);
         }
-    }, [canvasRef]);
+    }, [homeCanvasRef]);
 
     //handleResize
     useEffect(() => {
@@ -117,9 +119,12 @@ function Layout({ isDrawing, selectedBrush, currentDrawColor, eraserEnabled, sav
                         behavior: 'smooth',
                     });
 
-                    const canvas = canvasRef.current;
-                    if (canvas) {
-                        canvas.style.left = -targetScrollLeft + 'px';
+                    const graphContainer = document.querySelector('.graph-content');
+                    if (graphContainer) {
+                        graphContainer.scrollTo({
+                            left: targetScrollLeft,
+                            behavior: 'smooth',
+                        });
                     }
 
                     requestAnimationFrame(() => {
@@ -215,18 +220,23 @@ function Layout({ isDrawing, selectedBrush, currentDrawColor, eraserEnabled, sav
         if (mainContainerRef.current) {
             const sections = mainContainerRef.current.querySelectorAll('.layout-main > section.top-level-section');
             setTotalPages(sections.length);
+
+            const graphContainer = document.querySelector('.graph-content');
+            if (graphContainer) {
+                const totalWidth = sections.length * canvasWidth;
+                graphContainer.style.width = `${totalWidth}px`;
+            }
         }
-    }, [mainContainerRef]);
+    }, [mainContainerRef, canvasWidth]);
 
     return (
         <div className='layout-container'> {/* Flexbox for layout */}
             <Header ref={navLinksRef} mainContainerRef={mainContainerRef} />
             <div className={`layout-main ${isDrawing ? 'no-select' : ''}`} ref={mainContainerRef} >
-                <section id="keaton-nemes" className="top-level-section" > <div className="page-content">
-                    <Home /> </div>
-                    <canvas ref={canvasRef} />
+                <div className="graph-content">
+                    <canvas ref={homeCanvasRef} />
                     {hasMounted && <Graph
-                        canvas={canvasRef.current}
+                        canvas={homeCanvasRef.current}
                         isDrawing={isDrawing}
                         selectedBrush={selectedBrush}
                         currentDrawColor={currentDrawColor}
@@ -236,40 +246,64 @@ function Layout({ isDrawing, selectedBrush, currentDrawColor, eraserEnabled, sav
                         trashTrigger={trashTrigger}
                         setTrashTrigger={setTrashTrigger}
                     />}
+                    <canvas ref={projectCanvasRef} />
+                    {hasMounted && <Graph
+                        canvas={projectCanvasRef.current}
+                        isDrawing={isDrawing}
+                        selectedBrush={selectedBrush}
+                        currentDrawColor={currentDrawColor}
+                        eraserEnabled={eraserEnabled}
+                        saveTrigger={saveTrigger}
+                        setSaveTrigger={setSaveTrigger}
+                        trashTrigger={trashTrigger}
+                        setTrashTrigger={setTrashTrigger}
+                    />}
+                    <canvas ref={aboutCanvasRef} />
+                    {hasMounted && <Graph
+                        canvas={aboutCanvasRef.current}
+                        isDrawing={isDrawing}
+                        selectedBrush={selectedBrush}
+                        currentDrawColor={currentDrawColor}
+                        eraserEnabled={eraserEnabled}
+                        saveTrigger={saveTrigger}
+                        setSaveTrigger={setSaveTrigger}
+                        trashTrigger={trashTrigger}
+                        setTrashTrigger={setTrashTrigger}
+                    />}
+                    <canvas ref={contactCanvasRef} />
+                    {hasMounted && <Graph
+                        canvas={contactCanvasRef.current}
+                        isDrawing={isDrawing}
+                        selectedBrush={selectedBrush}
+                        currentDrawColor={currentDrawColor}
+                        eraserEnabled={eraserEnabled}
+                        saveTrigger={saveTrigger}
+                        setSaveTrigger={setSaveTrigger}
+                        trashTrigger={trashTrigger}
+                        setTrashTrigger={setTrashTrigger}
+                    />}
+                </div>
+                <section id="keaton-nemes" className="top-level-section" > <div className="page-content">
+                    <Home
+                        isDrawing={isDrawing}
+                    /> </div>
                 </section>
                 <section id="projects" className="top-level-section" ref={projectSectionRef}> <div className="page-content">
                     <Project 
                         isDrawing={isDrawing}
-                        selectedBrush={selectedBrush}
-                        currentDrawColor={currentDrawColor}
-                        eraserEnabled={eraserEnabled}
-                        saveTrigger={saveTrigger}
-                        setSaveTrigger={setSaveTrigger}
-                        trashTrigger={trashTrigger}
-                        setTrashTrigger={setTrashTrigger}
-                    /> </div> </section>
+                    /> </div>                 
+                </section>
                 <section id="about" className="top-level-section"> <div className="page-content">
                     <About 
                         isDrawing={isDrawing}
-                        selectedBrush={selectedBrush}
-                        currentDrawColor={currentDrawColor}
-                        eraserEnabled={eraserEnabled}
-                        saveTrigger={saveTrigger}
-                        setSaveTrigger={setSaveTrigger}
-                        trashTrigger={trashTrigger}
-                        setTrashTrigger={setTrashTrigger}
-                    /> </div> </section>
+                    /> </div>                
+                </section>
                 <section id="contact" className="top-level-section"> <div className="page-content">
                     <Contact 
                         isDrawing={isDrawing}
-                        selectedBrush={selectedBrush}
-                        currentDrawColor={currentDrawColor}
-                        eraserEnabled={eraserEnabled}
-                        saveTrigger={saveTrigger}
-                        setSaveTrigger={setSaveTrigger}
-                        trashTrigger={trashTrigger}
-                        setTrashTrigger={setTrashTrigger}
-                    /> </div> </section>
+                    /> </div>                    
+                    
+                </section>
             </div>
             <Footer currentPage={currentSectionIndex + 1} totalPages={totalPages} />
         </div>
