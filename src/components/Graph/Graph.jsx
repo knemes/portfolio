@@ -144,7 +144,6 @@ function Graph({ canvas, isDrawing, selectedBrush, currentDrawColor, eraserEnabl
     }, [canvas, mousePos]);
 
     const drawGrid = useCallback(() => {
-
         const ctx = canvas.getContext('2d');
         const width = canvas.width;
         const height = canvas.height;
@@ -207,6 +206,7 @@ function Graph({ canvas, isDrawing, selectedBrush, currentDrawColor, eraserEnabl
                 }
                 ctx.lineTo(endX, endY);
             }
+            
             ctx.stroke();
         }
 
@@ -403,11 +403,11 @@ function Graph({ canvas, isDrawing, selectedBrush, currentDrawColor, eraserEnabl
                     canvas.height = canvas.offsetHeight;
                     drawGrid();
                     drawLines();
+
                 };
 
                 handleResize();
                 window.addEventListener('resize', handleResize);
-
                 return () => {
                     window.removeEventListener('resize', handleResize);
                 };

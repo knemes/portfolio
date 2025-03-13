@@ -71,14 +71,6 @@ body, html {
     box-sizing: border-box;
 }
 
-canvas {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: -1;
-}
-
 .app-container.drawing-mode .content-container {
     filter: grayscale(0.7);
     pointer-events: none;

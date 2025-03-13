@@ -125,6 +125,13 @@ function Layout({ isDrawing, selectedBrush, currentDrawColor, eraserEnabled, sav
                             left: targetScrollLeft,
                             behavior: 'smooth',
                         });
+
+                        const canvases = graphContainer.querySelectorAll('canvas');
+                        canvases.forEach((canvas, index) => {
+                            const initialLeftPercentage = parseInt(canvas.dataset.initialLeft); // Get stored percentage
+                            const canvasLeft = initialLeftPercentage - (targetScrollLeft / (canvasWidth + 200)) * 100; //calculate the percentage to subtract.
+                            canvas.style.left = `${canvasLeft}%`;
+                        });
                     }
 
                     requestAnimationFrame(() => {
@@ -225,6 +232,14 @@ function Layout({ isDrawing, selectedBrush, currentDrawColor, eraserEnabled, sav
             if (graphContainer) {
                 const totalWidth = sections.length * canvasWidth;
                 graphContainer.style.width = `${totalWidth}px`;
+
+                const canvases = graphContainer.querySelectorAll('canvas');
+
+                canvases.forEach((canvas, index) => {
+                    const leftPercentage = index * 100;
+                    canvas.style.left = `${leftPercentage}%`;
+                    canvas.dataset.initialLeft = `${leftPercentage}%`;
+                });
             }
         }
     }, [mainContainerRef, canvasWidth]);

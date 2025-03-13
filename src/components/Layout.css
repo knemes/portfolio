@@ -50,7 +50,28 @@
     overflow-y: auto;
 }
 
-.graph-content canvas {
-    width: 500px;
-    height: 100vh;
-}
+    .graph-content canvas {
+        position: absolute;
+        top: 0;
+        left: 100%;
+        z-index: -1;
+        width: 100vw;
+        height: 100vh;
+        transition: 0.7s ease-in-out
+    }
+
+        .graph-content canvas:nth-child(1) {
+            left: 0%;
+        }
+
+        .graph-content canvas:nth-child(2) {
+            left: 25%;
+        }
+
+        .graph-content canvas:nth-child(3) {
+            left: 50%;
+        }
+
+        .graph-content canvas:nth-child(4) {
+            left: 75%;
+        }
