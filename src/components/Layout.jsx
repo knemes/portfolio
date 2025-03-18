@@ -15,9 +15,6 @@ function Layout({ isDrawing, selectedBrush, currentDrawColor, eraserEnabled, sav
     const [canvasHeight, setCanvasHeight] = useState(window.innerHeight - 200);
     const mainContainerRef = useRef(null);
     const homeCanvasRef = useRef(null);
-    const projectCanvasRef = useRef(null);
-    const aboutCanvasRef = useRef(null);
-    const contactCanvasRef = useRef(null);
     const navLinksRef = useRef(null);
     const sectionWidthRef = useRef(window.innerWidth);
     const [totalPages, setTotalPages] = useState(0);
@@ -119,21 +116,6 @@ function Layout({ isDrawing, selectedBrush, currentDrawColor, eraserEnabled, sav
                         behavior: 'smooth',
                     });
 
-                    const graphContainer = document.querySelector('.graph-content');
-                    if (graphContainer) {
-                        graphContainer.scrollTo({
-                            left: targetScrollLeft,
-                            behavior: 'smooth',
-                        });
-
-                        const canvases = graphContainer.querySelectorAll('canvas');
-                        canvases.forEach((canvas, index) => {
-                            const initialLeftPercentage = parseInt(canvas.dataset.initialLeft); // Get stored percentage
-                            const canvasLeft = initialLeftPercentage - (targetScrollLeft / (canvasWidth + 200)) * 100; //calculate the percentage to subtract.
-                            canvas.style.left = `${canvasLeft}%`;
-                        });
-                    }
-
                     requestAnimationFrame(() => {
                         const sectionIndex = Math.min(Math.max(0, targetPage), calculatedTotalPages - 1);
                         setCurrentSectionIndex(sectionIndex);
@@ -228,19 +210,6 @@ function Layout({ isDrawing, selectedBrush, currentDrawColor, eraserEnabled, sav
             const sections = mainContainerRef.current.querySelectorAll('.layout-main > section.top-level-section');
             setTotalPages(sections.length);
 
-            const graphContainer = document.querySelector('.graph-content');
-            if (graphContainer) {
-                const totalWidth = sections.length * canvasWidth;
-                graphContainer.style.width = `${totalWidth}px`;
-
-                const canvases = graphContainer.querySelectorAll('canvas');
-
-                canvases.forEach((canvas, index) => {
-                    const leftPercentage = index * 100;
-                    canvas.style.left = `${leftPercentage}%`;
-                    canvas.dataset.initialLeft = `${leftPercentage}%`;
-                });
-            }
         }
     }, [mainContainerRef, canvasWidth]);
 
@@ -252,42 +221,6 @@ function Layout({ isDrawing, selectedBrush, currentDrawColor, eraserEnabled, sav
                     <canvas ref={homeCanvasRef} />
                     {hasMounted && <Graph
                         canvas={homeCanvasRef.current}
-                        isDrawing={isDrawing}
-                        selectedBrush={selectedBrush}
-                        currentDrawColor={currentDrawColor}
-                        eraserEnabled={eraserEnabled}
-                        saveTrigger={saveTrigger}
-                        setSaveTrigger={setSaveTrigger}
-                        trashTrigger={trashTrigger}
-                        setTrashTrigger={setTrashTrigger}
-                    />}
-                    <canvas ref={projectCanvasRef} />
-                    {hasMounted && <Graph
-                        canvas={projectCanvasRef.current}
-                        isDrawing={isDrawing}
-                        selectedBrush={selectedBrush}
-                        currentDrawColor={currentDrawColor}
-                        eraserEnabled={eraserEnabled}
-                        saveTrigger={saveTrigger}
-                        setSaveTrigger={setSaveTrigger}
-                        trashTrigger={trashTrigger}
-                        setTrashTrigger={setTrashTrigger}
-                    />}
-                    <canvas ref={aboutCanvasRef} />
-                    {hasMounted && <Graph
-                        canvas={aboutCanvasRef.current}
-                        isDrawing={isDrawing}
-                        selectedBrush={selectedBrush}
-                        currentDrawColor={currentDrawColor}
-                        eraserEnabled={eraserEnabled}
-                        saveTrigger={saveTrigger}
-                        setSaveTrigger={setSaveTrigger}
-                        trashTrigger={trashTrigger}
-                        setTrashTrigger={setTrashTrigger}
-                    />}
-                    <canvas ref={contactCanvasRef} />
-                    {hasMounted && <Graph
-                        canvas={contactCanvasRef.current}
                         isDrawing={isDrawing}
                         selectedBrush={selectedBrush}
                         currentDrawColor={currentDrawColor}

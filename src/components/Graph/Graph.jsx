@@ -11,6 +11,70 @@ function Graph({ canvas, isDrawing, selectedBrush, currentDrawColor, eraserEnabl
     const [lines, setLines] = useState([]);
     const [backgroundLines, setBackgroundLines] = useState([]);
 
+    const initialBackgroundLines = useCallback(() => {
+        if (!canvas) return [];
+
+        const buttonX = canvas.width - 50;
+        const buttonY = canvas.height - 50;
+
+        const arrowPoints = [
+            { x: buttonX - 150, y: buttonY - 100 },
+            { x: buttonX - 50, y: buttonY - 50 },
+            { x: buttonX - 150, y: buttonY },
+            { x: buttonX - 100, y: buttonY - 50 },
+        ];
+
+        const arrowLine = {
+            points: arrowPoints,
+            brush: { lineWidth: 2, lineCap: 'round', opacity: 1 },
+            brushType: 'Pencil',
+        };
+
+        const textStartX = (arrowPoints[0].x + arrowPoints[1].x) / 2 - 30; // Adjust start X
+        const textStartY = (arrowPoints[0].y + arrowPoints[2].y) / 2; // Adjust start Y
+
+        const letterDPoints = [
+            { x: textStartX, y: textStartY - 20 },
+            { x: textStartX, y: textStartY + 20 },
+            { x: textStartX + 15, y: textStartY + 20 },
+            { x: textStartX + 15, y: textStartY - 20 },
+            { x: textStartX, y: textStartY - 20 },
+        ];
+
+        const letterRPoints = [
+            { x: textStartX + 20, y: textStartY - 20 },
+            { x: textStartX + 20, y: textStartY + 20 },
+            { x: textStartX + 35, y: textStartY },
+            { x: textStartX + 20, y: textStartY - 10 },
+            { x: textStartX + 35, y: textStartY + 20 },
+        ];
+
+        const letterAPoints = [
+            { x: textStartX + 40, y: textStartY + 20 },
+            { x: textStartX + 47.5, y: textStartY - 20 },
+            { x: textStartX + 55, y: textStartY + 20 },
+            { x: textStartX + 40, y: textStartY - 5 },
+            { x: textStartX + 55, y: textStartY - 5 },
+        ];
+
+        const letterWPoints = [
+            { x: textStartX + 60, y: textStartY - 20 },
+            { x: textStartX + 65, y: textStartY + 20 },
+            { x: textStartX + 70, y: textStartY - 20 },
+            { x: textStartX + 75, y: textStartY + 20 },
+            { x: textStartX + 80, y: textStartY - 20 },
+        ];
+
+        const letterLines = [
+            { points: letterDPoints, brush: { lineWidth: 2, lineCap: 'round', opacity: 1 }, brushType: 'Pencil' },
+            { points: letterRPoints, brush: { lineWidth: 2, lineCap: 'round', opacity: 1 }, brushType: 'Pencil' },
+            { points: letterAPoints, brush: { lineWidth: 2, lineCap: 'round', opacity: 1 }, brushType: 'Pencil' },
+            { points: letterWPoints, brush: { lineWidth: 2, lineCap: 'round', opacity: 1 }, brushType: 'Pencil' },
+        ];
+
+        return [arrowLine, ...letterLines];
+    }, [canvas]);
+
     const brushProperties = {
         Pencil: {
             lineWidth: 2,
@@ -399,11 +463,13 @@ function Graph({ canvas, isDrawing, selectedBrush, currentDrawColor, eraserEnabl
             const ctx = canvas.getContext('2d');
             if (ctx) {
                 const handleResize = () => {
-                    canvas.width = canvas.offsetWidth;
-                    canvas.height = canvas.offsetHeight;
+                    const width = canvas.offsetWidth;
+                    const height = canvas.offsetHeight;
+                    canvas.width = width;
+                    canvas.height = height;
+
                     drawGrid();
                     drawLines();
-
                 };
 
                 handleResize();
@@ -458,6 +524,10 @@ function Graph({ canvas, isDrawing, selectedBrush, currentDrawColor, eraserEnabl
     useEffect(() => {
         setHasMounted(true);
     }, []);
+
+    useEffect(() => {
+        setBackgroundLines(initialBackgroundLines());
+    }, [initialBackgroundLines]);
 
     if (!canvas || !hasMounted) {
         return null;
