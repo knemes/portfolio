@@ -1,0 +1,6 @@
+{
+  "name": "Digital Sketchbook Portfolio",
+  "description": "A fluid, interactive digital notebook portfolio featuring horizontal scrolling pages, a detailed sketching layer, and custom Three.js 3D integrations.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
