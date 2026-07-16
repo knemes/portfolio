@@ -221,7 +221,7 @@ export default function ThreeCanvas() {
   ];
 
   return (
-    <div className="relative w-full h-[360px] md:h-[420px] rounded-2xl bg-white/40 border border-stone-200/50 shadow-inner flex flex-col justify-between overflow-hidden">
+    <div className="relative w-full h-[420px] md:h-[500px] rounded-2xl bg-white/40 border border-stone-200/50 shadow-inner flex flex-col justify-between overflow-hidden">
       
       {/* 3D Viewport container */}
       <div

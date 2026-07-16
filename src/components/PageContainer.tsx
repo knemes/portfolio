@@ -51,7 +51,7 @@ export default function PageContainer({
       </div>
 
       {/* 2. Page Header Layout */}
-      <div className="pt-6 pb-4 px-8 md:px-14 flex justify-between items-center border-b border-[#1A1A1A]/10 bg-[#F4F1EA]/95 backdrop-blur z-10 text-[#1A1A1A]">
+      <div className="pt-5 pb-3 px-6 md:px-8 flex justify-between items-center border-b border-[#1A1A1A]/10 bg-[#F4F1EA]/95 backdrop-blur z-10 text-[#1A1A1A]">
         <div className="flex items-center gap-3">
           <div className="w-1.5 h-1.5 rounded-full bg-[#1A1A1A]/30" />
           <span className="text-[10px] font-mono text-[#1A1A1A]/40 uppercase tracking-[0.2em]">
@@ -70,12 +70,12 @@ export default function PageContainer({
       </div>
 
       {/* 3. Primary Content Canvas Wrapper */}
-      <div className="flex-1 w-full px-8 md:px-14 py-6 md:py-8 flex flex-col justify-center items-stretch overflow-y-auto md:overflow-y-hidden relative z-20">
+      <div className="flex-1 w-full px-6 md:px-8 py-5 md:py-6 flex flex-col justify-center items-stretch overflow-y-auto md:overflow-y-hidden relative z-20">
         {children}
       </div>
 
       {/* 4. Page Footer Layout */}
-      <div className="py-4 px-8 md:px-14 border-t border-[#1A1A1A]/10 bg-[#F4F1EA]/90 backdrop-blur z-10 flex justify-between items-center text-[#1A1A1A]">
+      <div className="py-3 px-6 md:px-8 border-t border-[#1A1A1A]/10 bg-[#F4F1EA]/90 backdrop-blur z-10 flex justify-between items-center text-[#1A1A1A]">
         
         {/* Drawing Status Flag */}
         <div className="flex items-center gap-2">

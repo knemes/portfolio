@@ -6,3 +6,8 @@ coverage/
 *.log
 .env*
 !.env.example
+resumes/
+assets/*
+!assets/images/
+assets/images/*
+!assets/images/keaton_sketch.png
