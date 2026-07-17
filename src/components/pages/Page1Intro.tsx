@@ -1,7 +1,7 @@
 import { Compass, PenTool, ArrowRight } from "lucide-react";
 import PageContainer from "../PageContainer";
 import { Line } from "../../types";
-import keatonSketch from "../../../assets/images/keaton_sketch.png";
+import LorenzCanvas from "../LorenzCanvas";
 
 interface Page1IntroProps {
   isDrawingActive: boolean;
@@ -29,16 +29,9 @@ export default function Page1Intro({
       drawingActive={isDrawingActive}
     >
       <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center max-w-5xl mx-auto py-4">
-        
-        {/* Left: Vintage Notebook Title */}
-        <div className="md:col-span-7 space-y-6 text-left">
-          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-[#1A1A1A] text-white">
-            <Compass className="w-3.5 h-3.5 text-white/80" />
-            <span className="text-[9px] font-mono uppercase tracking-[0.2em]">
-              v1.0.0 — Design & Geometry Journal
-            </span>
-          </div>
 
+        {/* Left: Introduction Title */}
+        <div className="md:col-span-7 space-y-6 text-left">
           <div className="space-y-2">
             <h2 className="text-4xl md:text-5xl font-serif italic text-[#1A1A1A] leading-[0.9] tracking-tight">
               Keaton Nemes
@@ -52,6 +45,22 @@ export default function Page1Intro({
           <p className="text-base md:text-lg text-[#1A1A1A]/80 leading-relaxed max-w-xl font-serif italic">
             An interdisciplinary technologist specializing in computational geometry, generative systems, and automated design workflows. I translate complex mathematical frameworks and spatial design schematics into high-performance, full-stack tools.
           </p>
+
+          {/* Profile Log Metadata */}
+          <div className="grid grid-cols-3 gap-4 border-y border-[#1A1A1A]/10 py-3 max-w-xl text-[10px] font-mono text-[#1A1A1A]/70">
+            <div>
+              <span className="text-[#1A1A1A]/40 block text-[8px] tracking-wider uppercase font-bold mb-0.5">Location:</span>
+              <span className="text-[#1A1A1A] font-semibold">CHICAGO, IL, USA</span>
+            </div>
+            <div>
+              <span className="text-[#1A1A1A]/40 block text-[8px] tracking-wider uppercase font-bold mb-0.5">Credentials:</span>
+              <span className="text-[#1A1A1A] font-semibold">M.Arch (UC Berkeley)</span>
+            </div>
+            <div>
+              <span className="text-[#1A1A1A]/40 block text-[8px] tracking-wider uppercase font-bold mb-0.5">Focus:</span>
+              <span className="text-[#1A1A1A] font-semibold block leading-tight">Computational Geometry & Systems Logic</span>
+            </div>
+          </div>
 
           <div className="space-y-2.5">
             <h4 className="text-[10px] font-mono font-bold tracking-wider text-[#1A1A1A]/40 uppercase">
@@ -96,53 +105,16 @@ export default function Page1Intro({
         {/* Right: Graphic Card mockup */}
         <div className="md:col-span-5 flex flex-col justify-center">
           <div className="aspect-[4/5] bg-[#EAE7DF] border border-[#1A1A1A]/10 rounded-none p-6 shadow-none relative flex flex-col justify-between overflow-hidden">
-            {/* Grid alignment mark */}
-            <div className="absolute top-0 right-0 w-8 h-8 border-b border-l border-[#1A1A1A]/10 pointer-events-none" />
-            
-            <div className="flex justify-between items-center">
-              <span className="text-[10px] font-mono uppercase bg-[#1A1A1A] text-white px-2 py-1">
-                Computational Designer
-              </span>
-              <span className="text-[9px] font-mono text-[#1A1A1A]/30">CARD // 01</span>
-            </div>
 
-            {/* Framed Sketch Image Container */}
-            <div className="my-2.5 flex justify-center items-center pointer-events-none select-none">
-              <div className="w-40 h-48 border border-[#1A1A1A]/10 bg-[#f4ede2]/40 flex items-center justify-center p-2 relative shadow-[inset_0_1px_3px_rgba(0,0,0,0.05)]">
-                {/* Drafting layout grid marks */}
-                <div className="absolute top-1 left-1 w-1.5 h-1.5 border-t border-l border-[#1A1A1A]/20" />
-                <div className="absolute top-1 right-1 w-1.5 h-1.5 border-t border-r border-[#1A1A1A]/20" />
-                <div className="absolute bottom-1 left-1 w-1.5 h-1.5 border-b border-l border-[#1A1A1A]/20" />
-                <div className="absolute bottom-1 right-1 w-1.5 h-1.5 border-b border-r border-[#1A1A1A]/20" />
-                <img
-                  src={keatonSketch}
-                  alt="Keaton Outline Sketch"
-                  className="w-full h-full object-contain opacity-90 mix-blend-multiply"
-                />
-              </div>
-            </div>
-
-            {/* Description Text Moved Below Image */}
-            <div className="space-y-1">
-              <h3 className="text-[15px] font-serif italic text-[#1A1A1A]/80 leading-relaxed tracking-tight">
-                Codifying spatial designs, automating engineering pipelines, and bridging code with physical craft.
-              </h3>
-            </div>
-
-            {/* Info Fields Grid */}
-            <div className="space-y-2 pt-3 border-t border-[#1A1A1A]/10">
-              <div className="flex justify-between items-center text-[10px] font-mono text-[#1A1A1A]/40 pb-1 border-b border-[#1A1A1A]/5">
-                <span>BASED IN:</span>
-                <span className="text-[#1A1A1A] font-semibold">CHICAGO, IL, USA</span>
-              </div>
-              <div className="flex justify-between items-center text-[10px] font-mono text-[#1A1A1A]/40 pb-1 border-b border-[#1A1A1A]/5">
-                <span>EDUCATION:</span>
-                <span className="text-[#1A1A1A] font-semibold">M.Arch (UC Berkeley)</span>
-              </div>
-              <div className="flex justify-between items-center text-[10px] font-mono text-[#1A1A1A]/40 pb-1">
-                <span>SPECIALTIES:</span>
-                <span className="text-[#1A1A1A] font-semibold">C#, Python, WebGL</span>
-              </div>
+            {/* Framed Interactive Attractor Canvas */}
+            <div className="flex-1 w-full border border-[#1A1A1A]/10 relative">
+              {/* Drafting layout grid marks */}
+              <div className="absolute top-1 left-1 w-1.5 h-1.5 border-t border-l border-[#1A1A1A]/20 pointer-events-none z-10" />
+              <div className="absolute top-1 right-1 w-1.5 h-1.5 border-t border-r border-[#1A1A1A]/20 pointer-events-none z-10" />
+              <div className="absolute bottom-1 left-1 w-1.5 h-1.5 border-b border-l border-[#1A1A1A]/20 pointer-events-none z-10" />
+              <div className="absolute bottom-1 right-1 w-1.5 h-1.5 border-b border-r border-[#1A1A1A]/20 pointer-events-none z-10" />
+              
+              <LorenzCanvas />
             </div>
           </div>
         </div>

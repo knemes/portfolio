@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { Sliders } from "lucide-react";
 import PageContainer from "../PageContainer";
 
 interface Page5SandboxProps {
@@ -162,43 +163,33 @@ export default function Page5Sandbox({
       category="SANDBOX"
       drawingActive={isDrawingActive}
     >
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch max-w-6xl mx-auto">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch max-w-6xl mx-auto py-4">
         
-        {/* Left: Interactive Particle canvas screen */}
-        <div className="lg:col-span-7 flex flex-col h-full justify-between gap-4">
-          <div className="flex-1 w-full bg-[#EAE7DF] border border-[#1A1A1A]/10 overflow-hidden relative min-h-[385px]">
-            <canvas ref={vortexCanvasRef} className="absolute inset-0 block w-full h-full" />
-            
-            <div className="absolute bottom-3 left-3 pointer-events-none bg-[#F4F1EA]/90 backdrop-blur border border-[#1A1A1A]/10 px-2.5 py-1 text-[9px] font-mono text-[#1A1A1A]/60 uppercase tracking-widest">
-              Hover over Canvas to attract particle dust
-            </div>
-          </div>
-        </div>
-
-        {/* Right: Particle Parameters sliders */}
+        {/* Left: Particle Parameters and Text (5 cols) */}
         <div className="lg:col-span-5 flex flex-col justify-between py-1 text-left space-y-4">
           <div className="space-y-3">
-            <span className="text-[10px] font-mono bg-[#1A1A1A] text-white px-2 py-1 uppercase tracking-widest">
+            <span className="text-[10px] font-mono bg-[#1A1A1A] text-white px-2.5 py-1 uppercase tracking-widest inline-block w-fit">
               Kinetic Physics
             </span>
-            <h3 className="text-xl md:text-2xl font-serif italic text-[#1A1A1A] leading-tight">
+            <h3 className="text-2xl md:text-3xl font-serif italic text-[#1A1A1A] leading-tight">
               Graphite Vortex Sim
             </h3>
-            <p className="text-base text-[#1A1A1A]/80 leading-relaxed font-serif italic">
+            <p className="text-sm md:text-base text-[#1A1A1A]/80 leading-relaxed font-serif italic">
               A real-time HTML5 2D Canvas physics sandbox that mimics charcoal lead shavings swarming in orbit. Drag or hover your mouse inside the container to warp gravity forces.
             </p>
           </div>
 
-          {/* Interactive Sliders */}
-          <div className="p-4 bg-[#EAE7DF]/60 border border-[#1A1A1A]/10 space-y-3">
-            <h4 className="text-[10px] font-mono font-bold text-[#1A1A1A]/60 uppercase tracking-widest pb-1.5 border-b border-[#1A1A1A]/10">
-              Gravity Parameters
-            </h4>
+          {/* Interactive Sliders (standardized card) */}
+          <div className="p-4 bg-[#EAE7DF]/60 border border-[#1A1A1A]/10 space-y-3 font-mono text-[11px] text-[#1A1A1A]">
+            <div className="flex items-center gap-1.5 text-[10px] font-bold text-[#1A1A1A] uppercase tracking-wider pb-1.5 border-b border-[#1A1A1A]/10">
+              <Sliders className="w-3.5 h-3.5 text-[#1A1A1A]/60" />
+              <span>Gravity Parameters</span>
+            </div>
 
-            <div className="space-y-2">
+            <div className="space-y-2.5 pt-1">
               {/* Particle density */}
               <div>
-                <div className="flex justify-between text-[10px] font-mono text-[#1A1A1A]/60 mb-1">
+                <div className="flex justify-between text-[9px] font-mono text-[#1A1A1A]/60 mb-1">
                   <span>PARTICLE_DENSITY:</span>
                   <span className="text-[#1A1A1A] font-semibold">{vortexDensity}</span>
                 </div>
@@ -216,7 +207,7 @@ export default function Page5Sandbox({
 
               {/* Rotation Speed */}
               <div>
-                <div className="flex justify-between text-[10px] font-mono text-[#1A1A1A]/60 mb-1">
+                <div className="flex justify-between text-[9px] font-mono text-[#1A1A1A]/60 mb-1">
                   <span>ROTATION_VELOCITY:</span>
                   <span className="text-[#1A1A1A] font-semibold">{vortexSpeed.toFixed(1)}x</span>
                 </div>
@@ -234,7 +225,7 @@ export default function Page5Sandbox({
 
               {/* Pull force */}
               <div>
-                <div className="flex justify-between text-[10px] font-mono text-[#1A1A1A]/60 mb-1">
+                <div className="flex justify-between text-[9px] font-mono text-[#1A1A1A]/60 mb-1">
                   <span>ATTRACTION_FORCE:</span>
                   <span className="text-[#1A1A1A] font-semibold">{vortexForce}</span>
                 </div>
@@ -252,8 +243,30 @@ export default function Page5Sandbox({
             </div>
           </div>
 
-          <div className="text-[10px] font-mono text-stone-400">
+          <div className="text-[10px] font-mono text-[#1A1A1A]/40 border-t border-[#1A1A1A]/10 pt-3 uppercase tracking-widest">
             🖋️ Sketch notes right onto the swarming dust clouds for an amazing aesthetic!
+          </div>
+        </div>
+
+        {/* Right: Interactive Particle canvas screen (7 cols) */}
+        <div className="lg:col-span-7 flex flex-col justify-between">
+          <div className="w-full h-[380px] md:h-[420px] bg-[#EAE7DF]/60 border border-[#1A1A1A]/10 overflow-hidden relative flex flex-col">
+            {/* Header bar matches standards */}
+            <div className="p-2 border-b border-[#1A1A1A]/10 bg-[#F4F1EA]/80 backdrop-blur flex items-center justify-between z-10">
+              <div className="flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#1A1A1A]/60 animate-pulse"></span>
+                <span className="text-[9px] font-mono font-medium text-[#1A1A1A] uppercase tracking-wider">Kinetic Field Engine</span>
+              </div>
+              <span className="text-[9px] font-mono text-[#1A1A1A]/40">GRAVITY_SIM::60FPS</span>
+            </div>
+
+            <div className="flex-1 relative">
+              <canvas ref={vortexCanvasRef} className="absolute inset-0 block w-full h-full" />
+              
+              <div className="absolute bottom-3 left-3 pointer-events-none bg-[#F4F1EA]/90 backdrop-blur border border-[#1A1A1A]/10 px-2.5 py-1 text-[9px] font-mono text-[#1A1A1A]/60 uppercase tracking-widest z-10">
+                Hover over Canvas to attract particle dust
+              </div>
+            </div>
           </div>
         </div>
 

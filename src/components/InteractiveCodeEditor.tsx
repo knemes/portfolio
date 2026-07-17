@@ -129,37 +129,33 @@ export function useWaveField() {
 }`;
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 w-full">
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch max-w-6xl mx-auto">
       
-      {/* Wave Previewer Canvas Panel (5 cols) */}
-      <div className="lg:col-span-5 flex flex-col h-full rounded-none bg-[#EAE7DF]/60 border border-[#1A1A1A]/10 overflow-hidden relative min-h-[220px]">
-        <div className="p-3 border-b border-[#1A1A1A]/10 bg-[#F4F1EA]/80 backdrop-blur flex items-center justify-between">
-          <div className="flex items-center gap-1.5">
-            <Sparkles className="w-3.5 h-3.5 text-[#1A1A1A]/60" />
-            <span className="text-xs font-mono font-medium text-[#1A1A1A] uppercase tracking-wider">Sandbox Preview</span>
-          </div>
-          <div className="flex items-center gap-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#1A1A1A]/60 animate-pulse"></span>
-            <span className="text-[10px] font-mono text-[#1A1A1A]/50">FPS: 60</span>
-          </div>
+      {/* Left: Text, Description & Controllers */}
+      <div className="lg:col-span-5 flex flex-col justify-between py-1 text-left space-y-4">
+        <div className="space-y-3">
+          <span className="text-[10px] font-mono bg-[#1A1A1A] text-white px-2.5 py-1 uppercase tracking-widest inline-block w-fit">
+            Engineering
+          </span>
+          <h3 className="text-2xl md:text-3xl font-serif italic text-[#1A1A1A] leading-tight">
+            Generative Wave Field
+          </h3>
+          <p className="text-sm md:text-base text-[#1A1A1A]/80 leading-relaxed font-serif italic">
+            I compose interactive code modules that bind direct inputs to canvas renders. This sandbox showcases custom sliders linked to a dynamic trigonometric wave simulation.
+          </p>
         </div>
 
-        {/* Live Simulation Screen */}
-        <div className="flex-1 w-full bg-transparent flex items-center justify-center relative">
-          <canvas ref={canvasRef} className="absolute inset-0 block w-full h-full" />
-        </div>
-
-        {/* Controls Overlay inside panel */}
-        <div className="p-4 bg-[#F4F1EA] border-t border-[#1A1A1A]/10 space-y-3 z-10">
-          <div className="flex items-center gap-1.5 border-b border-[#1A1A1A]/10 pb-2">
+        {/* Standardized specs card layout enclosing sliders */}
+        <div className="p-4 bg-[#EAE7DF]/60 border border-[#1A1A1A]/10 space-y-3 font-mono text-[11px] text-[#1A1A1A]">
+          <div className="flex items-center gap-1.5 text-[10px] font-bold text-[#1A1A1A] uppercase tracking-wider pb-1.5 border-b border-[#1A1A1A]/10">
             <Sliders className="w-3.5 h-3.5 text-[#1A1A1A]/60" />
-            <h5 className="text-[11px] font-mono text-[#1A1A1A] uppercase tracking-wider font-bold">Interactive Constants</h5>
+            <span>Interactive Constants</span>
           </div>
 
-          <div className="space-y-2">
+          <div className="space-y-2.5 pt-1">
             {/* Speed slider */}
             <div>
-              <div className="flex justify-between text-[10px] font-mono text-[#1A1A1A]/60 mb-1">
+              <div className="flex justify-between text-[9px] font-mono text-[#1A1A1A]/60 mb-1">
                 <span>WAVE_SPEED:</span>
                 <span className="text-[#1A1A1A] font-semibold">{waveSpeed.toFixed(1)}x</span>
               </div>
@@ -177,7 +173,7 @@ export function useWaveField() {
 
             {/* Nodes slider */}
             <div>
-              <div className="flex justify-between text-[10px] font-mono text-[#1A1A1A]/60 mb-1">
+              <div className="flex justify-between text-[9px] font-mono text-[#1A1A1A]/60 mb-1">
                 <span>RESOLUTION (NODES):</span>
                 <span className="text-[#1A1A1A] font-semibold">{nodesCount}</span>
               </div>
@@ -195,7 +191,7 @@ export function useWaveField() {
 
             {/* Amplitude slider */}
             <div>
-              <div className="flex justify-between text-[10px] font-mono text-[#1A1A1A]/60 mb-1">
+              <div className="flex justify-between text-[9px] font-mono text-[#1A1A1A]/60 mb-1">
                 <span>AMPLITUDE:</span>
                 <span className="text-[#1A1A1A] font-semibold">{amplitude}px</span>
               </div>
@@ -213,7 +209,7 @@ export function useWaveField() {
 
             {/* Accent Hues */}
             <div className="pt-1 flex items-center justify-between">
-              <span className="text-[10px] font-mono text-[#1A1A1A]/60">COLOR_ACCENT:</span>
+              <span className="text-[9px] font-mono text-[#1A1A1A]/60 uppercase tracking-widest">COLOR_ACCENT:</span>
               <div className="flex gap-1.5">
                 {[
                   { name: "Charcoal", hex: "#1A1A1A" },
@@ -239,60 +235,82 @@ export function useWaveField() {
             </div>
           </div>
         </div>
+
+        <div className="text-[10px] font-mono text-[#1A1A1A]/40 border-t border-[#1A1A1A]/10 pt-3 uppercase tracking-widest">
+          💡 <strong className="text-[#1A1A1A]/70">Pro-Tip:</strong> Adjust constants to recompile the dynamic wave equation render!
+        </div>
       </div>
 
-      {/* Code Snippet Window (7 cols) */}
-      <div className="lg:col-span-7 flex flex-col h-full rounded-none bg-white border border-[#1A1A1A]/15 text-[#1A1A1A] font-mono text-[11px] overflow-hidden leading-relaxed shadow-sm">
-        {/* Terminal Title Bar */}
-        <div className="p-3 bg-[#EAE7DF] border-b border-[#1A1A1A]/10 flex items-center justify-between text-[#1A1A1A]">
-          <div className="flex items-center gap-2">
-            <div className="flex gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#1A1A1A]/30"></span>
-              <span className="w-1.5 h-1.5 rounded-full bg-[#1A1A1A]/30"></span>
-              <span className="w-1.5 h-1.5 rounded-full bg-[#1A1A1A]/30"></span>
+      {/* Right: Stacked Canvas & Code Snippet Terminal */}
+      <div className="lg:col-span-7 flex flex-col gap-4 h-[380px] md:h-[420px] justify-between">
+        
+        {/* Top: Wave Canvas Box */}
+        <div className="h-[140px] md:h-[150px] w-full bg-[#EAE7DF]/60 border border-[#1A1A1A]/10 overflow-hidden relative flex flex-col shadow-inner">
+          <div className="p-2 border-b border-[#1A1A1A]/10 bg-[#F4F1EA]/80 backdrop-blur flex items-center justify-between">
+            <div className="flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#1A1A1A]/60 animate-pulse"></span>
+              <span className="text-[9px] font-mono font-medium text-[#1A1A1A] uppercase tracking-wider">Canvas Live Render</span>
             </div>
-            <span className="text-[#1A1A1A]/60 text-[10px] ml-1.5 uppercase tracking-widest font-bold">useWaveField.ts — Interactive Code API</span>
+            <span className="text-[9px] font-mono text-[#1A1A1A]/40">TRIG_WAVE::60FPS</span>
           </div>
-          <div className="flex items-center gap-1.5 text-[10px] text-[#1A1A1A]/60 font-bold uppercase tracking-wider">
-            <Code2 className="w-3.5 h-3.5" />
-            <span>TYPESCRIPT</span>
+          <div className="flex-1 w-full bg-transparent flex items-center justify-center relative">
+            <canvas ref={canvasRef} className="absolute inset-0 block w-full h-full" />
           </div>
         </div>
 
-        {/* Code Content */}
-        <div className="p-4 flex-1 overflow-x-auto select-all text-left bg-white text-[#1A1A1A]">
-          <pre className="text-[#1A1A1A]">
-            {codeSnippet.split("\n").map((line, idx) => {
-              // Quick decorative highlighting
-              let highlighted = line;
-              if (line.startsWith("//")) {
-                highlighted = `<span class="text-[#1A1A1A]/40 font-serif italic">${line}</span>`;
-              } else {
-                highlighted = line
-                  .replace(/(import|export|function|const|let|return|useMemo|useState)/g, '<span class="text-indigo-800 font-bold">$1</span>')
-                  .replace(/(".*?"|'.*?'|`.*?`)/g, '<span class="text-emerald-700 font-semibold">$1</span>')
-                  .replace(/(\b\d+(\.\d+)?\b)/g, '<span class="text-amber-800 font-semibold">$1</span>')
-                  .replace(/([{}[\]()])/g, '<span class="text-[#1A1A1A]/40 font-bold">$1</span>');
-              }
-
-              return (
-                <div key={idx} className="flex hover:bg-[#1A1A1A]/5 px-2 rounded -mx-2">
-                  <span className="w-6 text-right text-[#1A1A1A]/30 mr-4 select-none">{idx + 1}</span>
-                  <span dangerouslySetInnerHTML={{ __html: highlighted }} />
-                </div>
-              );
-            })}
-          </pre>
-        </div>
-
-        {/* Console status footer */}
-        <div className="px-4 py-2 border-t border-[#1A1A1A]/10 bg-[#EAE7DF]/40 flex items-center justify-between text-[10px] text-[#1A1A1A]/60">
-          <div className="flex items-center gap-1.5">
-            <Play className="w-3 h-3 text-[#1A1A1A]/60" />
-            <span className="text-[#1A1A1A]/60 uppercase tracking-widest text-[9px]">Module recompiled in 4ms</span>
+        {/* Bottom: Terminal Code Snippet */}
+        <div className="flex-1 min-h-0 flex flex-col rounded-none bg-white border border-[#1A1A1A]/15 text-[#1A1A1A] font-mono text-[11px] overflow-hidden leading-relaxed shadow-sm">
+          {/* Terminal Title Bar */}
+          <div className="p-2.5 bg-[#EAE7DF] border-b border-[#1A1A1A]/10 flex items-center justify-between text-[#1A1A1A]">
+            <div className="flex items-center gap-2">
+              <div className="flex gap-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#1A1A1A]/30"></span>
+                <span className="w-1.5 h-1.5 rounded-full bg-[#1A1A1A]/30"></span>
+                <span className="w-1.5 h-1.5 rounded-full bg-[#1A1A1A]/30"></span>
+              </div>
+              <span className="text-[#1A1A1A]/60 text-[9px] ml-1.5 uppercase tracking-widest font-bold">useWaveField.ts — Live State Hook</span>
+            </div>
+            <div className="flex items-center gap-1.5 text-[9px] text-[#1A1A1A]/60 font-bold uppercase tracking-wider">
+              <Code2 className="w-3.5 h-3.5" />
+              <span>TYPESCRIPT</span>
+            </div>
           </div>
-          <span className="text-[9px] tracking-wider">UTF-8</span>
+
+          {/* Code Content */}
+          <div className="p-3.5 flex-1 overflow-y-auto select-all text-left bg-white text-[#1A1A1A]">
+            <pre className="text-[#1A1A1A] whitespace-pre-wrap">
+              {codeSnippet.split("\n").map((line, idx) => {
+                let highlighted = line;
+                if (line.startsWith("//")) {
+                  highlighted = `<span class="text-[#1A1A1A]/40 font-serif italic">${line}</span>`;
+                } else {
+                  highlighted = line
+                    .replace(/(import|export|function|const|let|return|useMemo|useState)/g, '<span class="text-indigo-800 font-bold">$1</span>')
+                    .replace(/(".*?"|'.*?'|`.*?`)/g, '<span class="text-emerald-700 font-semibold">$1</span>')
+                    .replace(/(\b\d+(\.\d+)?\b)/g, '<span class="text-amber-800 font-semibold">$1</span>')
+                    .replace(/([{}[\]()])/g, '<span class="text-[#1A1A1A]/40 font-bold">$1</span>');
+                }
+
+                return (
+                  <div key={idx} className="flex hover:bg-[#1A1A1A]/5 px-2 rounded -mx-2">
+                    <span className="w-6 text-right text-[#1A1A1A]/30 mr-4 select-none">{idx + 1}</span>
+                    <span dangerouslySetInnerHTML={{ __html: highlighted }} />
+                  </div>
+                );
+              })}
+            </pre>
+          </div>
+
+          {/* Console status footer */}
+          <div className="px-3.5 py-1.5 border-t border-[#1A1A1A]/10 bg-[#EAE7DF]/40 flex items-center justify-between text-[9px] text-[#1A1A1A]/60">
+            <div className="flex items-center gap-1.5">
+              <Play className="w-3 h-3 text-[#1A1A1A]/60" />
+              <span className="text-[#1A1A1A]/60 uppercase tracking-widest">Module recompiled in 4ms</span>
+            </div>
+            <span className="tracking-wider">UTF-8</span>
+          </div>
         </div>
+
       </div>
 
     </div>

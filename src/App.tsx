@@ -400,12 +400,12 @@ export default function App() {
             id="btn-page-prev"
             onClick={() => navigatePage(-1)}
             disabled={activePage === 1 || isDrawingActive}
-            className={`absolute left-0 top-1/2 -translate-y-1/2 -ml-3 md:-ml-7 w-10 md:w-12 h-10 md:h-12 flex items-center justify-center border transition-all z-30 rounded-none ${
+            className={`absolute left-[max(16px,calc(50vw-min(85vw,1275px)/2-144px))] top-1/2 -translate-y-1/2 w-10 md:w-12 h-10 md:h-12 flex items-center justify-center border transition-all z-30 rounded-none ${
               activePage === 1
                 ? "bg-transparent border-transparent text-transparent pointer-events-none"
                 : isDrawingActive
                 ? "bg-stone-100/20 border-transparent text-stone-300 cursor-not-allowed"
-                : "bg-white hover:bg-[#F4F1EA] border-[#1A1A1A]/15 text-[#1A1A1A] shadow-sm hover:scale-105 active:scale-95 cursor-pointer"
+                : "bg-[#F4F1EA]/35 backdrop-blur-sm border-[#1A1A1A]/10 text-[#1A1A1A]/50 hover:bg-[#EAE7DF]/60 hover:text-[#1A1A1A]/80 hover:border-[#1A1A1A]/20 hover:scale-105 active:scale-95 cursor-pointer"
             }`}
             title="Previous Page"
           >
@@ -417,12 +417,12 @@ export default function App() {
             id="btn-page-next"
             onClick={() => navigatePage(1)}
             disabled={activePage === TOTAL_PAGES || isDrawingActive}
-            className={`absolute right-0 top-1/2 -translate-y-1/2 -mr-3 md:-mr-7 w-10 md:w-12 h-10 md:h-12 flex items-center justify-center border transition-all z-30 rounded-none ${
+            className={`absolute right-[max(16px,calc(50vw-min(85vw,1275px)/2-144px))] top-1/2 -translate-y-1/2 w-10 md:w-12 h-10 md:h-12 flex items-center justify-center border transition-all z-30 rounded-none ${
               activePage === TOTAL_PAGES
                 ? "bg-transparent border-transparent text-transparent pointer-events-none"
                 : isDrawingActive
                 ? "bg-stone-100/20 border-transparent text-stone-300 cursor-not-allowed"
-                : "bg-white hover:bg-[#F4F1EA] border-[#1A1A1A]/15 text-[#1A1A1A] shadow-sm hover:scale-105 active:scale-95 cursor-pointer"
+                : "bg-[#F4F1EA]/35 backdrop-blur-sm border-[#1A1A1A]/10 text-[#1A1A1A]/50 hover:bg-[#EAE7DF]/60 hover:text-[#1A1A1A]/80 hover:border-[#1A1A1A]/20 hover:scale-105 active:scale-95 cursor-pointer"
             }`}
             title="Next Page"
           >

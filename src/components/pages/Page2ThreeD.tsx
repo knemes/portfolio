@@ -21,19 +21,19 @@ export default function Page2ThreeD({ isDrawingActive, totalPages }: Page2ThreeD
         {/* Left: Text & Pitch */}
         <div className="lg:col-span-5 flex flex-col justify-between py-1 text-left space-y-4">
           <div className="space-y-3">
-            <span className="text-[10px] font-mono bg-[#1A1A1A] text-white px-2 py-1 uppercase tracking-widest">
+            <span className="text-[10px] font-mono bg-[#1A1A1A] text-white px-2.5 py-1 uppercase tracking-widest inline-block w-fit">
               Interactive Math
             </span>
             <h3 className="text-2xl md:text-3xl font-serif italic text-[#1A1A1A] leading-tight">
               Tactile 3D Wireframes
             </h3>
-            <p className="text-base text-[#1A1A1A]/80 leading-relaxed font-serif italic">
+            <p className="text-sm md:text-base text-[#1A1A1A]/80 leading-relaxed font-serif italic">
               I leverage 3D mathematical meshes to construct high-performance spatial mockups directly in web browsers. By binding canvas mouse interactions, users are invited to inspect meshes dynamically.
             </p>
           </div>
 
-          <div className="bg-[#EAE7DF] border border-[#1A1A1A]/10 p-4 rounded-none space-y-2 font-mono text-[11px] text-[#1A1A1A]">
-            <div className="flex items-center gap-1.5 text-[10px] font-bold text-[#1A1A1A] uppercase tracking-wider">
+          <div className="p-4 bg-[#EAE7DF]/60 border border-[#1A1A1A]/10 space-y-3 font-mono text-[11px] text-[#1A1A1A]">
+            <div className="flex items-center gap-1.5 text-[10px] font-bold text-[#1A1A1A] uppercase tracking-wider pb-1.5 border-b border-[#1A1A1A]/10">
               <Sparkles className="w-3.5 h-3.5 text-[#1A1A1A]/60" />
               <span>3D Project Case Studies</span>
             </div>
@@ -50,7 +50,7 @@ export default function Page2ThreeD({ isDrawingActive, totalPages }: Page2ThreeD
         </div>
 
         {/* Right: Embedded Interactive 3D Viewport */}
-        <div className="lg:col-span-7">
+        <div className="lg:col-span-7 flex flex-col justify-between">
           <ThreeCanvas />
         </div>
 

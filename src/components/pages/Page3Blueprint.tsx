@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { Sparkles, X } from "lucide-react";
+import { Sparkles, X, Sliders } from "lucide-react";
 import PageContainer from "../PageContainer";
 
 interface Page3BlueprintProps {
@@ -30,84 +30,91 @@ export default function Page3Blueprint({ isDrawingActive, totalPages }: Page3Blu
         category="PRODUCT"
         drawingActive={isDrawingActive}
       >
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch max-w-6xl mx-auto">
           
           {/* Left: Blueprint controls & Description */}
-          <div className="lg:col-span-4 flex flex-col justify-between py-1 text-left space-y-4">
+          <div className="lg:col-span-5 flex flex-col justify-between py-1 text-left space-y-4">
             <div className="space-y-3">
-              <span className="text-[10px] font-mono bg-[#1A1A1A] text-white px-2 py-1 uppercase tracking-widest">
+              <span className="text-[10px] font-mono bg-[#1A1A1A] text-white px-2.5 py-1 uppercase tracking-widest inline-block w-fit">
                 Wireframe Grid
               </span>
-              <h3 className="text-xl md:text-2xl font-serif italic text-[#1A1A1A] leading-tight">
+              <h3 className="text-2xl md:text-3xl font-serif italic text-[#1A1A1A] leading-tight">
                 Responsive Blueprints
               </h3>
-              <p className="text-base text-[#1A1A1A]/80 leading-relaxed font-serif italic">
+              <p className="text-sm md:text-base text-[#1A1A1A]/80 leading-relaxed font-serif italic">
                 Before writing code, product design requires rigorous structural drafting. This mock viewport allows toggling between mobile, tablet, and desktop aspect ratios to preview responsive wireframe scaling.
               </p>
             </div>
 
-            {/* Interactive UI to change the grid layout */}
-            <div className="space-y-4 pt-2 border-t border-[#1A1A1A]/10">
-              <div className="space-y-2">
-                <span className="text-[10px] font-mono text-[#1A1A1A]/40 uppercase tracking-widest block">
-                  Select Target Viewport
-                </span>
-                <div className="grid grid-cols-3 gap-1.5">
-                  {(["desktop", "tablet", "mobile"] as const).map((v) => (
+            {/* Standardized specs card layout enclosing settings */}
+            <div className="p-4 bg-[#EAE7DF]/60 border border-[#1A1A1A]/10 space-y-3 font-mono text-[11px] text-[#1A1A1A]">
+              <div className="flex items-center gap-1.5 text-[10px] font-bold text-[#1A1A1A] uppercase tracking-wider pb-1.5 border-b border-[#1A1A1A]/10">
+                <Sliders className="w-3.5 h-3.5 text-[#1A1A1A]/60" />
+                <span>Blueprint Controllers</span>
+              </div>
+              
+              <div className="space-y-3 pt-1">
+                <div className="space-y-1.5">
+                  <span className="text-[9px] font-mono text-[#1A1A1A]/40 uppercase tracking-widest block font-bold">
+                    Select Target Viewport
+                  </span>
+                  <div className="grid grid-cols-3 gap-1.5">
+                    {(["desktop", "tablet", "mobile"] as const).map((v) => (
+                      <button
+                        id={`btn-viewport-${v}`}
+                        key={v}
+                        onClick={() => setBlueprintViewport(v)}
+                        className={`text-[9px] font-mono py-1 border border-[#1A1A1A]/15 capitalize transition-all rounded-none cursor-pointer ${
+                          blueprintViewport === v
+                            ? "bg-[#1A1A1A] border-[#1A1A1A] text-white font-bold"
+                            : "bg-white/50 border-[#1A1A1A]/10 text-[#1A1A1A]/60 hover:bg-[#1A1A1A]/5 hover:text-[#1A1A1A]"
+                        }`}
+                      >
+                        {v}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="space-y-1.5">
+                  <span className="text-[9px] font-mono text-[#1A1A1A]/40 uppercase tracking-widest block font-bold">
+                    Aesthetic Scheme
+                  </span>
+                  <div className="flex gap-2">
                     <button
-                      id={`btn-viewport-${v}`}
-                      key={v}
-                      onClick={() => setBlueprintViewport(v)}
-                      className={`text-[10px] font-mono px-2 py-1.5 border capitalize transition-all rounded-none cursor-pointer ${
-                        blueprintViewport === v
-                          ? "bg-[#1A1A1A] border-[#1A1A1A] text-white font-bold"
-                          : "bg-white/50 border-[#1A1A1A]/10 text-[#1A1A1A]/60 hover:bg-[#1A1A1A]/5 hover:text-[#1A1A1A]"
+                      id="btn-theme-blueprint"
+                      onClick={() => setBlueprintTheme("blueprint")}
+                      className={`flex-1 text-[9px] font-mono py-1 border border-[#1A1A1A]/15 transition-all rounded-none cursor-pointer ${
+                        blueprintTheme === "blueprint"
+                          ? "bg-blue-900 border-blue-900 text-white font-bold"
+                          : "bg-white/50 border-[#1A1A1A]/10 text-[#1A1A1A]/60 hover:bg-[#1A1A1A]/5"
                       }`}
                     >
-                      {v}
+                      Cyan Blueprint
                     </button>
-                  ))}
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <span className="text-[10px] font-mono text-[#1A1A1A]/40 uppercase tracking-widest block">
-                  Aesthetic Scheme
-                </span>
-                <div className="flex gap-2">
-                  <button
-                    id="btn-theme-blueprint"
-                    onClick={() => setBlueprintTheme("blueprint")}
-                    className={`flex-1 text-[10px] font-mono px-3 py-1.5 border transition-all rounded-none cursor-pointer ${
-                      blueprintTheme === "blueprint"
-                        ? "bg-blue-900 border-blue-900 text-white font-bold"
-                        : "bg-white/50 border-[#1A1A1A]/10 text-[#1A1A1A]/60 hover:bg-[#1A1A1A]/5"
-                    }`}
-                  >
-                    Cyan Blueprint
-                  </button>
-                  <button
-                    id="btn-theme-monochrome"
-                    onClick={() => setBlueprintTheme("monochrome")}
-                    className={`flex-1 text-[10px] font-mono px-3 py-1.5 border transition-all rounded-none cursor-pointer ${
-                      blueprintTheme === "monochrome"
-                        ? "bg-[#1A1A1A] border-[#1A1A1A] text-white font-bold"
-                        : "bg-white/50 border-[#1A1A1A]/10 text-[#1A1A1A]/60 hover:bg-[#1A1A1A]/5"
-                    }`}
-                  >
-                    Monochrome
-                  </button>
+                    <button
+                      id="btn-theme-monochrome"
+                      onClick={() => setBlueprintTheme("monochrome")}
+                      className={`flex-1 text-[9px] font-mono py-1 border border-[#1A1A1A]/15 transition-all rounded-none cursor-pointer ${
+                        blueprintTheme === "monochrome"
+                          ? "bg-[#1A1A1A] border-[#1A1A1A] text-white font-bold"
+                          : "bg-white/50 border-[#1A1A1A]/10 text-[#1A1A1A]/60 hover:bg-[#1A1A1A]/5"
+                      }`}
+                    >
+                      Monochrome
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
 
-            <div className="text-[10px] font-mono text-[#1A1A1A]/40 uppercase tracking-widest leading-relaxed">
+            <div className="text-[10px] font-mono text-[#1A1A1A]/40 border-t border-[#1A1A1A]/10 pt-3 uppercase tracking-widest">
               🖊️ Draping sketches on top mimics drawing corrections on paper architectural rolls!
             </div>
           </div>
 
           {/* Right: Dynamic scaling wireframe previewer */}
-          <div className="lg:col-span-8 flex items-center justify-center bg-[#EAE7DF] rounded-none border border-[#1A1A1A]/10 p-4 min-h-[440px] relative overflow-hidden">
+          <div className="lg:col-span-7 flex items-center justify-center bg-[#EAE7DF] rounded-none border border-[#1A1A1A]/10 p-4 min-h-[440px] relative overflow-hidden">
             
             {/* Interactive wireframe container that animatedly changes width */}
             <motion.div
