@@ -68,7 +68,7 @@ export default function Page1Intro({
             </h4>
             <div className="grid grid-cols-2 gap-2 text-xs font-mono text-[#1A1A1A]/80">
               <button onClick={() => jumpToPage(2)} className="flex items-center gap-1.5 hover:opacity-60 text-left cursor-pointer border-none bg-transparent p-0">
-                <span className="font-serif italic font-bold">01.</span> Three.js 3D Showcase
+                <span className="font-serif italic font-bold">01.</span> Parametric Boat Modeler
               </button>
               <button onClick={() => jumpToPage(3)} className="flex items-center gap-1.5 hover:opacity-60 text-left cursor-pointer border-none bg-transparent p-0">
                 <span className="font-serif italic font-bold">02.</span> System Blueprint UI

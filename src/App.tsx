@@ -446,7 +446,7 @@ export default function App() {
               // Custom metadata for each tick to display in tooltip
               const pageMeta = [
                 { title: "Introduction", category: "INDEX" },
-                { title: "3D WebGL Showcase", category: "SHOWCASE" },
+                { title: "Parametric Boat Modeler", category: "CAD" },
                 { title: "System Blueprint", category: "PRODUCT" },
                 { title: "Interactive Code Editor", category: "LAB" },
                 { title: "Kinetic Sandbox", category: "PHYSICS" },

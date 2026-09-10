@@ -21,8 +21,8 @@
         },
         "background": {
           "activeOnStart": true,
-          "beginsPattern": "^.*$",
-          "endsPattern": "^.*(ready in|Local:).*$"
+          "beginsPattern": ".*(re-optimizing|reloading|page reload).*",
+          "endsPattern": ".*(ready in|Local:).*"
         }
       },
       "isBackground": true,
