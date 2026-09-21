@@ -2,261 +2,626 @@ import { SpectreTileData, CognitiveEpochData } from "./types";
 
 export const INITIAL_SPECTRE_TILES: SpectreTileData[] = [
   {
-    tile_id: "d908dee3b333a46c19ee78046f466175",
-    header: {
-      index: 0,
-      agent_alias: "GenesisCore",
-      transform: { x: 0.0, y: 0.0, rotation_index: 0, angle_rad: 0, angle_deg: 0 },
-      ml_kem_pk: "2d08ac9ffb46fa466960d13c74520986355f36b092b3dc46be48a51860ba091b...",
-      ml_dsa_pk: "1ddfaeb21e476c79ab6b31fec33bf19537ccde10fb0060e84136245bd3754ea6...",
-      prompt_commitment: "ca5e4210ef17c0206fd60d00d3bade3da97ce4cea305fd58462e8bf36c84361c",
-      timestamp: 1789957476,
-      previous_block_hash: "0",
+  "tile_id": "39c6e1834f5403eb684d7d697a77f5c0d5b2e14e1a571e0c7b7b815bd10036b7",
+  "header": {
+    "index": 0,
+    "agent_alias": "GenesisCore",
+    "transform": {
+      "x": 0.0,
+      "y": 0.0,
+      "rotation_index": 0,
+      "angle_rad": 0.0,
+      "angle_deg": 0
     },
-    specialization: "ROOT_ORCHESTRATOR",
-    role_description: "Coordinates high-level swarm objectives and preserves aperiodic mosaic consensus.",
-    color: "#4f46e5", // Indigo
-    geometry: {
-      transform: { x: 0.0, y: 0.0, rotation_index: 0, angle_rad: 0, angle_deg: 0 },
-      vertices: [
-        { x: 0.0, y: 0.0 },
-        { x: 1.0, y: 0.0 },
-        { x: 1.5, y: -0.866025 },
-        { x: 2.366025, y: -0.366025 },
-        { x: 2.366025, y: 0.633975 },
-        { x: 3.366025, y: 0.633975 },
-        { x: 3.866025, y: 1.5 },
-        { x: 3.0, y: 2.0 },
-        { x: 2.133975, y: 1.5 },
-        { x: 1.633975, y: 2.366025 },
-        { x: 0.633975, y: 2.366025 },
-        { x: -0.366025, y: 2.366025 },
-        { x: -0.866025, y: 1.5 },
-        { x: 0.0, y: 1.0 },
-      ],
-      centroid: { x: 1.488034, y: 1.09641 },
-    },
-    edge_connections: {
-      0: { neighbor_tile_id: "a1c948e02d3345fa", neighbor_edge_idx: 7, neighbor_alias: "CryptoSpecialist" },
-      6: { neighbor_tile_id: "b2d8819ef34762bc", neighbor_edge_idx: 1, neighbor_alias: "ThreatAnalyzer" },
-      11: { neighbor_tile_id: "c3e7728ab45981cd", neighbor_edge_idx: 4, neighbor_alias: "ColonySynthesizer" },
-      13: { neighbor_tile_id: "d4f6639bc56092de", neighbor_edge_idx: 9, neighbor_alias: "DataIngestor" },
-    },
-    status: "ACTIVE",
+    "ml_kem_pk": "5dc0701e78b49d517842319bf60b2ebc...",
+    "ml_dsa_pk": "e7adc67fd76681d8e2b32a7cd5d4ffc8...",
+    "prompt_commitment": "af7b9eec2de6c45ca3a7b2f45567893274a26b9df2604c97fc869318ec421ad0",
+    "timestamp": 1789961267,
+    "previous_block_hash": "0"
   },
+  "specialization": "ROOT_ORCHESTRATOR",
+  "role_description": "Coordinates high-level swarm objectives, goal decomposition, and preserves aperiodic mosaic consensus.",
+  "color": "#d97706",
+  "geometry": {
+    "transform": {
+      "x": 0.0,
+      "y": 0.0,
+      "rotation_index": 0,
+      "angle_rad": 0.0,
+      "angle_deg": 0
+    },
+    "vertices": [
+      {
+        "x": 0.0,
+        "y": 0.0
+      },
+      {
+        "x": 1.0,
+        "y": 0.0
+      },
+      {
+        "x": 1.5,
+        "y": -0.866025
+      },
+      {
+        "x": 2.366025,
+        "y": -0.366025
+      },
+      {
+        "x": 2.366025,
+        "y": 0.633975
+      },
+      {
+        "x": 3.366025,
+        "y": 0.633975
+      },
+      {
+        "x": 3.866025,
+        "y": 1.5
+      },
+      {
+        "x": 3.0,
+        "y": 2.0
+      },
+      {
+        "x": 2.133975,
+        "y": 1.5
+      },
+      {
+        "x": 1.633975,
+        "y": 2.366025
+      },
+      {
+        "x": 0.633975,
+        "y": 2.366025
+      },
+      {
+        "x": -0.366025,
+        "y": 2.366025
+      },
+      {
+        "x": -0.866025,
+        "y": 1.5
+      },
+      {
+        "x": 0.0,
+        "y": 1.0
+      }
+    ],
+    "centroid": {
+      "x": 1.473855,
+      "y": 1.045284
+    }
+  },
+  "edge_connections": {
+    "13": {
+      "neighbor_tile_id": "066e54f42cb9bd8b8b88bc1f809d38da5cf0c27d65b58a1c0e06a511acca77d7",
+      "neighbor_edge_idx": 2,
+      "neighbor_alias": "CryptoSpecialist"
+    },
+    "12": {
+      "neighbor_tile_id": "066e54f42cb9bd8b8b88bc1f809d38da5cf0c27d65b58a1c0e06a511acca77d7",
+      "neighbor_edge_idx": 3,
+      "neighbor_alias": "CryptoSpecialist"
+    },
+    "11": {
+      "neighbor_tile_id": "066e54f42cb9bd8b8b88bc1f809d38da5cf0c27d65b58a1c0e06a511acca77d7",
+      "neighbor_edge_idx": 4,
+      "neighbor_alias": "CryptoSpecialist"
+    }
+  },
+  "status": "ACTIVE"
+},
   {
-    tile_id: "a1c948e02d3345fa",
-    header: {
-      index: 1,
-      agent_alias: "CryptoSpecialist",
-      transform: { x: 1.0, y: 0.0, rotation_index: 6, angle_rad: 3.14159, angle_deg: 180 },
-      ml_kem_pk: "3c8479e0a294b150c91834dfa5286b9a847291038475cbed10294875cb610928...",
-      ml_dsa_pk: "4e9182746bcda019284756ef1092837465bd102948576cbe0192837465af1029...",
-      prompt_commitment: "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      timestamp: 1789957477,
-      previous_block_hash: "d908dee3b333a46c19ee78046f466175",
+  "tile_id": "066e54f42cb9bd8b8b88bc1f809d38da5cf0c27d65b58a1c0e06a511acca77d7",
+  "header": {
+    "index": 1,
+    "agent_alias": "CryptoSpecialist",
+    "transform": {
+      "x": -1.5,
+      "y": -0.866025,
+      "rotation_index": 2,
+      "angle_rad": 1.0472,
+      "angle_deg": 60
     },
-    specialization: "POST_QUANTUM_CRYPTANALYSIS",
-    role_description: "Lattice cryptography defense, ML-KEM encapsulation checks, and ML-DSA verification.",
-    color: "#0284c7", // Sky blue
-    geometry: {
-      transform: { x: 1.0, y: 0.0, rotation_index: 6, angle_rad: 3.14159, angle_deg: 180 },
-      vertices: [
-        { x: 1.0, y: 0.0 },
-        { x: 0.0, y: 0.0 },
-        { x: -0.5, y: 0.866025 },
-        { x: -1.366025, y: 0.366025 },
-        { x: -1.366025, y: -0.633975 },
-        { x: -2.366025, y: -0.633975 },
-        { x: -2.866025, y: -1.5 },
-        { x: -2.0, y: -2.0 },
-        { x: -1.133975, y: -1.5 },
-        { x: -0.633975, y: -2.366025 },
-        { x: 0.366025, y: -2.366025 },
-        { x: 1.366025, y: -2.366025 },
-        { x: 1.866025, y: -1.5 },
-        { x: 1.0, y: -1.0 },
-      ],
-      centroid: { x: -0.488034, y: -1.09641 },
-    },
-    edge_connections: {
-      7: { neighbor_tile_id: "d908dee3b333a46c19ee78046f466175", neighbor_edge_idx: 0, neighbor_alias: "GenesisCore" },
-    },
-    status: "ACTIVE",
+    "ml_kem_pk": "f71a7bf1701f051a4ea8bb9a5f9077e6...",
+    "ml_dsa_pk": "07e6eeb804520ce4e82c7e0bca2d5055...",
+    "prompt_commitment": "d1b4e89a0cfa6ede8be15dd6099c5c4abea38aaf092b16c3677d28c80300925e",
+    "timestamp": 1789961267,
+    "previous_block_hash": "39c6e1834f5403eb684d7d697a77f5c0d5b2e14e1a571e0c7b7b815bd10036b7"
   },
+  "specialization": "POST_QUANTUM_CRYPTANALYSIS",
+  "role_description": "Lattice cryptography defense, ML-KEM-1024 encapsulation checks, and ML-DSA-65 verification.",
+  "color": "#4f46e5",
+  "geometry": {
+    "transform": {
+      "x": -1.5,
+      "y": -0.866025,
+      "rotation_index": 2,
+      "angle_rad": 1.0472,
+      "angle_deg": 60
+    },
+    "vertices": [
+      {
+        "x": -1.5,
+        "y": -0.866025
+      },
+      {
+        "x": -1.0,
+        "y": 0.0
+      },
+      {
+        "x": 0.0,
+        "y": 0.0
+      },
+      {
+        "x": 0.0,
+        "y": 1.0
+      },
+      {
+        "x": -0.866025,
+        "y": 1.5
+      },
+      {
+        "x": -0.366025,
+        "y": 2.366026
+      },
+      {
+        "x": -0.866025,
+        "y": 3.232051
+      },
+      {
+        "x": -1.732051,
+        "y": 2.732051
+      },
+      {
+        "x": -1.732051,
+        "y": 1.732051
+      },
+      {
+        "x": -2.732051,
+        "y": 1.732051
+      },
+      {
+        "x": -3.232051,
+        "y": 0.866026
+      },
+      {
+        "x": -3.732051,
+        "y": 0.0
+      },
+      {
+        "x": -3.232051,
+        "y": -0.866025
+      },
+      {
+        "x": -2.366025,
+        "y": -0.366025
+      }
+    ],
+    "centroid": {
+      "x": -1.668315,
+      "y": 0.933013
+    }
+  },
+  "edge_connections": {
+    "2": {
+      "neighbor_tile_id": "39c6e1834f5403eb684d7d697a77f5c0d5b2e14e1a571e0c7b7b815bd10036b7",
+      "neighbor_edge_idx": 13,
+      "neighbor_alias": "GenesisCore"
+    },
+    "3": {
+      "neighbor_tile_id": "39c6e1834f5403eb684d7d697a77f5c0d5b2e14e1a571e0c7b7b815bd10036b7",
+      "neighbor_edge_idx": 12,
+      "neighbor_alias": "GenesisCore"
+    },
+    "4": {
+      "neighbor_tile_id": "39c6e1834f5403eb684d7d697a77f5c0d5b2e14e1a571e0c7b7b815bd10036b7",
+      "neighbor_edge_idx": 11,
+      "neighbor_alias": "GenesisCore"
+    },
+    "9": {
+      "neighbor_tile_id": "35af1e714206e9911cc4981728e3825730e77228412e604f5f82a17391bf0dae",
+      "neighbor_edge_idx": 0,
+      "neighbor_alias": "ColonySynthesizer"
+    },
+    "8": {
+      "neighbor_tile_id": "35af1e714206e9911cc4981728e3825730e77228412e604f5f82a17391bf0dae",
+      "neighbor_edge_idx": 1,
+      "neighbor_alias": "ColonySynthesizer"
+    },
+    "7": {
+      "neighbor_tile_id": "35af1e714206e9911cc4981728e3825730e77228412e604f5f82a17391bf0dae",
+      "neighbor_edge_idx": 2,
+      "neighbor_alias": "ColonySynthesizer"
+    },
+    "11": {
+      "neighbor_tile_id": "cfd1e3cadbe0618033df5dabfedc5278634a32f546268a66e17d1590736cf38a",
+      "neighbor_edge_idx": 0,
+      "neighbor_alias": "ThreatAnalyzer"
+    },
+    "10": {
+      "neighbor_tile_id": "cfd1e3cadbe0618033df5dabfedc5278634a32f546268a66e17d1590736cf38a",
+      "neighbor_edge_idx": 1,
+      "neighbor_alias": "ThreatAnalyzer"
+    }
+  },
+  "status": "ACTIVE"
+},
   {
-    tile_id: "b2d8819ef34762bc",
-    header: {
-      index: 2,
-      agent_alias: "ThreatAnalyzer",
-      transform: { x: 3.366, y: 2.366, rotation_index: 10, angle_rad: 5.23599, angle_deg: 300 },
-      ml_kem_pk: "5a928374619b0284756cbe0192837465af1029384756cbe0192837465af10293...",
-      ml_dsa_pk: "6b039485720c1395867dcf1203948576ba2130495867dcf1203948576ba21304...",
-      prompt_commitment: "a89bc2148756cbe0192837465af1029384756cbe0192837465af1029384756cb",
-      timestamp: 1789957478,
-      previous_block_hash: "a1c948e02d3345fa",
+  "tile_id": "35af1e714206e9911cc4981728e3825730e77228412e604f5f82a17391bf0dae",
+  "header": {
+    "index": 2,
+    "agent_alias": "ColonySynthesizer",
+    "transform": {
+      "x": -3.232051,
+      "y": 0.866025,
+      "rotation_index": 2,
+      "angle_rad": 1.0472,
+      "angle_deg": 60
     },
-    specialization: "THREAT_MODELING",
-    role_description: "Evaluates Byzantine attack surfaces, side-channel vectors, and fault injections.",
-    color: "#e11d48", // Rose red
-    geometry: {
-      transform: { x: 3.366, y: 2.366, rotation_index: 10, angle_rad: 5.23599, angle_deg: 300 },
-      vertices: [
-        { x: 3.366, y: 2.366 },
-        { x: 3.866, y: 1.5 },
-        { x: 3.366, y: 0.633975 },
-        { x: 4.116, y: 0.2 },
-        { x: 4.982, y: 0.7 },
-        { x: 5.482, y: -0.166 },
-        { x: 6.348, y: 0.334 },
-        { x: 5.482, y: 1.834 },
-        { x: 4.982, y: 1.4 },
-        { x: 4.232, y: 2.7 },
-        { x: 3.732, y: 3.566 },
-        { x: 2.866, y: 4.066 },
-        { x: 2.0, y: 3.566 },
-        { x: 2.5, y: 2.7 },
-      ],
-      centroid: { x: 4.12, y: 1.85 },
-    },
-    edge_connections: {
-      1: { neighbor_tile_id: "d908dee3b333a46c19ee78046f466175", neighbor_edge_idx: 6, neighbor_alias: "GenesisCore" },
-    },
-    status: "ACTIVE",
+    "ml_kem_pk": "b23886d701b971750fb58304c9cb70a2...",
+    "ml_dsa_pk": "cc8c1c45e72c452e00a0816d904a08c3...",
+    "prompt_commitment": "0c3aaa3d5d10739dd4a3e45fa82e31a74ffc49b8589ce03522e48de74d977a34",
+    "timestamp": 1789961267,
+    "previous_block_hash": "066e54f42cb9bd8b8b88bc1f809d38da5cf0c27d65b58a1c0e06a511acca77d7"
   },
+  "specialization": "EXECUTIVE_CONSENSUS_SYNTHESIS",
+  "role_description": "Synthesizes multi-agent cognitive epochs into final consensus and validates proof provenance.",
+  "color": "#059669",
+  "geometry": {
+    "transform": {
+      "x": -3.232051,
+      "y": 0.866025,
+      "rotation_index": 2,
+      "angle_rad": 1.0472,
+      "angle_deg": 60
+    },
+    "vertices": [
+      {
+        "x": -3.232051,
+        "y": 0.866025
+      },
+      {
+        "x": -2.732051,
+        "y": 1.73205
+      },
+      {
+        "x": -1.732051,
+        "y": 1.73205
+      },
+      {
+        "x": -1.732051,
+        "y": 2.73205
+      },
+      {
+        "x": -2.598076,
+        "y": 3.23205
+      },
+      {
+        "x": -2.098076,
+        "y": 4.098076
+      },
+      {
+        "x": -2.598076,
+        "y": 4.964101
+      },
+      {
+        "x": -3.464102,
+        "y": 4.464101
+      },
+      {
+        "x": -3.464102,
+        "y": 3.464101
+      },
+      {
+        "x": -4.464102,
+        "y": 3.464101
+      },
+      {
+        "x": -4.964102,
+        "y": 2.598076
+      },
+      {
+        "x": -5.464102,
+        "y": 1.73205
+      },
+      {
+        "x": -4.964102,
+        "y": 0.866025
+      },
+      {
+        "x": -4.098076,
+        "y": 1.366025
+      }
+    ],
+    "centroid": {
+      "x": -3.400366,
+      "y": 2.665063
+    }
+  },
+  "edge_connections": {
+    "0": {
+      "neighbor_tile_id": "066e54f42cb9bd8b8b88bc1f809d38da5cf0c27d65b58a1c0e06a511acca77d7",
+      "neighbor_edge_idx": 9,
+      "neighbor_alias": "CryptoSpecialist"
+    },
+    "1": {
+      "neighbor_tile_id": "066e54f42cb9bd8b8b88bc1f809d38da5cf0c27d65b58a1c0e06a511acca77d7",
+      "neighbor_edge_idx": 8,
+      "neighbor_alias": "CryptoSpecialist"
+    },
+    "2": {
+      "neighbor_tile_id": "066e54f42cb9bd8b8b88bc1f809d38da5cf0c27d65b58a1c0e06a511acca77d7",
+      "neighbor_edge_idx": 7,
+      "neighbor_alias": "CryptoSpecialist"
+    },
+    "13": {
+      "neighbor_tile_id": "cfd1e3cadbe0618033df5dabfedc5278634a32f546268a66e17d1590736cf38a",
+      "neighbor_edge_idx": 2,
+      "neighbor_alias": "ThreatAnalyzer"
+    },
+    "12": {
+      "neighbor_tile_id": "cfd1e3cadbe0618033df5dabfedc5278634a32f546268a66e17d1590736cf38a",
+      "neighbor_edge_idx": 3,
+      "neighbor_alias": "ThreatAnalyzer"
+    },
+    "11": {
+      "neighbor_tile_id": "cfd1e3cadbe0618033df5dabfedc5278634a32f546268a66e17d1590736cf38a",
+      "neighbor_edge_idx": 4,
+      "neighbor_alias": "ThreatAnalyzer"
+    }
+  },
+  "status": "ACTIVE"
+},
   {
-    tile_id: "c3e7728ab45981cd",
-    header: {
-      index: 3,
-      agent_alias: "ColonySynthesizer",
-      transform: { x: -1.598, y: 4.964, rotation_index: 10, angle_rad: 5.23599, angle_deg: 300 },
-      ml_kem_pk: "7c140596831d2406978edf2314059687cb3241506978edf2314059687cb32415...",
-      ml_dsa_pk: "8d251607942e3517089fea3425160798dc4352617089fea3425160798dc43526...",
-      prompt_commitment: "b90cd3259867dcf1203948576ba2130495867dcf1203948576ba2130495867dc",
-      timestamp: 1789957479,
-      previous_block_hash: "b2d8819ef34762bc",
+  "tile_id": "cfd1e3cadbe0618033df5dabfedc5278634a32f546268a66e17d1590736cf38a",
+  "header": {
+    "index": 3,
+    "agent_alias": "ThreatAnalyzer",
+    "transform": {
+      "x": -3.232051,
+      "y": -0.866025,
+      "rotation_index": 4,
+      "angle_rad": 2.0944,
+      "angle_deg": 120
     },
-    specialization: "EXECUTIVE_SYNTHESIS",
-    role_description: "Cross-correlates multi-agent telemetry into unified, verified strategic intelligence.",
-    color: "#16a34a", // Emerald green
-    geometry: {
-      transform: { x: -1.598, y: 4.964, rotation_index: 10, angle_rad: 5.23599, angle_deg: 300 },
-      vertices: [
-        { x: -1.598, y: 4.964 },
-        { x: -1.098, y: 4.098 },
-        { x: -1.598, y: 3.232 },
-        { x: -0.848, y: 2.798 },
-        { x: 0.018, y: 3.298 },
-        { x: 0.518, y: 2.432 },
-        { x: 1.384, y: 2.932 },
-        { x: 0.518, y: 4.432 },
-        { x: 0.018, y: 4.0 },
-        { x: -0.732, y: 5.3 },
-        { x: -1.232, y: 6.166 },
-        { x: -2.098, y: 6.666 },
-        { x: -2.964, y: 6.166 },
-        { x: -2.464, y: 5.3 },
-      ],
-      centroid: { x: -0.84, y: 4.45 },
-    },
-    edge_connections: {
-      4: { neighbor_tile_id: "d908dee3b333a46c19ee78046f466175", neighbor_edge_idx: 11, neighbor_alias: "GenesisCore" },
-    },
-    status: "ACTIVE",
+    "ml_kem_pk": "b9972f87da9672307acce1663ebaaee0...",
+    "ml_dsa_pk": "9981c78377bb953a74302a93ebfb111f...",
+    "prompt_commitment": "a87b49b8b481e35dd63f3120fa7b3d19b2deca73ded1068fca006171239e930d",
+    "timestamp": 1789961267,
+    "previous_block_hash": "35af1e714206e9911cc4981728e3825730e77228412e604f5f82a17391bf0dae"
   },
+  "specialization": "BYZANTINE_PERIMETER_DEFENSE",
+  "role_description": "Evaluates Byzantine attack surfaces, side-channel vectors, and neighbor airlock quorums.",
+  "color": "#e11d48",
+  "geometry": {
+    "transform": {
+      "x": -3.232051,
+      "y": -0.866025,
+      "rotation_index": 4,
+      "angle_rad": 2.0944,
+      "angle_deg": 120
+    },
+    "vertices": [
+      {
+        "x": -3.232051,
+        "y": -0.866025
+      },
+      {
+        "x": -3.732051,
+        "y": 0.0
+      },
+      {
+        "x": -3.232051,
+        "y": 0.866026
+      },
+      {
+        "x": -4.098076,
+        "y": 1.366026
+      },
+      {
+        "x": -4.964102,
+        "y": 0.866026
+      },
+      {
+        "x": -5.464102,
+        "y": 1.732051
+      },
+      {
+        "x": -6.464102,
+        "y": 1.732051
+      },
+      {
+        "x": -6.464102,
+        "y": 0.732051
+      },
+      {
+        "x": -5.598076,
+        "y": 0.232051
+      },
+      {
+        "x": -6.098076,
+        "y": -0.633974
+      },
+      {
+        "x": -5.598076,
+        "y": -1.5
+      },
+      {
+        "x": -5.098076,
+        "y": -2.366025
+      },
+      {
+        "x": -4.098076,
+        "y": -2.366025
+      },
+      {
+        "x": -4.098076,
+        "y": -1.366025
+      }
+    ],
+    "centroid": {
+      "x": -4.874221,
+      "y": -0.112271
+    }
+  },
+  "edge_connections": {
+    "0": {
+      "neighbor_tile_id": "066e54f42cb9bd8b8b88bc1f809d38da5cf0c27d65b58a1c0e06a511acca77d7",
+      "neighbor_edge_idx": 11,
+      "neighbor_alias": "CryptoSpecialist"
+    },
+    "1": {
+      "neighbor_tile_id": "066e54f42cb9bd8b8b88bc1f809d38da5cf0c27d65b58a1c0e06a511acca77d7",
+      "neighbor_edge_idx": 10,
+      "neighbor_alias": "CryptoSpecialist"
+    },
+    "2": {
+      "neighbor_tile_id": "35af1e714206e9911cc4981728e3825730e77228412e604f5f82a17391bf0dae",
+      "neighbor_edge_idx": 13,
+      "neighbor_alias": "ColonySynthesizer"
+    },
+    "3": {
+      "neighbor_tile_id": "35af1e714206e9911cc4981728e3825730e77228412e604f5f82a17391bf0dae",
+      "neighbor_edge_idx": 12,
+      "neighbor_alias": "ColonySynthesizer"
+    },
+    "4": {
+      "neighbor_tile_id": "35af1e714206e9911cc4981728e3825730e77228412e604f5f82a17391bf0dae",
+      "neighbor_edge_idx": 11,
+      "neighbor_alias": "ColonySynthesizer"
+    },
+    "13": {
+      "neighbor_tile_id": "898fef766281fa1272cfd16ad4f69deedb4f2d4a9ac985ea660c2222fb2bd335",
+      "neighbor_edge_idx": 2,
+      "neighbor_alias": "DataIngestor"
+    },
+    "12": {
+      "neighbor_tile_id": "898fef766281fa1272cfd16ad4f69deedb4f2d4a9ac985ea660c2222fb2bd335",
+      "neighbor_edge_idx": 3,
+      "neighbor_alias": "DataIngestor"
+    },
+    "11": {
+      "neighbor_tile_id": "898fef766281fa1272cfd16ad4f69deedb4f2d4a9ac985ea660c2222fb2bd335",
+      "neighbor_edge_idx": 4,
+      "neighbor_alias": "DataIngestor"
+    }
+  },
+  "status": "ACTIVE"
+},
   {
-    tile_id: "d4f6639bc56092de",
-    header: {
-      index: 4,
-      agent_alias: "DataIngestor",
-      transform: { x: -4.232, y: 0.866, rotation_index: 0, angle_rad: 0, angle_deg: 0 },
-      ml_kem_pk: "9e362718053f4628190afb4536271809ed5463728190afb4536271809ed54637...",
-      ml_dsa_pk: "af47382916405739201bac5647382910fe6574839201bac5647382910fe65748...",
-      prompt_commitment: "ca1de4360978edf2314059687cb3241506978edf2314059687cb3241506978ed",
-      timestamp: 1789957480,
-      previous_block_hash: "c3e7728ab45981cd",
+  "tile_id": "898fef766281fa1272cfd16ad4f69deedb4f2d4a9ac985ea660c2222fb2bd335",
+  "header": {
+    "index": 4,
+    "agent_alias": "DataIngestor",
+    "transform": {
+      "x": -1.732051,
+      "y": -1.732051,
+      "rotation_index": 6,
+      "angle_rad": 3.1416,
+      "angle_deg": 180
     },
-    specialization: "DATA_HARVESTING",
-    role_description: "Monitors decentralized feeds, sanitizes input payloads, and verifies raw entropy.",
-    color: "#d97706", // Amber
-    geometry: {
-      transform: { x: -4.232, y: 0.866, rotation_index: 0, angle_rad: 0, angle_deg: 0 },
-      vertices: [
-        { x: -4.232, y: 0.866 },
-        { x: -3.232, y: 0.866 },
-        { x: -2.732, y: 0.0 },
-        { x: -1.866, y: 0.5 },
-        { x: -1.866, y: 1.5 },
-        { x: -0.866, y: 1.5 },
-        { x: -0.366, y: 2.366 },
-        { x: -1.232, y: 2.866 },
-        { x: -2.098, y: 2.366 },
-        { x: -2.598, y: 3.232 },
-        { x: -3.598, y: 3.232 },
-        { x: -4.598, y: 3.232 },
-        { x: -5.098, y: 2.366 },
-        { x: -4.232, y: 1.866 },
-      ],
-      centroid: { x: -2.74, y: 1.96 },
-    },
-    edge_connections: {
-      9: { neighbor_tile_id: "d908dee3b333a46c19ee78046f466175", neighbor_edge_idx: 13, neighbor_alias: "GenesisCore" },
-    },
-    status: "ACTIVE",
+    "ml_kem_pk": "67aca34d540e30bb53a894090217a142...",
+    "ml_dsa_pk": "b33168d9fe02ca14e7698345668c1095...",
+    "prompt_commitment": "c8944831c6be5e61c47bb277797c019083d1cb6d29d5d018406a641e82bcb6cb",
+    "timestamp": 1789961267,
+    "previous_block_hash": "cfd1e3cadbe0618033df5dabfedc5278634a32f546268a66e17d1590736cf38a"
   },
+  "specialization": "TOPOLOGY_TELEMETRY_INGESTION",
+  "role_description": "Processes aperiodic topology telemetry, contact constraints, and gapless neighborhood packing.",
+  "color": "#0891b2",
+  "geometry": {
+    "transform": {
+      "x": -1.732051,
+      "y": -1.732051,
+      "rotation_index": 6,
+      "angle_rad": 3.1416,
+      "angle_deg": 180
+    },
+    "vertices": [
+      {
+        "x": -1.732051,
+        "y": -1.732051
+      },
+      {
+        "x": -2.732051,
+        "y": -1.732051
+      },
+      {
+        "x": -3.232051,
+        "y": -0.866026
+      },
+      {
+        "x": -4.098076,
+        "y": -1.366026
+      },
+      {
+        "x": -4.098076,
+        "y": -2.366026
+      },
+      {
+        "x": -5.098076,
+        "y": -2.366026
+      },
+      {
+        "x": -5.598076,
+        "y": -3.232051
+      },
+      {
+        "x": -4.732051,
+        "y": -3.732051
+      },
+      {
+        "x": -3.866026,
+        "y": -3.232051
+      },
+      {
+        "x": -3.366026,
+        "y": -4.098076
+      },
+      {
+        "x": -2.366026,
+        "y": -4.098076
+      },
+      {
+        "x": -1.366026,
+        "y": -4.098076
+      },
+      {
+        "x": -0.866026,
+        "y": -3.232051
+      },
+      {
+        "x": -1.732051,
+        "y": -2.732051
+      }
+    ],
+    "centroid": {
+      "x": -3.205906,
+      "y": -2.777335
+    }
+  },
+  "edge_connections": {
+    "2": {
+      "neighbor_tile_id": "cfd1e3cadbe0618033df5dabfedc5278634a32f546268a66e17d1590736cf38a",
+      "neighbor_edge_idx": 13,
+      "neighbor_alias": "ThreatAnalyzer"
+    },
+    "3": {
+      "neighbor_tile_id": "cfd1e3cadbe0618033df5dabfedc5278634a32f546268a66e17d1590736cf38a",
+      "neighbor_edge_idx": 12,
+      "neighbor_alias": "ThreatAnalyzer"
+    },
+    "4": {
+      "neighbor_tile_id": "cfd1e3cadbe0618033df5dabfedc5278634a32f546268a66e17d1590736cf38a",
+      "neighbor_edge_idx": 11,
+      "neighbor_alias": "ThreatAnalyzer"
+    }
+  },
+  "status": "ACTIVE"
+},
 ];
 
 export const INITIAL_COGNITIVE_EPOCHS: CognitiveEpochData[] = [
-  {
-    epoch_hash: "820aa13aa15a8029049a718293c4e5f60718293a4b5c6d7e8f90123456789abc",
-    agent_tile_id: "d908dee3b333a46c19ee78046f466175",
-    agent_alias: "GenesisCore",
-    epoch_index: 0,
-    category: "CONSENSUS_STABILIZE",
-    summary: "Mosaic consensus stabilized. 5 tiles joined in aperiodic chiral harmony.",
-    detailed_reasoning: "Validated 14-gon chiral contact constraints across all perimeter segments. Zero overlapping vertices. Polarities interlock seamlessly. No geometric cul-de-sacs identified within 3 radial shells.",
-    timestamp: 1789957476,
-    dual_kem_status: "ML-KEM-1024 sealed (Agent + Auditor keys)",
-    dsa_signature_stamp: "ML-DSA-65 [1ddfaeb2...]",
-    prev_epoch_hash: "0000000000000000000000000000000000000000000000000000000000000000",
-  },
-  {
-    epoch_hash: "931bb24bb26b9130150b829304d5f6a71829304b5c6d7e8f90123456789abcde",
-    agent_tile_id: "a1c948e02d3345fa",
-    agent_alias: "CryptoSpecialist",
-    epoch_index: 1,
-    category: "LATTICE_VERIFY",
-    summary: "ML-KEM-1024 parameter safety margin verified against classical and Shor vectors.",
-    detailed_reasoning: "Performed security margin evaluation for NIST Level 5 lattice parameters. Module-LWE noise distribution maintains 280+ bits of quantum security margin under dual-basis reduction.",
-    timestamp: 1789957477,
-    dual_kem_status: "ML-KEM-1024 sealed (Agent + Auditor keys)",
-    dsa_signature_stamp: "ML-DSA-65 [4e918274...]",
-    prev_epoch_hash: "820aa13aa15a8029049a718293c4e5f60718293a4b5c6d7e8f90123456789abc",
-  },
-  {
-    epoch_hash: "a42cc35cc37c0241261c930415e6a7b82930415c6d7e8f90123456789abcdef0",
-    agent_tile_id: "b2d8819ef34762bc",
-    agent_alias: "ThreatAnalyzer",
-    epoch_index: 2,
-    category: "BYZANTINE_SWEEP",
-    summary: "Spatial firewall perimeter inspected. All touching edge traffic verified authentic.",
-    detailed_reasoning: "Monitored packet arrival intervals across Edge 1 contact with GenesisCore. Hop signatures correspond exactly to registered public keys. No replay attempts or nonce collisions detected.",
-    timestamp: 1789957478,
-    dual_kem_status: "ML-KEM-1024 sealed (Agent + Auditor keys)",
-    dsa_signature_stamp: "ML-DSA-65 [6b039485...]",
-    prev_epoch_hash: "931bb24bb26b9130150b829304d5f6a71829304b5c6d7e8f90123456789abcde",
-  },
-  {
-    epoch_hash: "b53dd46dd48d1352372da41526f7b8c93041526d7e8f90123456789abcdef012",
-    agent_tile_id: "c3e7728ab45981cd",
-    agent_alias: "ColonySynthesizer",
-    epoch_index: 3,
-    category: "EXECUTIVE_SYNTHESIS",
-    summary: "Cross-colony telemetry compiled. Ready to process adaptive reasoning queries.",
-    detailed_reasoning: "Correlated crypto verification and threat telemetry into high-availability matrix. Swarm state ready to dispatch localized hop-by-hop reasoning tasks to touching neighbors.",
-    timestamp: 1789957479,
-    dual_kem_status: "ML-KEM-1024 sealed (Agent + Auditor keys)",
-    dsa_signature_stamp: "ML-DSA-65 [8d251607...]",
-    prev_epoch_hash: "a42cc35cc37c0241261c930415e6a7b82930415c6d7e8f90123456789abcdef0",
-  },
 ];

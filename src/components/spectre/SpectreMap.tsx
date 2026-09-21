@@ -1,6 +1,6 @@
-import { useState, useMemo } from "react";
+import React, { useState, useMemo, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { Shield, ShieldAlert, Cpu, Radio, Sparkles, Key } from "lucide-react";
+import { Shield, ShieldAlert, Cpu, Radio, Sparkles, Key, ZoomIn, ZoomOut, RotateCcw, Move } from "lucide-react";
 import { SpectreTileData } from "./types";
 
 interface SpectreMapProps {
@@ -22,8 +22,15 @@ export default function SpectreMap({
 }: SpectreMapProps) {
   const [hoveredTile, setHoveredTile] = useState<SpectreTileData | null>(null);
 
+  // Pan & Zoom interactive state
+  const [pan, setPan] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState<number>(1);
+  const [isDragging, setIsDragging] = useState<boolean>(false);
+  const [dragStart, setDragStart] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+  const svgRef = useRef<SVGSVGElement>(null);
+
   // Compute bounding box across all tiles to auto-fit and center the SVG
-  const { minX, minY, width, height, viewBox } = useMemo(() => {
+  const { minX, minY, width, height, viewBox, centerX, centerY } = useMemo(() => {
     let minX = Infinity;
     let maxX = -Infinity;
     let minY = Infinity;
@@ -39,7 +46,7 @@ export default function SpectreMap({
     });
 
     if (minX === Infinity) {
-      return { minX: -6, minY: -6, width: 12, height: 12, viewBox: "-6 -6 12 12" };
+      return { minX: -6, minY: -6, width: 12, height: 12, viewBox: "-6 -6 12 12", centerX: 0, centerY: 0 };
     }
 
     // Add margin around the colony
@@ -55,9 +62,48 @@ export default function SpectreMap({
       minY: y0,
       width: Math.max(w, 8),
       height: Math.max(h, 8),
+      centerX: x0 + Math.max(w, 8) / 2,
+      centerY: y0 + Math.max(h, 8) / 2,
       viewBox: `${x0} ${y0} ${Math.max(w, 8)} ${Math.max(h, 8)}`,
     };
   }, [tiles]);
+
+  // Mouse pan handlers
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (e.button !== 0) return;
+    setIsDragging(true);
+    setDragStart({ x: e.clientX, y: e.clientY });
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging || !svgRef.current) return;
+    const rect = svgRef.current.getBoundingClientRect();
+    if (rect.width === 0 || rect.height === 0) return;
+
+    const scaleX = width / (rect.width * zoom);
+    const scaleY = height / (rect.height * zoom);
+
+    const dx = (e.clientX - dragStart.x) * scaleX;
+    const dy = (e.clientY - dragStart.y) * scaleY;
+
+    setPan((prev) => ({ x: prev.x + dx, y: prev.y + dy }));
+    setDragStart({ x: e.clientX, y: e.clientY });
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  const handleWheel = (e: React.WheelEvent) => {
+    e.preventDefault();
+    const factor = e.deltaY < 0 ? 1.15 : 0.85;
+    setZoom((prev) => Math.min(Math.max(prev * factor, 0.4), 4.0));
+  };
+
+  const handleResetView = () => {
+    setPan({ x: 0, y: 0 });
+    setZoom(1);
+  };
 
   // Generate inter-agent touching edge communication lines
   const edgeConnections = useMemo(() => {
@@ -97,24 +143,62 @@ export default function SpectreMap({
           </span>
         </div>
         
-        <div className="flex items-center gap-3 text-[9px] font-mono">
-          <span className="flex items-center gap-1">
-            <span className="w-2 h-2 rounded-full bg-indigo-600 inline-block" /> Active
-          </span>
-          <span className="flex items-center gap-1">
-            <span className="w-2 h-2 rounded-full bg-rose-500 inline-block animate-pulse" /> Thinking
-          </span>
-          <span className="flex items-center gap-1 text-[#1A1A1A]/50">
-            <Shield className="w-3 h-3" /> FIPS 203 ML-KEM
-          </span>
+        {/* Navigation & Zoom controls */}
+        <div className="flex items-center gap-2">
+          <div className="flex items-center bg-white/80 border border-[#1A1A1A]/10 rounded px-1.5 py-0.5 text-[9px] font-mono gap-1.5 text-[#1A1A1A]/70">
+            <button
+              onClick={() => setZoom((z) => Math.min(z * 1.2, 4.0))}
+              title="Zoom In"
+              className="hover:text-black transition cursor-pointer"
+            >
+              <ZoomIn className="w-3 h-3" />
+            </button>
+            <button
+              onClick={() => setZoom((z) => Math.max(z * 0.8, 0.4))}
+              title="Zoom Out"
+              className="hover:text-black transition cursor-pointer"
+            >
+              <ZoomOut className="w-3 h-3" />
+            </button>
+            <button
+              onClick={handleResetView}
+              title="Reset Pan/Zoom"
+              className="hover:text-black transition cursor-pointer flex items-center gap-0.5 pl-1 border-l border-[#1A1A1A]/10"
+            >
+              <RotateCcw className="w-2.5 h-2.5" />
+              <span>{Math.round(zoom * 100)}%</span>
+            </button>
+          </div>
+
+          <div className="hidden sm:flex items-center gap-3 text-[9px] font-mono">
+            <span className="flex items-center gap-1">
+              <span className="w-2 h-2 rounded-full bg-indigo-600 inline-block" /> Active
+            </span>
+            <span className="flex items-center gap-1">
+              <span className="w-2 h-2 rounded-full bg-rose-500 inline-block animate-pulse" /> Thinking
+            </span>
+            <span className="flex items-center gap-1 text-[#1A1A1A]/50">
+              <Shield className="w-3 h-3" /> FIPS 203 ML-KEM
+            </span>
+          </div>
         </div>
       </div>
 
       {/* SVG Canvas for Einstein Spectre Monotiles */}
-      <div className="relative flex-1 min-h-0 w-full flex items-center justify-center p-2">
+      <div
+        className={`relative flex-1 min-h-0 w-full flex items-center justify-center p-2 overflow-hidden ${
+          isDragging ? "cursor-grabbing" : "cursor-grab"
+        }`}
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
+        onMouseLeave={handleMouseUp}
+        onWheel={handleWheel}
+      >
         <svg
+          ref={svgRef}
           viewBox={viewBox}
-          className="w-full h-full max-h-[360px] overflow-visible drop-shadow-sm"
+          className="w-full h-full min-h-[260px] overflow-visible drop-shadow-sm"
           preserveAspectRatio="xMidYMid meet"
         >
           <defs>
@@ -133,8 +217,13 @@ export default function SpectreMap({
             </pattern>
           </defs>
 
-          {/* Hexagonal lattice background preview */}
-          <rect x={minX} y={minY} width={width} height={height} fill="url(#hexGrid)" />
+          {/* Dynamic Transform Group for Pan and Zoom */}
+          <g
+            transform={`translate(${centerX + pan.x}, ${centerY + pan.y}) scale(${zoom}) translate(${-centerX}, ${-centerY})`}
+            style={{ transition: isDragging ? "none" : "transform 0.1s ease-out" }}
+          >
+            {/* Hexagonal lattice background preview */}
+            <rect x={minX - 20} y={minY - 20} width={width + 40} height={height + 40} fill="url(#hexGrid)" />
 
           {/* Touching Edge Communication Lines (Spatial Firewall) */}
           {edgeConnections.map((conn) => (
@@ -238,6 +327,7 @@ export default function SpectreMap({
               </g>
             );
           })}
+          </g>
         </svg>
 
         {/* Hover Inspector Tooltip Overlay */}
