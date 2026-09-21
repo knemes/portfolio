@@ -16,7 +16,7 @@ import DrawingToolbar from "./components/DrawingToolbar";
 
 import Page1Intro from "./components/pages/Page1Intro";
 import Page2ThreeD from "./components/pages/Page2ThreeD";
-import Page3Blueprint from "./components/pages/Page3Blueprint";
+import Page3QAIChain from "./components/pages/Page3QAIChain";
 import Page4Editor from "./components/pages/Page4Editor";
 import Page5Sandbox from "./components/pages/Page5Sandbox";
 import Page6Contact from "./components/pages/Page6Contact";
@@ -347,9 +347,9 @@ export default function App() {
                       />
                     )}
 
-                    {/* PAGE 3: BLUEPRINTS / responsive visual blueprint */}
+                    {/* PAGE 3: QAI-CHAIN QUANTUM SWARM EXPLORER */}
                     {pageNum === 3 && (
-                      <Page3Blueprint
+                      <Page3QAIChain
                         isDrawingActive={isDrawingActive}
                         totalPages={TOTAL_PAGES}
                       />
@@ -447,7 +447,7 @@ export default function App() {
               const pageMeta = [
                 { title: "Introduction", category: "INDEX" },
                 { title: "Parametric Boat Modeler", category: "CAD" },
-                { title: "System Blueprint", category: "PRODUCT" },
+                { title: "QAI-Chain Swarm Protocol", category: "QUANTUM AI" },
                 { title: "Interactive Code Editor", category: "LAB" },
                 { title: "Kinetic Sandbox", category: "PHYSICS" },
                 { title: "Public Review Board", category: "GUESTBOOK" },
